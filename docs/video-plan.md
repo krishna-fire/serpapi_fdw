@@ -1,47 +1,80 @@
-# Demo video plan (target 2:40, hard limit 3:00)
+# The film (2:45)
 
-Rules that shape it: screen recording, under three minutes, the project **running locally**, core
-functionality visibly working, link opens without sign-in. Narration optional; speed-ups allowed;
-production quality explicitly does not count. Judges watch dozens of these: the first 15 seconds
-decide whether they lean in, so the finished result comes first and the setup comes second.
+A keynote, not a test report. One claim, one reveal, three pillars, a payoff, one more thing.
+Every sentence is backed by a real terminal shot, because that is what the judges verify; the
+cuts carry the argument. Constraints: under three minutes, running locally, no key on screen.
 
-Everything below runs on the local stack (`scripts/dev-up.sh --no-mock`, key in `~/.serpapi_key`)
-against the real SerpApi, pre-warmed within the hour so re-takes hit SerpApi's cache for free.
-Credit budget for the recording day: about 6 fresh searches, approved separately before recording.
+Voice: calm, short declaratives, pauses. Type: black cards, one idea per card, two to five words
+in large type, a single line of small type beneath when needed. Terminal: one clean window, big
+type, no prompt clutter, results that appear rather than scroll.
 
-## Layout
+## Script
 
-Two panes, one terminal: left `psql` (font 16, dark), right a tail of the request log
-(`watch -n1 'psql ... -c "select at::time, engine, params->>''q'', rows, elapsed_ms from serpapi.request_log limit 6"'`).
-A single title card at the start and an end card; nothing else edited. Optional narration.
-
-## Shot list
-
-| Time | On screen | What it proves (criterion) |
+| Time | Card / screen | Voice |
 |---|---|---|
-| 0:00–0:12 | Title card: **serpapi_fdw** — "SerpApi as Postgres functions for Supabase and plain Postgres." One line under it: "Live search results become a table in the database you already have, and the wrapper meters its own credits." | Idea strength in one sentence |
-| 0:12–0:30 | The finished thing first: `select * from public.strikethrough_forensics('2026-10-09') where inflated;` showing real iPhone rows: sale price, strikethrough, max seen over the prior nights, `inflated = true`. (Before Oct 9: show `price_changes` for the nights collected so far and say the forensics view is what runs on sale day.) | Usefulness; not LLM-answerable |
-| 0:30–0:50 | Prove it is local and honest: `git clone … && supabase start` (pre-warmed, sped up), `scripts/build.sh` finishing in seconds, `scripts/load-local.sh` printing the server line, `.env.example` on screen (never a key). | Runs locally; no secrets |
-| 0:50–1:20 | The core call, live: `select source, extracted_price, old_price from serpapi.google_shopping('iPhone 16');` Rows from Flipkart, Croma, Amazon.in appear; the right pane logs `google_shopping … rows=40 … 900ms`. Run it again: same rows, log shows the hit, `serpapi.budget_status()` unchanged (SerpApi cache). | Meaningful SerpApi usage; engine specificity (`gl=in`, location, Markdown-ready) |
-| 1:20–1:40 | Named arguments and an explicit per-row call: `select p.query, s.asin, s.extracted_price from (values ('iPhone 16'),('iPhone 17')) p(query), lateral serpapi.amazon(p.query) s limit 6;` The log shows exactly two searches. Then `select * from serpapi.replay_amazon('<search_id>')` returning the same rows and the budget not moving: free re-read from SerpApi's archive. | Technical complexity; originality (functions, not a chat bot) |
-| 1:40–2:00 | Guards, fast: `select * from serpapi.google_shopping(null)` → "q is required"; `alter server serpapi options (set hourly_cap '2')` then a third fresh query → "hourly cap reached (2/2) … resets at"; restore. A wrong-key error on screen with no URL in it. | CSE-grade robustness; key hygiene |
-| 2:00–2:20 | The loop that produced the opening shot: `select * from cron.job;` (the nightly job), `select * from public.snapshot_runs order by id desc limit 5;` (one row per night, per-search commits, zero errors), `select captured_on, source, price, old_price from public.price_series where product_key = '<asin>' order by 1;` (the time series for one iPhone). | State over time; closed loop |
-| 2:20–2:35 | Same functions through PostgREST: `curl -X POST …/rpc/google_shopping` with the anon key → policy error; with an authenticated JWT → rows and `budget_status` showing that user's daily quota. | Deterministic code decides; quotas per caller |
-| 2:35–2:45 | The engines-and-roles table from the README on screen, then `scripts/smoke-assert.sh` printing `errors=5 warnings=0 … repeated_ok=6` and `cargo test` printing 27 passed (sped up). | Tests; honesty |
-| 2:45–2:52 | End card: repo URL, track (Open-Source Integrations), "works on Supabase (hosted + local) and plain Postgres with the wrappers .deb", name, Bengaluru. | |
+| 0:00 | Black. Type fades in: **Every SerpApi tutorial ends the same way.** (beat) **Export to Sheets.** | — |
+| 0:07 | **What if the results were already in your database?** | — |
+| 0:12 | Terminal. One line types itself: `select source, price from serpapi.google_shopping('iPhone 16');` Rows appear: Flipkart, Croma, Amazon.in, Reliance… | "Google Shopping. As a Postgres function." |
+| 0:22 | **serpapi_fdw** / *SerpApi, as SQL. For Supabase and Postgres.* | "This is serpapi_fdw." |
+| 0:28 | **It's a table.** | "Three things." (beat) "First. It's a table." |
+| 0:32 | `select asin, price, old_price from serpapi.amazon('iPhone', pages => 2);` → rows. Then a join: `from products p, lateral serpapi.amazon(p.query) s` → the log pane shows exactly two searches. | "Named arguments. Joins. Eight engines with typed columns, and a hundred more one call away." |
+| 0:50 | `select * from serpapi.search('google_trends', '{"q":"air fryer","geo":"IN-KA"}');` → one JSON row. | "Any engine. Same rules." |
+| 0:56 | **It keeps the receipts.** | "Second. It keeps the receipts." |
+| 1:00 | Zoom on the `search_id` column. `select * from serpapi.replay_amazon('6ab9…');` → the same rows. `budget_status()` before and after: unchanged. | "Every row carries the search it came from. Read it again for thirty-one days. Free." |
+| 1:14 | `select * from cron.job;` then `select * from snapshot_runs;` one row per night. Then one iPhone's `price_series`, nights stacked. | "Every night at two-thirty, it records the price of every iPhone on Amazon.in. Three credits." |
+| 1:30 | **It never surprises your bill.** | "Third. It never surprises your bill." |
+| 1:34 | `serpapi.budget_status()` → hour 7/50, month 41/250, user 3/20. Then a query that trips the cap: `serpapi: hourly cap reached (50/50), resets at 14:00`. Then a wrong-key error, zoomed: no URL in it. | "Caps live inside the wrapper. Quotas live per user. The key lives in Vault — and never in an error message." |
+| 1:50 | `curl … /rpc/google_shopping` with the anon key → `anonymous callers are not allowed`; with a user token → rows. | "An app can call it. An anonymous visitor can't." |
+| 1:58 | **October 9. Big Billion Days.** | — |
+| 2:02 | `select * from strikethrough_forensics('2026-10-09') where inflated;` Zoom on one row: *was ₹149,900 → ₹119,900 · claimed 20% · real 4%*. | "The discount is a claim. The ledger is a fact." |
+| 2:16 | **Under the hood.** Fast cuts: `cargo test` → 27 passed; `smoke-assert.sh` → errors=5 warnings=0; a 480 KB `.wasm`; `create server serpapi … fdw_package_url 'https://github.com/…/serpapi_fdw.wasm'`. Three logos in a row: Supabase hosted, Supabase local, Postgres. | "One wrapper, in Rust. Installs from a URL. Runs wherever Supabase Wrappers runs." |
+| 2:32 | **One more thing.** | — |
+| 2:35 | `select markdown from serpapi.search_md('google_news', '{"q":"Bengaluru tech hiring"}');` → a clean Markdown block. | "Markdown out. For your agents." |
+| 2:42 | End card: **serpapi_fdw** · github.com/krishna-fire/serpapi_fdw · Open-Source Integrations · Krishna Janaswamy, Bengaluru | — |
 
-## What is deliberately not in the video
+Runtime of terminal footage: about 1:50 of 2:45. Cards never exceed six seconds.
 
-- No hosted Supabase footage (the rule says local; hosted is a README screenshot).
-- No mock server (real data reads better; the mock is for tests and judges without a key).
-- No architecture talk beyond one sentence; the README carries it.
-- No Markdown-output or token-savings segment unless there is spare time at 2:35; it is a README number.
+## How it maps to the judging criteria (do not say this in the film)
 
-## Recording checklist
+Idea strength: 0:00–0:22. Originality: 0:28–0:56 (functions, joins, any engine), 2:35. Technical
+complexity: 1:00–1:50, 2:16. Usefulness: 1:14, 1:58–2:16. Meaningful SerpApi usage: everything.
 
-1. Night before: `scripts/dev-up.sh --no-mock`, `load-local.sh`, `apply-sql.sh`; confirm `smoke-assert.sh` passes against the mock first, then switch to live.
-2. Within the hour before recording, run every query once (pre-warm; ~6 credits). Note one `search_id` and one ASIN for the replay and time-series shots.
-3. Set the terminal to 120×34, font 16; hide the dock; close the Chrome tab with the dashboard (no keys on screen).
-4. Record with QuickTime (screen only) or `ffmpeg`; speed the clone/build segment 4×.
-5. Watch it back once for any string starting with `api_key=`; export; upload unlisted to YouTube; test in an incognito window.
-6. Oct 9: re-record only 0:12–0:30 with the real forensics rows and re-export.
+## Production
+
+- **Terminal segments with VHS** (charmbracelet/vhs): a `.tape` file per segment, deterministic
+  typing speed, waits, theme, 1920×1080, MP4 out. Repeatable, and it lives in the repo
+  (`demo/tapes/`). Font 22, dark theme, prompt set to `❯`, no window chrome.
+- **Cards in Keynote**: black background, SF Pro Display, white type, one idea per card, a
+  slow fade in and a hard cut out. Export at 1080p.
+- **Assembly in iMovie or Final Cut**: cards and tapes alternate; cross-dissolve only between
+  a card and its terminal shot; no transitions inside terminal footage. Zooms are done in the
+  editor (Ken Burns on the row that matters), not by scrolling the terminal.
+- **Voice**: Krishna's own voice, recorded separately with the script above, then aligned.
+  Short sentences. Leave air after each card.
+- **Music**: none, or one quiet royalty-free bed under the cards only. Silence under terminal.
+- **Data**: real SerpApi, local stack (`scripts/dev-up.sh --no-mock`), pre-warmed within the
+  hour so every take hits SerpApi's cache. About six fresh searches on the day, approved first.
+- **Before Oct 9**: 1:58–2:16 uses the nights collected so far with `price_series`; re-shoot only
+  that segment on Oct 9 and re-export. Everything else is final by Oct 3.
+- **Check before upload**: play once looking for any string beginning `api_key=`; unlisted
+  YouTube; open the link in an incognito window; confirm under 3:00.
+
+## VHS tape skeleton (demo/tapes/01-reveal.tape)
+
+```
+Output demo/out/01-reveal.mp4
+Set FontSize 22
+Set Width 1920
+Set Height 1080
+Set Theme "Catppuccin Mocha"
+Set TypingSpeed 40ms
+Set Padding 40
+Hide
+Type "psql \"$DB_URL\" -q" Enter
+Sleep 1s
+Show
+Type "select source, extracted_price as price from serpapi.google_shopping('iPhone 16') order by price limit 8;"
+Sleep 800ms
+Enter
+Sleep 4s
+```
