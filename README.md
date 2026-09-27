@@ -29,7 +29,7 @@ The result: named arguments instead of `WHERE q = …`, an explicit `LATERAL` wh
 
 | Platform | Wrappers host | Key storage | Status |
 |---|---|---|---|
-| Supabase hosted | preinstalled | Vault (`api_key_name`) | install from the release URL |
+| Supabase hosted | preinstalled | Vault (`api_key_name`) | install from the release URL with `scripts/load-hosted.sh`. Caveat: `create foreign data wrapper` needs a privilege Supabase grants to `postgres` during provisioning; on projects where it is missing (see [supabase/supabase#46480](https://github.com/supabase/supabase/issues/46480), typically restored or unpaused ones) every client including the SQL editor gets `permission denied to create foreign-data wrapper`, and only Supabase can fix the project |
 | Supabase local (`supabase start`) | preinstalled | Vault | `scripts/dev-up.sh` |
 | Self-hosted Postgres 14–18 (Debian trixie / Ubuntu 24.04+, amd64/arm64) | [`wrappers` .deb from the Supabase releases](https://github.com/supabase/wrappers/releases) | plain `api_key` server option, gated by `serpapi.allow_plain_key` | `scripts/plain-pg-up.sh`, verified with the same 17-check suite |
 | Managed clouds that forbid third-party extensions (RDS, Cloud SQL, …) | not installable | — | federate to a sidecar with `postgres_fdw` / `dblink` (below) |

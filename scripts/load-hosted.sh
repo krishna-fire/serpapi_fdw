@@ -11,6 +11,7 @@ RELEASE="${RELEASE:-v0.1.0}"
 REGION="${REGION:-ap-south-1}"
 PW="${SUPABASE_DB_PASSWORD:-$(cat "$HOME/.supabase-db-password" 2>/dev/null || true)}"
 test -n "$PW" || { echo "put the database password in ~/.supabase-db-password" >&2; exit 1; }
+PW="$(printf '%s' "$PW" | python3 -c 'import sys,urllib.parse; print(urllib.parse.quote(sys.stdin.read().strip(), safe=""))')"   # URL-safe
 KEY="${SERPAPI_API_KEY:-$(cat "$HOME/.serpapi_key" 2>/dev/null || true)}"
 test -n "$KEY" || { echo "put the SerpApi key in ~/.serpapi_key" >&2; exit 1; }
 

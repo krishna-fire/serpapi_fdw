@@ -18,6 +18,15 @@ filed as an issue where one does not already exist; links are added as they are 
    Also: after `create extension wrappers with schema extensions` on plain Postgres, the handler must
    be referenced schema-qualified (`extensions.wasm_fdw_handler`) because `extensions` is only on
    the default `search_path` on Supabase.
+0c. **Hosted Supabase: `create foreign data wrapper` is superuser-only, and the grant that lets
+   `postgres` do it is applied by Supabase's provisioning pipeline, not by the extension.** On a
+   freshly created free project (Postgres 17.6, Wrappers 0.5.7) both psql and the dashboard SQL
+   editor returned `42501 permission denied to create foreign-data wrapper … Must be superuser`;
+   `supautils.privileged_role` points at a role that does not exist in the database, and `postgres`
+   holds no membership that could stand in. This is the symptom tracked in supabase/supabase#46480
+   (open, June 2026) and PR #46533. Nothing a user can run fixes it. *Suggestion:* make the FDW
+   creation part of `create extension wrappers` (run as `supabase_admin`, which already happens for
+   privileged extensions) so third-party Wasm wrappers work wherever the extension does.
 1. **429 retries ignore `Retry-After`, and there is no request timeout.** The host wraps
    `reqwest` with `reqwest_retry` (`max_retries(3)`, exponential backoff) and no `timeout`
    ([host/http.rs](https://github.com/supabase/wrappers/blob/main/wrappers/src/fdw/wasm_fdw/host/http.rs)).
