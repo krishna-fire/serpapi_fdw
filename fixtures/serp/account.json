@@ -1,0 +1,15 @@
+{
+  "account_id": "fixture",
+  "api_key": "THIS-MUST-NEVER-BE-RETURNED",
+  "account_email": "fixture@example.com",
+  "plan_id": "free",
+  "plan_name": "Free Plan",
+  "searches_per_month": 250,
+  "plan_searches_left": 213,
+  "extra_credits": 0,
+  "total_searches_left": 213,
+  "this_month_usage": 37,
+  "this_hour_searches": 3,
+  "last_hour_backend_searches": 3,
+  "account_rate_limit_per_hour": 50
+}

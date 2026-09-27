@@ -1,0 +1,13 @@
+{
+  "search_metadata": { "id": "fixture-trends-air-fryer-in-ka", "status": "Success" },
+  "search_parameters": { "engine": "google_trends", "q": "air fryer", "geo": "IN-KA", "data_type": "TIMESERIES", "date": "today 3-m" },
+  "interest_over_time": {
+    "timeline_data": [
+      { "date": "Jul 6 – 12, 2026",  "timestamp": "1783296000", "values": [ { "query": "air fryer", "value": "41", "extracted_value": 41 } ] },
+      { "date": "Aug 3 – 9, 2026",   "timestamp": "1785715200", "values": [ { "query": "air fryer", "value": "47", "extracted_value": 47 } ] },
+      { "date": "Sep 7 – 13, 2026",  "timestamp": "1788739200", "values": [ { "query": "air fryer", "value": "63", "extracted_value": 63 } ] },
+      { "date": "Sep 21 – 27, 2026", "timestamp": "1789948800", "values": [ { "query": "air fryer", "value": "100", "extracted_value": 100 } ] }
+    ],
+    "averages": [ { "query": "air fryer", "value": 58 } ]
+  }
+}

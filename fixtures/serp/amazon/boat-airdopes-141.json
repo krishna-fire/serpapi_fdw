@@ -1,0 +1,48 @@
+{
+  "search_metadata": {
+    "id": "fixture-amazon-boat-airdopes-141",
+    "status": "Success",
+    "created_at": "2026-09-27 03:00:14 UTC",
+    "processed_at": "2026-09-27 03:00:14 UTC"
+  },
+  "search_parameters": {
+    "engine": "amazon",
+    "k": "boAt Airdopes 141",
+    "amazon_domain": "amazon.in"
+  },
+  "organic_results": [
+    {
+      "position": 1,
+      "asin": "B09N3ZNHTY",
+      "title": "boAt Airdopes 141 Bluetooth TWS Earbuds with 42H Playtime, Beast Mode(Low Latency Upto 80ms) for Gaming, ENx Tech, ASAP Charge, IWP, IPX4 Water Resistance, Smooth Touch Controls(Bold Black)",
+      "link": "https://www.amazon.in/dp/B09N3ZNHTY",
+      "thumbnail": "https://example.invalid/amz1.jpg",
+      "rating": 4.1,
+      "reviews": 254312,
+      "price": "₹1,099",
+      "extracted_price": 1099,
+      "old_price": "₹2,990",
+      "extracted_old_price": 2990,
+      "bought_last_month": "10K+ bought in past month",
+      "sponsored": false,
+      "prime": true,
+      "delivery": ["FREE delivery Tomorrow"]
+    },
+    {
+      "position": 2,
+      "asin": "B0SPONSORED1",
+      "title": "Some Other Brand TWS Earbuds",
+      "link": "https://www.amazon.in/dp/B0SPONSORED1",
+      "rating": 3.9,
+      "reviews": 812,
+      "price": "₹899",
+      "extracted_price": 899,
+      "sponsored": true,
+      "prime": true
+    }
+  ],
+  "serpapi_pagination": {
+    "current": 1,
+    "next": "https://serpapi.com/search.json?amazon_domain=amazon.in&engine=amazon&k=boAt+Airdopes+141&page=2"
+  }
+}

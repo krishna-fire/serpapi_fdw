@@ -1,0 +1,30 @@
+{
+  "search_metadata": { "id": "fixture-jobs-data-engineer-p1", "status": "Success" },
+  "search_parameters": { "engine": "google_jobs", "q": "data engineer", "location_requested": "Bengaluru,Karnataka,India", "gl": "in", "hl": "en" },
+  "jobs_results": [
+    {
+      "title": "Data Engineer",
+      "company_name": "Razorpay",
+      "location": "Bengaluru, Karnataka",
+      "via": "LinkedIn",
+      "share_link": "https://www.google.com/search?ibp=htl;jobs#htivrt=jobs&htidocid=1",
+      "description": "Build and operate streaming pipelines...",
+      "job_id": "job1",
+      "detected_extensions": { "posted_at": "2 days ago", "schedule_type": "Full-time", "salary": "₹18L–₹30L a year" },
+      "apply_options": [ { "title": "LinkedIn", "link": "https://linkedin.example/1" }, { "title": "Razorpay Careers", "link": "https://razorpay.example/careers/1" } ],
+      "job_highlights": [ { "title": "Qualifications", "items": ["4+ years Python", "Kafka"] } ]
+    },
+    {
+      "title": "Senior Data Engineer",
+      "company_name": "Swiggy",
+      "location": "Bengaluru, Karnataka",
+      "via": "Naukri.com",
+      "share_link": "https://www.google.com/search?ibp=htl;jobs#htivrt=jobs&htidocid=2",
+      "description": "Own the data platform...",
+      "job_id": "job2",
+      "detected_extensions": { "posted_at": "5 days ago", "schedule_type": "Full-time", "work_from_home": true },
+      "apply_options": [ { "title": "Naukri.com", "link": "https://naukri.example/2" } ]
+    }
+  ],
+  "serpapi_pagination": { "next_page_token": "fixture-jobs-page-2-token" }
+}

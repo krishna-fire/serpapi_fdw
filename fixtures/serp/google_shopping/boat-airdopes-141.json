@@ -1,0 +1,65 @@
+{
+  "search_metadata": {
+    "id": "fixture-shopping-boat-airdopes-141",
+    "status": "Success",
+    "created_at": "2026-09-27 03:00:11 UTC",
+    "processed_at": "2026-09-27 03:00:11 UTC",
+    "total_time_taken": 1.42
+  },
+  "search_parameters": {
+    "engine": "google_shopping",
+    "q": "boAt Airdopes 141",
+    "location_requested": "Bengaluru,Karnataka,India",
+    "google_domain": "google.co.in",
+    "gl": "in",
+    "hl": "en"
+  },
+  "shopping_results": [
+    {
+      "position": 1,
+      "title": "boAt Airdopes 141 Bluetooth Truly Wireless Earbuds, 42H Playtime, Bold Black",
+      "product_link": "https://www.google.com/shopping/product/1?gl=in",
+      "product_id": "1",
+      "source": "Amazon.in",
+      "price": "₹1,099.00",
+      "extracted_price": 1099,
+      "old_price": "₹2,990.00",
+      "extracted_old_price": 2990,
+      "rating": 4.1,
+      "reviews": 254000,
+      "delivery": "Free delivery",
+      "tag": "63% OFF",
+      "immersive_product_page_token": "eyJ...token1",
+      "thumbnail": "https://example.invalid/thumb1.jpg"
+    },
+    {
+      "position": 2,
+      "title": "boAt Airdopes 141 TWS Earbuds (Cyan Cider)",
+      "product_link": "https://www.google.com/shopping/product/2?gl=in",
+      "product_id": "2",
+      "source": "Flipkart",
+      "price": "₹1,199.00",
+      "extracted_price": 1199,
+      "old_price": "₹2,999.00",
+      "extracted_old_price": 2999,
+      "rating": 4.2,
+      "reviews": 318000,
+      "delivery": "Free delivery",
+      "immersive_product_page_token": "eyJ...token2",
+      "thumbnail": "https://example.invalid/thumb2.jpg"
+    },
+    {
+      "position": 3,
+      "title": "boAt Airdopes 141 - Bold Black",
+      "product_link": "https://www.google.com/shopping/product/3?gl=in",
+      "product_id": "3",
+      "source": "Croma",
+      "price": "₹1,149.00",
+      "extracted_price": 1149,
+      "rating": 4.0,
+      "reviews": 1200,
+      "delivery": "Free delivery over ₹499",
+      "thumbnail": "https://example.invalid/thumb3.jpg"
+    }
+  ]
+}

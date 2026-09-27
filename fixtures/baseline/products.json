@@ -1,0 +1,12 @@
+[
+  { "sku": "iphone-16-128",        "query": "iPhone 16 128GB",                         "category": "phone" },
+  { "sku": "samsung-43-crystal4k", "query": "Samsung 43 inch Crystal 4K UHD Smart TV",  "category": "tv" },
+  { "sku": "boat-airdopes-141",    "query": "boAt Airdopes 141",                       "category": "audio" },
+  { "sku": "sony-wh1000xm5",       "query": "Sony WH-1000XM5",                         "category": "audio" },
+  { "sku": "philips-airfryer-41",  "query": "Philips 4.1L Air Fryer HD9200",           "category": "kitchen" },
+  { "sku": "prestige-iris-750",    "query": "Prestige Iris 750W Mixer Grinder",        "category": "kitchen" },
+  { "sku": "samsung-253l-fridge",  "query": "Samsung 253L Frost Free Refrigerator",    "category": "appliance" },
+  { "sku": "lg-7kg-frontload",     "query": "LG 7 kg Front Load Washing Machine",      "category": "appliance" },
+  { "sku": "oneplus-nord-ce4",     "query": "OnePlus Nord CE4",                        "category": "phone" },
+  { "sku": "lenovo-ideapad-slim3", "query": "Lenovo IdeaPad Slim 3 i5",                "category": "laptop" }
+]

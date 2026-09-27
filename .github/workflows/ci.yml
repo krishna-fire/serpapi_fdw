@@ -1,0 +1,123 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+    tags: ["v[0-9]+.[0-9]+.[0-9]+"]
+  pull_request:
+
+env:
+  RUST_VERSION: 1.97.1
+  CARGO_COMPONENT_VERSION: 0.21.1
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path --profile minimal --default-toolchain ${RUST_VERSION}
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          $HOME/.cargo/bin/rustup target add wasm32-unknown-unknown
+          $HOME/.cargo/bin/rustup component add rustfmt clippy
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/cargo-component
+            ~/.cargo/registry
+            target
+          key: ${{ runner.os }}-cargo-${{ env.RUST_VERSION }}-cc${{ env.CARGO_COMPONENT_VERSION }}-${{ hashFiles('Cargo.lock') }}
+
+      - name: Install cargo-component
+        run: test -x ~/.cargo/bin/cargo-component || cargo install --locked cargo-component --version ${CARGO_COMPONENT_VERSION}
+
+      - name: Catalog / SQL generation is up to date
+        run: |
+          python3 scripts/gen.py
+          git diff --exit-code -- sql/20_generated.sql docs/engines.md
+
+      - name: Format & lint
+        run: |
+          cargo component build --release --target wasm32-unknown-unknown   # generates bindings first
+          cargo fmt --all -- --check
+          cargo clippy --target wasm32-unknown-unknown -- -D warnings
+
+      - name: Unit tests (host target)
+        run: cargo test --target x86_64-unknown-linux-gnu
+
+      - name: Checksum
+        run: |
+          mkdir -p dist
+          cp target/wasm32-unknown-unknown/release/serpapi_fdw.wasm dist/
+          (cd dist && sha256sum serpapi_fdw.wasm > checksum.txt && cat checksum.txt)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: serpapi_fdw-wasm
+          path: dist/
+
+  smoke-plain-postgres:
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: serpapi_fdw-wasm
+          path: dist/
+      - name: Install psql
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client >/dev/null
+      - name: Stock postgres:17 + wrappers .deb + fixture mock
+        run: PORT=55433 scripts/plain-pg-up.sh
+      - name: Load wrapper, apply SQL, run the smoke suite
+        env:
+          DB_URL: postgresql://postgres:postgres@127.0.0.1:55433/postgres
+          CONTAINER: serpapi-plainpg
+          SERPAPI_API_URL: http://host.docker.internal:8787
+          SERPAPI_API_KEY: ci-mock-key
+        run: |
+          chmod 644 dist/serpapi_fdw.wasm
+          scripts/load-local.sh
+          scripts/apply-sql.sh
+          scripts/smoke-assert.sh
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build-test, smoke-plain-postgres]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: serpapi_fdw-wasm
+          path: dist/
+      - name: Install instructions
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          CHECKSUM=$(awk '{print $1}' dist/checksum.txt)
+          cat > dist/README.txt <<EOF
+          serpapi_fdw ${VERSION}
+
+          create server serpapi
+            foreign data wrapper wasm_wrapper
+            options (
+              fdw_package_url 'https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/serpapi_fdw.wasm',
+              fdw_package_name 'serpapi:serpapi-fdw',
+              fdw_package_version '${VERSION}',
+              fdw_package_checksum '${CHECKSUM}',
+              api_key_name 'serpapi_api_key',
+              default_gl 'in',
+              hourly_cap '50', monthly_cap '250'
+            );
+          EOF
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/serpapi_fdw.wasm
+            dist/checksum.txt
+            dist/README.txt

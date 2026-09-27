@@ -1,0 +1,945 @@
+{
+  "$schema": "./engines.schema.json",
+  "version": 1,
+  "notes": [
+    "Single source of truth for serpapi_fdw. Consumed by (1) the Rust wrapper via include_str! (import foreign schema DDL, param mapping, row mapping), and (2) scripts/gen.py which emits sql/20_generated.sql (composite types + public functions).",
+    "params: `name` is the SQL column/argument name; `api` is the SerpApi query parameter (defaults to name). `default` may reference a server option as `server:<option>`.",
+    "Optional-parameter convention: text '' / int|numeric -1 / bool false mean 'unset' and are omitted from the request. The wrapper echoes exactly what it was given so Postgres' local recheck passes.",
+    "pagination.kind: none | start (step N) | page (1-based) | next_page_token (from serpapi_pagination.next_page_token).",
+    "columns: `path` is a dotted path into one result object of `block`; types map to Postgres types text|int|bigint|numeric|bool|jsonb.",
+    "Every typed table also gets: pages int (param), search_id text (param+result), page int (result), raw jsonb (result). Those are added by the generators, not listed here."
+  ],
+  "common_params": [
+    {
+      "name": "gl",
+      "type": "text",
+      "default": "server:default_gl",
+      "doc": "Country code, e.g. in"
+    },
+    {
+      "name": "hl",
+      "type": "text",
+      "default": "server:default_hl",
+      "doc": "Language code, e.g. en, hi, ta"
+    }
+  ],
+  "engines": {
+    "google": {
+      "doc": "Google Search organic results",
+      "api_engine": "google",
+      "block": "organic_results",
+      "pagination": {
+        "kind": "start",
+        "step": 10
+      },
+      "required": [
+        "q"
+      ],
+      "params": [
+        {
+          "name": "q",
+          "type": "text"
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "default": "server:default_location"
+        },
+        {
+          "name": "google_domain",
+          "type": "text",
+          "default": "server:default_google_domain"
+        },
+        {
+          "name": "num",
+          "type": "int"
+        },
+        {
+          "name": "tbs",
+          "type": "text",
+          "doc": "Time filter, e.g. qdr:w"
+        },
+        {
+          "name": "safe",
+          "type": "text"
+        }
+      ],
+      "columns": [
+        {
+          "name": "position",
+          "type": "int",
+          "path": "position"
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "path": "title"
+        },
+        {
+          "name": "link",
+          "type": "text",
+          "path": "link"
+        },
+        {
+          "name": "displayed_link",
+          "type": "text",
+          "path": "displayed_link"
+        },
+        {
+          "name": "snippet",
+          "type": "text",
+          "path": "snippet"
+        },
+        {
+          "name": "date",
+          "type": "text",
+          "path": "date"
+        },
+        {
+          "name": "source",
+          "type": "text",
+          "path": "source"
+        },
+        {
+          "name": "favicon",
+          "type": "text",
+          "path": "favicon"
+        },
+        {
+          "name": "thumbnail",
+          "type": "text",
+          "path": "thumbnail"
+        }
+      ]
+    },
+    "google_light": {
+      "doc": "Google Light Search organic results (faster, fewer blocks). Note: `location` is temporarily unsupported by SerpApi on this engine (Sep 2026).",
+      "api_engine": "google_light",
+      "block": "organic_results",
+      "pagination": {
+        "kind": "start",
+        "step": 10
+      },
+      "required": [
+        "q"
+      ],
+      "params": [
+        {
+          "name": "q",
+          "type": "text"
+        },
+        {
+          "name": "google_domain",
+          "type": "text",
+          "default": "server:default_google_domain"
+        },
+        {
+          "name": "num",
+          "type": "int"
+        }
+      ],
+      "columns": [
+        {
+          "name": "position",
+          "type": "int",
+          "path": "position"
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "path": "title"
+        },
+        {
+          "name": "link",
+          "type": "text",
+          "path": "link"
+        },
+        {
+          "name": "displayed_link",
+          "type": "text",
+          "path": "displayed_link"
+        },
+        {
+          "name": "snippet",
+          "type": "text",
+          "path": "snippet"
+        },
+        {
+          "name": "date",
+          "type": "text",
+          "path": "date"
+        },
+        {
+          "name": "source",
+          "type": "text",
+          "path": "source"
+        }
+      ]
+    },
+    "google_shopping": {
+      "doc": "Google Shopping results. SerpApi ignores `start` on this engine (~40 results per request), so pagination is none.",
+      "api_engine": "google_shopping",
+      "block": "shopping_results",
+      "pagination": {
+        "kind": "none"
+      },
+      "required": [
+        "q"
+      ],
+      "params": [
+        {
+          "name": "q",
+          "type": "text"
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "default": "server:default_location"
+        },
+        {
+          "name": "google_domain",
+          "type": "text",
+          "default": "server:default_google_domain"
+        },
+        {
+          "name": "min_price",
+          "type": "numeric"
+        },
+        {
+          "name": "max_price",
+          "type": "numeric"
+        },
+        {
+          "name": "sort_by",
+          "type": "text",
+          "doc": "e.g. 1 (price low-high), 2 (price high-low), 3 (rating)"
+        },
+        {
+          "name": "on_sale",
+          "type": "bool"
+        },
+        {
+          "name": "num",
+          "type": "int"
+        }
+      ],
+      "columns": [
+        {
+          "name": "position",
+          "type": "int",
+          "path": "position"
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "path": "title"
+        },
+        {
+          "name": "source",
+          "type": "text",
+          "path": "source"
+        },
+        {
+          "name": "price",
+          "type": "text",
+          "path": "price"
+        },
+        {
+          "name": "extracted_price",
+          "type": "numeric",
+          "path": "extracted_price"
+        },
+        {
+          "name": "old_price",
+          "type": "text",
+          "path": "old_price"
+        },
+        {
+          "name": "extracted_old_price",
+          "type": "numeric",
+          "path": "extracted_old_price"
+        },
+        {
+          "name": "rating",
+          "type": "numeric",
+          "path": "rating"
+        },
+        {
+          "name": "reviews",
+          "type": "int",
+          "path": "reviews"
+        },
+        {
+          "name": "delivery",
+          "type": "text",
+          "path": "delivery"
+        },
+        {
+          "name": "tag",
+          "type": "text",
+          "path": "tag"
+        },
+        {
+          "name": "product_id",
+          "type": "text",
+          "path": "product_id"
+        },
+        {
+          "name": "product_link",
+          "type": "text",
+          "path": "product_link"
+        },
+        {
+          "name": "immersive_product_page_token",
+          "type": "text",
+          "path": "immersive_product_page_token"
+        },
+        {
+          "name": "thumbnail",
+          "type": "text",
+          "path": "thumbnail"
+        },
+        {
+          "name": "extensions",
+          "type": "jsonb",
+          "path": "extensions"
+        }
+      ]
+    },
+    "amazon": {
+      "doc": "Amazon Search results. Query parameter is `k`; `amazon_domain` selects the marketplace (amazon.in for India).",
+      "api_engine": "amazon",
+      "block": "organic_results",
+      "pagination": {
+        "kind": "page"
+      },
+      "required": [
+        "q"
+      ],
+      "params": [
+        {
+          "name": "q",
+          "type": "text",
+          "api": "k"
+        },
+        {
+          "name": "amazon_domain",
+          "type": "text",
+          "default": "server:default_amazon_domain"
+        },
+        {
+          "name": "language",
+          "type": "text",
+          "doc": "e.g. en_IN, hi_IN"
+        },
+        {
+          "name": "delivery_zip",
+          "type": "text",
+          "doc": "PIN code"
+        },
+        {
+          "name": "s",
+          "type": "text",
+          "doc": "Sort, e.g. price-asc-rank"
+        }
+      ],
+      "columns": [
+        {
+          "name": "position",
+          "type": "int",
+          "path": "position"
+        },
+        {
+          "name": "asin",
+          "type": "text",
+          "path": "asin"
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "path": "title"
+        },
+        {
+          "name": "link",
+          "type": "text",
+          "path": "link"
+        },
+        {
+          "name": "price",
+          "type": "text",
+          "path": "price"
+        },
+        {
+          "name": "extracted_price",
+          "type": "numeric",
+          "path": "extracted_price"
+        },
+        {
+          "name": "old_price",
+          "type": "text",
+          "path": "old_price"
+        },
+        {
+          "name": "extracted_old_price",
+          "type": "numeric",
+          "path": "extracted_old_price"
+        },
+        {
+          "name": "rating",
+          "type": "numeric",
+          "path": "rating"
+        },
+        {
+          "name": "reviews",
+          "type": "int",
+          "path": "reviews"
+        },
+        {
+          "name": "bought_last_month",
+          "type": "text",
+          "path": "bought_last_month"
+        },
+        {
+          "name": "sponsored",
+          "type": "bool",
+          "path": "sponsored"
+        },
+        {
+          "name": "prime",
+          "type": "bool",
+          "path": "prime"
+        },
+        {
+          "name": "thumbnail",
+          "type": "text",
+          "path": "thumbnail"
+        },
+        {
+          "name": "delivery",
+          "type": "jsonb",
+          "path": "delivery"
+        },
+        {
+          "name": "variants",
+          "type": "jsonb",
+          "path": "variants"
+        }
+      ]
+    },
+    "google_jobs": {
+      "doc": "Google Jobs results. 10 per page, token pagination. SerpApi reports intermittent empties on this engine (Sep 2026); the wrapper surfaces those as zero rows plus a notice.",
+      "api_engine": "google_jobs",
+      "block": "jobs_results",
+      "pagination": {
+        "kind": "next_page_token"
+      },
+      "required": [
+        "q"
+      ],
+      "params": [
+        {
+          "name": "q",
+          "type": "text"
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "default": "server:default_location"
+        },
+        {
+          "name": "google_domain",
+          "type": "text",
+          "default": "server:default_google_domain"
+        },
+        {
+          "name": "lrad",
+          "type": "int",
+          "doc": "Search radius in km"
+        },
+        {
+          "name": "uds",
+          "type": "text",
+          "doc": "Filter string harvested from filters[]"
+        }
+      ],
+      "columns": [
+        {
+          "name": "title",
+          "type": "text",
+          "path": "title"
+        },
+        {
+          "name": "company_name",
+          "type": "text",
+          "path": "company_name"
+        },
+        {
+          "name": "job_location",
+          "type": "text",
+          "path": "location"
+        },
+        {
+          "name": "via",
+          "type": "text",
+          "path": "via"
+        },
+        {
+          "name": "posted_at",
+          "type": "text",
+          "path": "detected_extensions.posted_at"
+        },
+        {
+          "name": "schedule_type",
+          "type": "text",
+          "path": "detected_extensions.schedule_type"
+        },
+        {
+          "name": "salary",
+          "type": "text",
+          "path": "detected_extensions.salary"
+        },
+        {
+          "name": "work_from_home",
+          "type": "bool",
+          "path": "detected_extensions.work_from_home"
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "path": "description"
+        },
+        {
+          "name": "share_link",
+          "type": "text",
+          "path": "share_link"
+        },
+        {
+          "name": "job_id",
+          "type": "text",
+          "path": "job_id"
+        },
+        {
+          "name": "apply_options",
+          "type": "jsonb",
+          "path": "apply_options"
+        },
+        {
+          "name": "job_highlights",
+          "type": "jsonb",
+          "path": "job_highlights"
+        },
+        {
+          "name": "thumbnail",
+          "type": "text",
+          "path": "thumbnail"
+        }
+      ]
+    },
+    "google_maps": {
+      "doc": "Google Maps local results (type=search). 20 per page via `start`. Prefer `ll` ('@lat,lng,14z') for precise geo; `location` also works.",
+      "api_engine": "google_maps",
+      "block": "local_results",
+      "pagination": {
+        "kind": "start",
+        "step": 20
+      },
+      "required": [
+        "q"
+      ],
+      "fixed_params": {
+        "type": "search"
+      },
+      "params": [
+        {
+          "name": "q",
+          "type": "text"
+        },
+        {
+          "name": "ll",
+          "type": "text",
+          "doc": "@lat,lng,zoom e.g. @12.9716,77.5946,14z"
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "default": "server:default_location"
+        },
+        {
+          "name": "google_domain",
+          "type": "text",
+          "default": "server:default_google_domain"
+        },
+        {
+          "name": "min_rating",
+          "type": "numeric"
+        },
+        {
+          "name": "open_state",
+          "type": "text",
+          "doc": "now | 24h"
+        }
+      ],
+      "columns": [
+        {
+          "name": "position",
+          "type": "int",
+          "path": "position"
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "path": "title"
+        },
+        {
+          "name": "place_id",
+          "type": "text",
+          "path": "place_id"
+        },
+        {
+          "name": "data_id",
+          "type": "text",
+          "path": "data_id"
+        },
+        {
+          "name": "data_cid",
+          "type": "text",
+          "path": "data_cid"
+        },
+        {
+          "name": "latitude",
+          "type": "numeric",
+          "path": "gps_coordinates.latitude"
+        },
+        {
+          "name": "longitude",
+          "type": "numeric",
+          "path": "gps_coordinates.longitude"
+        },
+        {
+          "name": "rating",
+          "type": "numeric",
+          "path": "rating"
+        },
+        {
+          "name": "reviews",
+          "type": "int",
+          "path": "reviews"
+        },
+        {
+          "name": "price",
+          "type": "text",
+          "path": "price"
+        },
+        {
+          "name": "type",
+          "type": "text",
+          "path": "type"
+        },
+        {
+          "name": "types",
+          "type": "jsonb",
+          "path": "types"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "path": "address"
+        },
+        {
+          "name": "open_now",
+          "type": "text",
+          "path": "open_state"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "path": "phone"
+        },
+        {
+          "name": "website",
+          "type": "text",
+          "path": "website"
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "path": "description"
+        },
+        {
+          "name": "service_options",
+          "type": "jsonb",
+          "path": "service_options"
+        },
+        {
+          "name": "thumbnail",
+          "type": "text",
+          "path": "thumbnail"
+        }
+      ]
+    },
+    "google_maps_reviews": {
+      "doc": "Reviews for one place. Requires `data_id` (from google_maps) or `place_id`. First page is 8 reviews, then up to 20 per page via token.",
+      "api_engine": "google_maps_reviews",
+      "block": "reviews",
+      "pagination": {
+        "kind": "next_page_token"
+      },
+      "required_any": [
+        "data_id",
+        "place_id"
+      ],
+      "params": [
+        {
+          "name": "data_id",
+          "type": "text"
+        },
+        {
+          "name": "place_id",
+          "type": "text"
+        },
+        {
+          "name": "sort_by",
+          "type": "text",
+          "doc": "qualityScore | newestFirst | ratingHigh | ratingLow"
+        },
+        {
+          "name": "topic_id",
+          "type": "text"
+        },
+        {
+          "name": "num",
+          "type": "int"
+        }
+      ],
+      "columns": [
+        {
+          "name": "review_id",
+          "type": "text",
+          "path": "review_id"
+        },
+        {
+          "name": "rating",
+          "type": "numeric",
+          "path": "rating"
+        },
+        {
+          "name": "date",
+          "type": "text",
+          "path": "date"
+        },
+        {
+          "name": "iso_date",
+          "type": "text",
+          "path": "iso_date"
+        },
+        {
+          "name": "snippet",
+          "type": "text",
+          "path": "snippet"
+        },
+        {
+          "name": "original_snippet",
+          "type": "text",
+          "path": "extracted_snippet.original"
+        },
+        {
+          "name": "translated_snippet",
+          "type": "text",
+          "path": "extracted_snippet.translated"
+        },
+        {
+          "name": "likes",
+          "type": "int",
+          "path": "likes"
+        },
+        {
+          "name": "user_name",
+          "type": "text",
+          "path": "user.name"
+        },
+        {
+          "name": "contributor_id",
+          "type": "text",
+          "path": "user.contributor_id"
+        },
+        {
+          "name": "local_guide",
+          "type": "bool",
+          "path": "user.local_guide"
+        },
+        {
+          "name": "user_reviews",
+          "type": "int",
+          "path": "user.reviews"
+        },
+        {
+          "name": "user_photos",
+          "type": "int",
+          "path": "user.photos"
+        },
+        {
+          "name": "response",
+          "type": "jsonb",
+          "path": "response"
+        }
+      ]
+    },
+    "google_news": {
+      "doc": "Google News results. No pagination. Regional editions exist for hi/ta/te/ml/bn/mr; `hl=kn` falls back to Hindi.",
+      "api_engine": "google_news",
+      "block": "news_results",
+      "pagination": {
+        "kind": "none"
+      },
+      "required_any": [
+        "q",
+        "topic_token",
+        "story_token",
+        "publication_token"
+      ],
+      "params": [
+        {
+          "name": "q",
+          "type": "text"
+        },
+        {
+          "name": "topic_token",
+          "type": "text"
+        },
+        {
+          "name": "story_token",
+          "type": "text"
+        },
+        {
+          "name": "publication_token",
+          "type": "text"
+        },
+        {
+          "name": "so",
+          "type": "int",
+          "doc": "1 = sort by date (inside a story/section)"
+        }
+      ],
+      "columns": [
+        {
+          "name": "position",
+          "type": "int",
+          "path": "position"
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "path": "title"
+        },
+        {
+          "name": "link",
+          "type": "text",
+          "path": "link"
+        },
+        {
+          "name": "source_name",
+          "type": "text",
+          "path": "source.name"
+        },
+        {
+          "name": "source_icon",
+          "type": "text",
+          "path": "source.icon"
+        },
+        {
+          "name": "authors",
+          "type": "jsonb",
+          "path": "source.authors"
+        },
+        {
+          "name": "date",
+          "type": "text",
+          "path": "date"
+        },
+        {
+          "name": "iso_date",
+          "type": "text",
+          "path": "iso_date"
+        },
+        {
+          "name": "snippet",
+          "type": "text",
+          "path": "snippet"
+        },
+        {
+          "name": "thumbnail",
+          "type": "text",
+          "path": "thumbnail"
+        },
+        {
+          "name": "stories",
+          "type": "jsonb",
+          "path": "stories"
+        }
+      ]
+    }
+  },
+  "objects": {
+    "search": {
+      "doc": "Generic access to any SerpApi engine. One row per page: result is the full JSON response, markdown is the same search rendered as Markdown (fetched free from the archive by search_id).",
+      "table": "search",
+      "columns_sql": "engine text, params jsonb, pages int, search_id text, page int, result jsonb, markdown text"
+    },
+    "account": {
+      "doc": "Live account status from /account.json. The api_key field is never returned.",
+      "table": "account",
+      "columns_sql": "account_id text, account_email text, plan_id text, plan_name text, searches_per_month int, plan_searches_left int, extra_credits int, total_searches_left int, this_month_usage int, this_hour_searches int, account_rate_limit_per_hour int, raw jsonb"
+    }
+  },
+  "server_options": {
+    "api_url": {
+      "default": "https://serpapi.com",
+      "doc": "Override for tests (mock server)"
+    },
+    "api_key_name": {
+      "doc": "Vault secret name holding the SerpApi key (preferred)"
+    },
+    "api_key_id": {
+      "doc": "Vault secret id (alternative)"
+    },
+    "api_key": {
+      "doc": "Plain key. Only honoured when GUC serpapi.allow_plain_key = on (local dev)"
+    },
+    "default_gl": {
+      "default": "",
+      "doc": "e.g. in"
+    },
+    "default_hl": {
+      "default": "",
+      "doc": "e.g. en"
+    },
+    "default_location": {
+      "default": "",
+      "doc": "e.g. Bengaluru,Karnataka,India"
+    },
+    "default_google_domain": {
+      "default": "",
+      "doc": "e.g. google.co.in"
+    },
+    "default_amazon_domain": {
+      "default": "",
+      "doc": "e.g. amazon.in"
+    },
+    "hourly_cap": {
+      "default": "50",
+      "doc": "Account-wide successful-search cap per hour (free plan: 50)"
+    },
+    "monthly_cap": {
+      "default": "250",
+      "doc": "Account-wide successful-search cap per calendar month (free plan: 250)"
+    },
+    "max_pages": {
+      "default": "3",
+      "doc": "Hard ceiling on pages per scan"
+    },
+    "json_restrictor": {
+      "default": "on",
+      "doc": "Send json_restrictor to trim payloads to the needed block"
+    }
+  }
+}
