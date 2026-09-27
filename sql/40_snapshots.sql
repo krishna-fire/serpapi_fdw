@@ -19,8 +19,8 @@ create table if not exists public.tracked_searches (
 );
 
 insert into public.tracked_searches (engine, query, title_filter, pages, note) values
-  ('amazon',          'iPhone',    '^Apple iPhone',  2, 'every current iPhone model/variant on amazon.in; 2 credits/night'),
-  ('google_shopping', 'iPhone 16', '^Apple iPhone 16', 1, 'cross-merchant (Flipkart, Croma, Reliance, …) for one flagship; 1 credit/night')
+  ('amazon',          'iPhone',    '^iPhone',           2, 'every current iPhone model/variant on amazon.in (titles start with "iPhone", not "Apple"); 2 credits/night'),
+  ('google_shopping', 'iPhone 16', '^(Apple )?iPhone 16', 1, 'cross-merchant (Flipkart, Croma, Reliance, …) for one flagship; 1 credit/night')
 on conflict (engine, query) do nothing;
 
 -- ---------------------------------------------------------------- snapshots

@@ -135,7 +135,7 @@ call serpapi.snapshot_prices();                                   -- or via pg_c
 select * from public.strikethrough_forensics('2026-10-09') where inflated;
 ```
 
-`public.products` holds ten SKUs; `snapshot_prices()` records the cheapest offer per merchant from Google Shopping and Amazon.in every night, committing per product so one flaky engine does not lose the night. `strikethrough_forensics(day)` compares each seller's sale-day "was" price against the maximum real price seen in the previous twelve nights.
+`public.tracked_searches` holds two searches: Amazon.in for "iPhone" (two pages, every current model and variant with its ASIN, price and strikethrough, 2 credits a night) and Google Shopping for "iPhone 16" (cross-merchant rows keyed by Google's product ID, 1 credit a night). `snapshot_prices()` keys every row by ASIN or product ID, filters titles with a regex, skips sponsored listings, and commits per search so one flaky engine does not lose the night. `strikethrough_forensics(day)` compares each product's sale-day "was" price against the maximum real price seen in the previous twelve nights. A free-text query alone is the wrong identity for price tracking: the first live test for a pair of earbuds returned forty rows of cases, covers and a clone, and not one listing of the earbuds themselves.
 
 ## Limits
 
