@@ -70,15 +70,32 @@ with (security_invoker = false) as
 
 -- ---------------------------------------------------------------- grants
 
--- Nothing in serpapi is callable by default (20_generated.sql revokes execute from public).
--- Grant what your app needs. Typical Supabase setup:
+-- Nothing in serpapi is callable by default (20_generated.sql revokes execute from public; the nightly
+-- procedure in 40_snapshots.sql is owner/service_role only).
 -- Supabase roles, applied only where they exist (plain Postgres has none of them).
+--   authenticated: signed-in app users. They get the typed engine functions, their replay_* twins and
+--                  the Markdown pair; every call is metered by the per-caller daily quota (10_private.sql)
+--                  and the account-wide caps inside the wrapper. Narrow this list if your app needs less.
+--   anon:          may only ask for budget_status(); searches are refused unless allow_anon = on.
+--   service_role:  the server-side admin key, may call everything and is quota-exempt.
 do $$
+declare
+  f record;
 begin
   if exists (select 1 from pg_roles where rolname = 'authenticated') then
     grant usage on schema serpapi to authenticated;
     grant execute on function serpapi.budget_status() to authenticated;
     grant select on serpapi.request_log to authenticated;
+    for f in
+      select p.oid::regprocedure as sig
+      from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+      where n.nspname = 'serpapi' and p.prokind = 'f'
+        and (p.proname like 'replay\_%' or p.proname = 'search_md'
+             or exists (select 1 from pg_proc r join pg_namespace rn on rn.oid = r.pronamespace
+                        where rn.nspname = 'serpapi' and r.proname = 'replay_' || p.proname))
+    loop
+      execute format('grant execute on function %s to authenticated', f.sig);
+    end loop;
   end if;
   if exists (select 1 from pg_roles where rolname = 'anon') then
     grant usage on schema serpapi to anon;

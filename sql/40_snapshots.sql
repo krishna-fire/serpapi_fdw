@@ -168,3 +168,6 @@ $$;
 
 comment on function public.strikethrough_forensics is
   'For each product × merchant on `day`: sale price, the strikethrough shown, the max and median real price over the prior `lookback` nights, and whether the strikethrough exceeds anything actually observed (inflated).';
+
+-- The nightly procedure is owner/service_role only (procedures default to PUBLIC execute).
+revoke execute on procedure serpapi.snapshot_prices(date) from public;
