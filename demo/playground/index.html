@@ -3,265 +3,425 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>serpapi_fdw · search on demand</title>
-<!-- A static page. No server of its own: it signs in with Supabase Auth and calls PostgREST directly.
+<title>Price check · serpapi_fdw</title>
+<!-- A static page with no server of its own: it signs in with Supabase Auth and calls PostgREST directly.
      Copy config.example.js to config.js and open this file from disk. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
 <script src="config.js"></script>
 <style>
-  :root{--bg:#000;--panel:#0f0f11;--line:#232326;--fg:#f5f5f7;--dim:#8e8e93;--faint:#48484a;--blue:#8ab4f8;--green:#6ee7a8;--amber:#ffd166;--red:#ff6b6b;
-        --mono:"SF Mono",ui-monospace,Menlo,monospace;--sans:-apple-system,"SF Pro Display","SF Pro Text","Helvetica Neue",Inter,sans-serif}
+  :root{
+    --bg:#121212; --panel:#1a1a1a; --panel2:#202020; --line:#2e2e2e; --line2:#262626;
+    --fg:#ededed; --dim:#a0a0a0; --faint:#6b6b6b;
+    --green:#3ecf8e; --green-dim:rgba(62,207,142,.12); --green-line:rgba(62,207,142,.35);
+    --amber:#f5b452; --amber-dim:rgba(245,180,82,.10); --amber-line:rgba(245,180,82,.32);
+    --red:#f87171;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Helvetica Neue",sans-serif;
+  }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);-webkit-font-smoothing:antialiased}
-  header{display:flex;align-items:baseline;justify-content:space-between;padding:34px 56px 0}
-  .brand{font-family:var(--mono);font-size:22px;font-weight:500;letter-spacing:-.01em}
-  .brand small{font-family:var(--sans);color:var(--dim);margin-left:14px;font-size:15px}
-  .meter{display:flex;gap:28px;color:var(--dim);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase}
-  .meter b{display:block;color:var(--fg);font-family:var(--mono);font-size:19px;text-transform:none;letter-spacing:0;margin-top:4px;font-weight:500}
-  main{display:grid;align-content:start;gap:18px;padding:30px 56px 40px}
-  .row{display:flex;align-items:center;gap:12px}
-  .seg{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:3px}
-  .seg button{background:transparent;border:0;color:var(--dim);font:500 13.5px var(--sans);padding:7px 14px;border-radius:8px;cursor:pointer}
-  .seg button.on{background:#1c1c1e;color:var(--fg)}
-  .who{font-size:13px;color:var(--dim)} .who b{color:var(--fg);font-weight:500}
+  button{font-family:inherit}
+
+  /* top bar */
+  .top{border-bottom:1px solid var(--line2)}
+  .top-in{display:flex;align-items:center;gap:18px;height:84px;max-width:1640px;margin:0 auto;padding:0 64px}
+  .logo{width:34px;height:34px;border-radius:9px;background:var(--green);display:grid;place-items:center}
+  .logo svg{width:20px;height:20px}
+  .name{font-size:24px;font-weight:600;letter-spacing:-.01em}
+  .name small{font-weight:400;color:var(--dim);margin-left:12px;font-size:20px}
   .spacer{flex:1}
-  #signin{display:none;align-items:center;gap:8px}
+  .quota{display:flex;align-items:baseline;gap:22px;font-size:20px;color:var(--dim)}
+  #m-user{font-size:24px;color:var(--fg);font-weight:600;padding:6px 14px;border-radius:10px;background:var(--panel);border:1px solid var(--line)}
+  #m-user b{color:var(--green);font-variant-numeric:tabular-nums}
+  #m-user.anon{color:var(--dim);font-weight:500}
+  #m-account{font-variant-numeric:tabular-nums}
+
+  main{max-width:1640px;margin:0 auto;padding:26px 64px 32px;display:grid;gap:20px}
+
+  /* who's asking */
+  .who{display:flex;align-items:center;gap:16px;font-size:20px;color:var(--dim)}
+  .seg{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:4px}
+  .seg button{background:transparent;border:0;color:var(--dim);font-size:20px;font-weight:500;padding:9px 20px;border-radius:9px;cursor:pointer;display:flex;align-items:center;gap:9px}
+  .seg button.on{background:var(--panel2);color:var(--fg);box-shadow:inset 0 0 0 1px var(--line)}
+  .seg button .dot{width:9px;height:9px;border-radius:50%;background:var(--faint)}
+  .seg button.on[data-v=user] .dot{background:var(--green)}
+  .seg button.busy{opacity:.6}
+  #signin{display:none;align-items:center;gap:10px}
   #signin.open{display:flex}
-  #signin input{background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--fg);font:14px var(--sans);padding:8px 12px;width:220px;outline:none}
-  #signin button{background:var(--fg);color:#000;border:0;border-radius:9px;font:600 13px var(--sans);padding:9px 14px;cursor:pointer}
-  .query{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;gap:12px}
-  .chips{display:flex;gap:8px;flex-wrap:wrap}
-  .chips button{background:transparent;border:1px solid var(--line);color:var(--dim);font:500 13.5px var(--sans);padding:7px 14px;border-radius:999px;cursor:pointer}
-  .chips button.on{border-color:var(--fg);color:var(--fg)}
-  .chips .sep{width:1px;background:var(--line);margin:0 6px}
-  .qline{display:flex;align-items:center;gap:12px}
-  #q{flex:1;background:transparent;border:0;color:var(--fg);font:400 30px var(--sans);letter-spacing:-.01em;padding:8px 6px;outline:none}
+  #password{background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--fg);font-size:18px;padding:10px 14px;width:220px;outline:none}
+  #password:focus{border-color:var(--green-line)}
+  #signin-go{background:var(--green);color:#0b0b0b;border:0;border-radius:10px;font-size:17px;font-weight:600;padding:11px 16px;cursor:pointer}
+  #whois{font-size:17px;color:var(--faint)}
+  #whois.err{color:var(--red)}
+
+  /* search */
+  .search{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px 20px 18px 24px;display:grid;gap:16px}
+  .engines{display:flex;gap:10px}
+  .engines button{background:transparent;border:1px solid var(--line);color:var(--dim);font-size:18px;font-weight:500;padding:8px 18px;border-radius:999px;cursor:pointer}
+  .engines button.on{border-color:var(--green-line);background:var(--green-dim);color:var(--fg)}
+  .qline{display:flex;align-items:center;gap:14px}
+  .qline svg{flex:none;color:var(--faint)}
+  #q{flex:1;min-width:0;background:transparent;border:0;color:var(--fg);font-size:36px;letter-spacing:-.01em;padding:6px 4px;outline:none}
   #q::placeholder{color:var(--faint)}
-  #run{background:var(--fg);color:#000;border:0;border-radius:11px;font:600 15px var(--sans);padding:12px 22px;cursor:pointer}
-  #run:disabled{opacity:.45}
-  .reqline{font-family:var(--mono);font-size:14px;color:var(--dim);min-height:20px;padding:0 6px}
-  .reqline .ok{color:var(--green)} .reqline .err{color:var(--red)} .reqline .credit{color:var(--amber)}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}
-  .card h3{margin:0;padding:12px 18px;font:500 12.5px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
-  .card h3 .spacer{flex:1}
-  .chip{font-family:var(--mono);text-transform:none;letter-spacing:0;font-size:12.5px;color:var(--fg);background:#1c1c1e;border:1px solid var(--line);border-radius:999px;padding:4px 10px;cursor:pointer}
-  .chip:hover{border-color:var(--fg)}
-  .chip .k{color:var(--dim)}
-  table{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:15.5px}
-  th{text-align:left;color:var(--dim);font-weight:500;padding:11px 18px;border-bottom:1px solid var(--line);white-space:nowrap}
-  td{padding:10px 18px;border-bottom:1px solid #151517;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:top;max-width:900px}
+  #run{background:var(--green);color:#0b0b0b;border:0;border-radius:12px;font-size:21px;font-weight:600;padding:15px 30px;cursor:pointer}
+  #run:disabled{opacity:.5;cursor:default}
+
+  /* results */
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+  .card-head{display:flex;align-items:center;gap:16px;padding:14px 20px 14px 24px;border-bottom:1px solid var(--line2);min-height:66px}
+  #count{font-size:20px;color:var(--dim)}
+  #count b{color:var(--fg);font-weight:600}
+  #receipt:empty{display:none}
+  .chip{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:17px;color:var(--fg);background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:7px 16px;cursor:pointer;transition:border-color .2s}
+  .chip:hover{border-color:var(--green-line)}
+  .chip .k{color:var(--faint)}
+  .chip .go{color:var(--green);font-family:var(--sans);font-size:16px;font-weight:600}
+  .view{padding:3px;border-radius:10px}
+  .view button{font-size:17px;padding:7px 16px}
+  .view button:disabled{opacity:.4;cursor:default}
+
+  #body{min-height:200px;transition:opacity .25s}
+  #body.fading{opacity:.15}
+  table{border-collapse:collapse;width:100%;table-layout:fixed}
+  th{text-align:left;color:var(--faint);font-weight:500;font-size:16px;letter-spacing:.05em;text-transform:uppercase;padding:14px 24px 10px;border-bottom:1px solid var(--line2)}
+  td{font-size:23px;padding:13px 24px;border-bottom:1px solid var(--line2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  tr:last-child td{border-bottom:0}
   td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
-  td.null{color:var(--faint)}
-  tr.new{animation:rise .35s ease-out both}
-  @keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-  .state{padding:26px 18px;font-size:16px;color:var(--dim)}
-  .state.err{color:var(--red);font-family:var(--mono);font-size:15px}
-  .state .code{display:block;font-family:var(--mono);font-size:34px;color:var(--fg);margin-bottom:8px;font-weight:500}
-  .md{padding:12px 24px 22px;font-size:16.5px;line-height:1.55;color:#d1d1d6;max-width:1100px}
-  .md h1{font-size:23px;margin:.6em 0 .3em;color:var(--fg)} .md h2{font-size:19px;color:var(--fg);margin:.5em 0 .4em} .md a{color:var(--blue);text-decoration:none} .md li{margin:.25em 0} .md em{color:var(--dim)}
-  .md .fm{font-family:var(--mono);font-size:12.5px;color:var(--faint);margin:6px 0 4px}
-  .md table{font-family:var(--sans);font-size:15px;width:100%;table-layout:auto}
-  .md th{padding:8px 12px;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase} .md td{padding:8px 12px;white-space:normal;max-width:none;vertical-align:middle}
-  .md td:nth-child(2){min-width:420px}
-  .md img{max-height:48px;max-width:86px;border-radius:6px;display:block;object-fit:cover}
-  pre.snippet{margin:0;padding:14px 18px;font:14px/1.55 var(--mono);color:#c7c7cc;white-space:pre-wrap}
-  pre.snippet .k{color:var(--blue)} pre.snippet .s{color:var(--green)}
+  td.price{font-weight:600}
+  td.was{color:var(--faint);text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3)}
+  td.merchant{color:var(--fg);font-weight:500}
+  td.title{color:var(--dim)}
+  td.null{color:var(--faint);text-decoration:none}
+  tr.new{animation:rise .45s ease-out both}
+  @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .more{padding:12px 24px 16px;font-size:18px;color:var(--faint);border-top:1px solid var(--line2)}
+  .empty{padding:56px 24px;font-size:22px;color:var(--faint);text-align:center}
+
+  /* designed refusal / notice states */
+  .state{display:flex;gap:22px;align-items:flex-start;padding:40px 36px;animation:rise .4s ease-out both}
+  .state .icon{flex:none;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--panel2);border:1px solid var(--line);color:var(--dim)}
+  .state.cap .icon{background:var(--amber-dim);border-color:var(--amber-line);color:var(--amber)}
+  .state h2{margin:2px 0 8px;font-size:28px;font-weight:600;letter-spacing:-.01em}
+  .state p{margin:0;font-size:21px;color:var(--dim);line-height:1.45}
+  .state .sent{margin-top:14px;font-size:19px;color:var(--fg)}
+  .state .sent b{color:var(--green);font-weight:600}
+  .state .http{margin-top:16px;font-family:var(--mono);font-size:15px;color:var(--faint)}
+
+  /* markdown */
+  .md{padding:20px 36px 28px;font-size:22px;line-height:1.55;color:#cfcfcf;max-height:460px;overflow:hidden;-webkit-mask-image:linear-gradient(#000 85%,transparent)}
+  .md h1{font-size:30px;line-height:1.25;color:var(--fg);margin:.3em 0 .5em;letter-spacing:-.01em}
+  .md h2{font-size:25px;color:var(--fg);margin:1em 0 .4em}
+  .md h3{font-size:22px;color:var(--fg);margin:1em 0 .3em}
+  .md a{color:var(--green);text-decoration:none;border-bottom:1px solid var(--green-line)}
+  .md strong{color:var(--fg)}
+  .md em{color:var(--dim)}
+  .md ol,.md ul{padding-left:1.4em;margin:.4em 0} .md li{margin:.35em 0} .md li::marker{color:var(--faint)}
+  .md code{font-family:var(--mono);font-size:.82em;background:var(--panel2);border:1px solid var(--line2);border-radius:6px;padding:1px 6px}
+  .md pre{background:#141414;border:1px solid var(--line2);border-radius:12px;padding:16px 20px;overflow:hidden;max-height:none;font-size:17px;line-height:1.5}
+  .md pre code{background:none;border:0;padding:0;font-size:inherit;color:#bdbdbd}
+  .md table{table-layout:auto;margin:.6em 0}
+  .md th{font-size:15px;padding:8px 14px} .md td{font-size:19px;padding:8px 14px;white-space:normal}
+  .md img{max-height:48px;border-radius:6px}
+  .md .fm{font-family:var(--mono);font-size:15px;color:var(--faint);margin:0 0 6px}
+
+  /* request line */
+  .reqline{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:19px;color:var(--dim);min-height:30px;padding:0 6px}
+  .reqline .ok{color:var(--green)} .reqline .no{color:var(--amber)}
+  .reqline .cr{color:var(--fg)} .reqline .cr.zero{color:var(--green)}
+  .reqline .arch{color:var(--green)}
+  .reqline .sep{color:var(--faint)}
+
+  /* snippet */
+  .snippet{display:flex;align-items:center;gap:18px;font-size:18px;color:var(--faint);padding:0 6px}
+  .snippet code{font-family:var(--mono);font-size:18px;color:#cfcfcf;background:var(--panel);border:1px solid var(--line2);border-radius:10px;padding:9px 14px}
+  .snippet code .s{color:var(--green)} .snippet code .f{color:#9ecbff}
 </style>
 </head>
 <body>
-<header>
-  <div class="brand">serpapi_fdw <small>SerpApi, as SQL. For Supabase and Postgres.</small></div>
-  <div class="meter">
-    <div>account · hour<b id="m-hour">–</b></div>
-    <div>account · month<b id="m-month">–</b></div>
-    <div>you · today<b id="m-user">–</b></div>
+<header class="top"><div class="top-in">
+  <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#0b0b0b" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></div>
+  <div class="name">Price check <small>search, served by Postgres</small></div>
+  <div class="spacer"></div>
+  <div class="quota">
+    <span id="m-user" class="anon">you: not signed in</span>
+    <span id="m-account">hour – · month –</span>
   </div>
-</header>
+</div></header>
+
 <main>
-  <div class="row">
-    <span class="who">who's asking</span>
+  <div class="who">
+    <span>Who's asking</span>
     <div class="seg" id="who">
-      <button data-v="anon" class="on">anonymous</button>
-      <button data-v="user">signed in</button>
+      <button data-v="anon" class="on"><span class="dot"></span>anonymous</button>
+      <button data-v="user"><span class="dot"></span><span id="who-user">signed in</span></button>
     </div>
-    <span class="who" id="whois"></span>
     <form id="signin" onsubmit="return false">
-      <input id="email" type="email" placeholder="email" autocomplete="off">
       <input id="password" type="password" placeholder="password" autocomplete="off">
       <button id="signin-go">Sign in</button>
     </form>
-    <div class="spacer"></div>
-    <span class="who" id="where"></span>
+    <span id="whois"></span>
   </div>
 
-  <div class="query">
-    <div class="chips" id="engines">
+  <div class="search">
+    <div class="engines" id="engines">
       <button data-v="google_shopping" class="on">Google Shopping</button>
       <button data-v="amazon">Amazon.in</button>
       <button data-v="google_news">Google News</button>
       <button data-v="google_jobs">Google Jobs</button>
-      <button data-v="google_maps">Google Maps</button>
-      <span class="sep"></span>
-      <button id="mdtoggle">Markdown</button>
     </div>
     <div class="qline">
-      <input id="q" placeholder="Search…" value="iPhone 16" autocomplete="off" spellcheck="false">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l5 5"/></svg>
+      <input id="q" placeholder="Search products" value="" autocomplete="off" spellcheck="false">
       <button id="run">Search</button>
     </div>
-    <div class="reqline" id="reqline"></div>
   </div>
 
-  <div class="card" id="results">
-    <h3>results <span id="count"></span><span class="spacer"></span><span id="receipt"></span></h3>
-    <div id="body"><div class="state">Nothing yet.</div></div>
-  </div>
+  <section class="card" id="results">
+    <div class="card-head">
+      <span id="count">No search yet</span>
+      <span id="receipt"></span>
+      <span class="spacer"></span>
+      <div class="seg view" id="view">
+        <button data-v="rows" class="on" id="rowstoggle">Rows</button>
+        <button data-v="md" id="mdtoggle" disabled>Markdown</button>
+      </div>
+    </div>
+    <div id="body"><div class="empty">Results appear here.</div></div>
+  </section>
 
-  <div class="card" id="snippetcard">
-    <h3>what this page just did <span class="spacer"></span><span class="chip" style="cursor:default">no server</span></h3>
-    <pre class="snippet" id="snippet">— run a search —</pre>
+  <div class="reqline" id="reqline"></div>
+
+  <div class="snippet" id="snippetrow">
+    <span>Same call from your app</span>
+    <code id="snippet"></code>
   </div>
 </main>
 
 <script>
 const $ = s => document.querySelector(s);
 const P = window.PLAYGROUND || {};
-const sb = window.supabase && P.url ? window.supabase.createClient(P.url, P.anonKey, {auth: {persistSession: false}}) : null;
-let who = "anon", session = null, engine = "google_shopping", wantMd = false, last = null, lastBudget = null;
+const sb = window.supabase && P.url ? window.supabase.createClient(P.url, P.anonKey, {auth: {persistSession: true, autoRefreshToken: true, storageKey: "price-check-auth"}}) : null;
+let who = "anon", session = null, engine = "google_shopping", view = "rows", last = null, busy = false;
 
-const VIEW = {
-  google_shopping: [["source", "merchant"], ["extracted_price", "price"], ["extracted_old_price", "was"], ["title", "title"]],
-  amazon:          [["asin", "asin"], ["extracted_price", "price"], ["extracted_old_price", "was"], ["title", "title"]],
-  google_news:     [["source", "source"], ["date", "date"], ["title", "title"]],
-  google_jobs:     [["company_name", "company"], ["location", "location"], ["title", "title"]],
-  google_maps:     [["title", "place"], ["rating", "rating"], ["reviews", "reviews"], ["address", "address"]],
+const COLS = {
+  google_shopping: [["source", "merchant", "merchant"], ["extracted_price", "price", "price"], ["extracted_old_price", "was", "was"], ["title", "title", "title"]],
+  amazon:          [["title", "title", "title"], ["extracted_price", "price", "price"], ["extracted_old_price", "was", "was"], ["rating", "rating", "num"]],
+  google_news:     [["source", "source", "merchant"], ["date", "date", ""], ["title", "title", "title"]],
+  google_jobs:     [["company_name", "company", "merchant"], ["location", "location", ""], ["title", "title", "title"]],
 };
-const PLACEHOLDER = {google_shopping: "iPhone 16", amazon: "iPhone", google_news: "Bengaluru tech hiring", google_jobs: "data engineer", google_maps: "filter coffee Indiranagar"};
+const WIDTH = {merchant: "22%", price: "15%", was: "15%", num: "12%", "": "24%"};
+const PLACEHOLDER = {google_shopping: "Search products", amazon: "Search Amazon.in", google_news: "Search news", google_jobs: "Search jobs"};
+const SHOWN = 7;
+const demoUser = (P.demoEmail || "").split("@")[0];
+if (demoUser) $("#who-user").textContent = `${demoUser} (signed in)`;
 
-$("#where").textContent = P.url ? new URL(P.url).host : "config.js missing";
-$("#email").value = P.demoEmail || "";
-refreshMeter();
+// ---------------------------------------------------------------- who's asking
+(async () => {
+  if (sb) { const {data} = await sb.auth.getSession(); session = data.session; }
+  refreshQuota();
+})();
 
 $("#who").addEventListener("click", async e => {
-  const b = e.target.closest("button"); if (!b) return;
-  if (b.dataset.v === "user" && !session) { $("#signin").classList.add("open"); $("#password").focus(); return; }
-  setWho(b.dataset.v);
-});
-$("#signin-go").addEventListener("click", async () => {
+  const b = e.target.closest("button"); if (!b || b.classList.contains("on")) return;
+  if (b.dataset.v === "anon") return setWho("anon");
   if (!sb) return;
-  const {data, error} = await sb.auth.signInWithPassword({email: $("#email").value, password: $("#password").value});
-  if (error) { $("#whois").textContent = "sign-in failed"; return; }
-  session = data.session; $("#signin").classList.remove("open"); $("#password").value = "";
-  setWho("user");
+  const {data} = await sb.auth.getSession(); session = data.session;
+  if (session) return setWho("user");
+  if (P.demoEmail && P.demoPassword) return signIn(P.demoPassword);
+  $("#signin").classList.add("open"); $("#password").focus();
 });
+$("#signin-go").addEventListener("click", () => signIn($("#password").value));
+$("#password").addEventListener("keydown", e => { if (e.key === "Enter") signIn($("#password").value); });
+
+async function signIn(password) {
+  const btn = $("#who button[data-v=user]"); btn.classList.add("busy");
+  const {data, error} = await sb.auth.signInWithPassword({email: P.demoEmail, password});
+  btn.classList.remove("busy");
+  if (error) { $("#whois").textContent = "Sign-in failed"; $("#whois").className = "err"; return; }
+  session = data.session; $("#password").value = ""; $("#signin").classList.remove("open"); $("#whois").textContent = "";
+  setWho("user");
+}
 function setWho(v) {
   who = v;
   document.querySelectorAll("#who button").forEach(x => x.classList.toggle("on", x.dataset.v === v));
-  $("#whois").innerHTML = v === "user" && session ? `as <b>${esc(session.user.email)}</b>` : "";
-  refreshMeter();
+  if (session) $("#who-user").textContent = `${session.user.email.split("@")[0]} (signed in)`;
+  $("#signin").classList.remove("open");
+  refreshQuota();
 }
+
+// ---------------------------------------------------------------- engine + view
 $("#engines").addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
-  if (b.id === "mdtoggle") { wantMd = !wantMd; b.classList.toggle("on", wantMd); return; }
   engine = b.dataset.v;
-  document.querySelectorAll("#engines button[data-v]").forEach(x => x.classList.toggle("on", x.dataset.v === engine));
-  $("#q").placeholder = PLACEHOLDER[engine] || "Search…";
-  if (!$("#q").value || Object.values(PLACEHOLDER).includes($("#q").value)) $("#q").value = PLACEHOLDER[engine] || "";
+  document.querySelectorAll("#engines button").forEach(x => x.classList.toggle("on", x === b));
+  $("#q").placeholder = PLACEHOLDER[engine];
+  setSnippet(`rpc(<span class="s">'${engine}'</span>, { q })`);
 });
-$("#run").addEventListener("click", () => run(false));
-$("#q").addEventListener("keydown", e => { if (e.key === "Enter") run(false); });
+$("#view").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b || b.disabled || b.dataset.v === view || !last || busy) return;
+  setView(b.dataset.v);
+  replay(b.dataset.v === "md" ? "md" : "rows");
+});
+function setView(v) { view = v; document.querySelectorAll("#view button").forEach(x => x.classList.toggle("on", x.dataset.v === v)); }
 
+$("#run").addEventListener("click", () => search());
+$("#q").addEventListener("keydown", e => { if (e.key === "Enter") search(); });
+
+// ---------------------------------------------------------------- calls
 function token() { return who === "user" && session ? session.access_token : P.anonKey; }
 async function rpc(fn, body) {
   const t0 = performance.now();
-  const r = await fetch(`${P.url}/rest/v1/rpc/${fn}`, {method: "POST", headers: {apikey: P.anonKey, Authorization: "Bearer " + token(), "Content-Profile": "serpapi", "Content-Type": "application/json"}, body: JSON.stringify(body)});
+  const r = await fetch(`${P.url}/rest/v1/rpc/${fn}`, {method: "POST",
+    headers: {apikey: P.anonKey, Authorization: "Bearer " + token(), "Content-Profile": "serpapi", "Content-Type": "application/json"},
+    body: JSON.stringify(body)});
   let data = null; try { data = await r.json(); } catch {}
   return {status: r.status, ms: Math.round(performance.now() - t0), data};
 }
-async function budget() { const r = await rpc("budget_status", {}); return r.status === 200 && Array.isArray(r.data) ? r.data : null; }
-const used = (rows, w) => (rows || []).find(x => x.window === w)?.used;
+async function budget() {   // budget_status() costs nothing; same JWT as the query
+  try { const r = await rpc("budget_status", {}); return r.status === 200 && Array.isArray(r.data) ? r.data : null; } catch { return null; }
+}
+const row = (rows, w) => (rows || []).find(x => x.scope === "account" && x.window === w);
+const mine = rows => (rows || []).find(x => x.window === "day" && String(x.scope).startsWith("user:"));
 
-async function run(replay) {
-  $("#run").disabled = true;
-  $("#reqline").innerHTML = `<span>…</span>`;
-  const q = $("#q").value.trim();
-  let fn, body;
-  if (replay && last) { fn = wantMd ? "replay_md" : "replay_" + last.engine; body = {search_id: last.searchId}; }
-  else if (wantMd) { fn = "search_md"; body = {engine, params: {q}}; }
-  else { fn = engine; body = {q}; }
-  const before = lastBudget || await budget();
-  const r = await rpc(fn, body);
-  const after = await budget(); lastBudget = after;
-  const credits = before && after ? used(after, "month") - used(before, "month") : null;
-  showSnippet(fn, body);
-  const cls = r.status === 200 ? "ok" : "err";
-  const creditTxt = credits === null ? "" : ` · <span class="credit">${credits} credit${credits === 1 ? "" : "s"}</span>`;
-  $("#reqline").innerHTML = `POST /rest/v1/rpc/${esc(fn)} · <span class="${cls}">${r.status}</span> · ${r.ms} ms${creditTxt}${replay ? " · from SerpApi's archive" : ""}`;
-  if (r.status !== 200) showError(r);
-  else if (fn.endsWith("_md")) showMarkdown(r.data, replay ? last.engine : engine);
-  else showRows(r.data, replay ? last.engine : engine);
-  paintMeter(after);
-  $("#run").disabled = false;
+async function call(fn, body) {
+  if (!P.url) { notice("config", "config.js is missing", "Copy config.example.js to config.js."); return null; }
+  busy = true; $("#run").disabled = true;
+  const before = await budget();
+  let r;
+  try { r = await rpc(fn, body); } catch { r = {status: 0, ms: 0, data: {message: "network error"}}; }
+  const after = await budget();
+  const credits = row(before, "hour") && row(after, "hour") ? row(after, "hour").used - row(before, "hour").used : null;
+  paintQuota(after);
+  busy = false; $("#run").disabled = false;
+  return {...r, fn, credits};
 }
-function showError(r) {
-  const msg = (r.data && (r.data.message || r.data.hint)) || "request failed";
-  $("#body").innerHTML = `<div class="state err"><span class="code">${r.status}</span>${esc(msg)}</div>`;
-  $("#count").textContent = ""; $("#receipt").innerHTML = "";
+
+async function search() {
+  const q = $("#q").value.trim(); if (!q || busy) return;
+  const fn = engine;
+  setSnippet(`rpc(<span class="s">'${fn}'</span>, { q })`);
+  fade();
+  const r = await call(fn, {q}); if (!r) return;
+  if (r.status !== 200) return refused(r);
+  setView("rows");
+  showRows(r.data, engine);
+  reqline(r);
 }
-function receipt(rows, eng) {
-  const id = rows.length ? rows[0].search_id : null;
-  if (!id) { $("#receipt").innerHTML = ""; return; }
-  last = {engine: eng, searchId: id};
-  $("#receipt").innerHTML = `<span class="chip" id="replay" title="replay from SerpApi's archive, free for 31 days"><span class="k">receipt</span> ${esc(id.slice(0, 12))}${id.length > 12 ? "…" : ""} <span class="k">· replay ↺</span></span>`;
-  $("#replay").addEventListener("click", () => run(true));
+
+async function replay(kind) {
+  if (!last || busy) return;
+  const fn = kind === "md" ? "replay_md" : "replay_" + last.engine;
+  setSnippet(`rpc(<span class="s">'${fn}'</span>, { search_id })`);
+  fade();
+  const r = await call(fn, {search_id: last.searchId}); if (!r) return;
+  if (r.status !== 200) return refused(r);
+  if (kind === "md") { setView("md"); showMarkdown(r.data); }
+  else { setView("rows"); showRows(r.data, last.engine); }
+  reqline(r, true);
 }
+
+function fade() { $("#body").classList.add("fading"); }
+
+// ---------------------------------------------------------------- rendering
+function reqline(r, archive) {
+  const ok = r.status >= 200 && r.status < 300;
+  const n = r.credits;
+  const cr = n === null ? "" : `<span class="sep">·</span><span class="cr ${n === 0 ? "zero" : ""}">${n} credit${n === 1 ? "" : "s"}</span>`;
+  const status = ok ? `<span class="ok">${r.status}</span>` : `<span class="no">refused</span>`;
+  $("#reqline").innerHTML = `<span>POST /rest/v1/rpc/${esc(r.fn)}</span><span class="sep">·</span>${status}<span class="sep">·</span><span>${r.ms} ms</span>${cr}` +
+    (archive && ok ? `<span class="sep">·</span><span class="arch">from SerpApi archive</span>` : "");
+}
+
 function showRows(rows, eng) {
   rows = Array.isArray(rows) ? rows : [rows];
-  $("#count").textContent = `${rows.length} row${rows.length === 1 ? "" : "s"}`;
-  receipt(rows, eng);
-  if (!rows.length) { $("#body").innerHTML = `<div class="state">0 rows</div>`; return; }
-  const cols = (VIEW[eng] || Object.keys(rows[0]).map(c => [c, c])).filter(([c]) => c in rows[0]);
-  const numeric = c => rows.some(r => typeof r[c] === "number");
-  const SHOW = 12, shown = rows.slice(0, SHOW);
-  const h = `<thead><tr>${cols.map(([c, l]) => `<th class="${numeric(c) ? "num" : ""}">${esc(l)}</th>`).join("")}</tr></thead>`;
-  const b = shown.map((r, i) => `<tr class="new" style="animation-delay:${i * 30}ms">${cols.map(([c]) => cell(r[c])).join("")}</tr>`).join("");
-  const more = rows.length > SHOW ? `<div class="state">… and ${rows.length - SHOW} more rows</div>` : "";
-  $("#body").innerHTML = `<table>${h}<tbody>${b}</tbody></table>${more}`;
+  const id = rows.length ? rows[0].search_id : null;
+  last = id ? {engine: eng, searchId: id, rows} : null;
+  $("#count").innerHTML = `<b>${rows.length}</b> result${rows.length === 1 ? "" : "s"}`;
+  receipt();
+  if (!rows.length) { body(`<div class="empty">No results.</div>`); return; }
+  const cols = COLS[eng] || Object.keys(rows[0]).filter(c => c !== "search_id").slice(0, 4).map(c => [c, c, ""]);
+  const colgroup = `<colgroup>${cols.map(([, , k]) => `<col style="width:${k === "title" ? "auto" : WIDTH[k] || "20%"}">`).join("")}</colgroup>`;
+  const head = `<thead><tr>${cols.map(([, l, k]) => `<th class="${["price", "was", "num"].includes(k) ? "num" : ""}">${esc(l)}</th>`).join("")}</tr></thead>`;
+  const tr = rows.slice(0, SHOWN).map((r, i) => `<tr class="new" style="animation-delay:${i * 60}ms">${cols.map(([c, , k]) => cell(r[c], k)).join("")}</tr>`).join("");
+  const more = rows.length > SHOWN ? `<div class="more">+ ${rows.length - SHOWN} more</div>` : "";
+  body(`<table>${colgroup}${head}<tbody>${tr}</tbody></table>${more}`);
 }
-function showMarkdown(rows, eng) {
-  rows = Array.isArray(rows) ? rows : [rows];
-  const md = rows.map(r => typeof r === "string" ? r : (r.markdown || "")).join("\n\n");
-  $("#count").textContent = `${md.length.toLocaleString("en-IN")} chars of markdown`;
-  receipt(rows, eng);
-  // SerpApi's Markdown opens with a YAML front matter (search metadata); fold it so the content leads
-  const m = md.match(/^---\n[\s\S]*?\n---\n/);
-  const body = m ? md.slice(m[0].length) : md;
-  const note = m ? `<p class="fm">front matter (search metadata) folded · ${m[0].split("\n").length - 2} lines</p>` : "";
-  $("#body").innerHTML = `<div class="md">${note}${marked.parse(body)}</div>`;
-}
-function cell(v) {
-  if (v === null || v === undefined) return `<td class="null">—</td>`;
+function cell(v, kind) {
+  if (v === null || v === undefined || v === "") return `<td class="null ${["price", "was", "num"].includes(kind) ? "num" : ""}">—</td>`;
+  if (kind === "price" || kind === "was") return `<td class="num ${kind}">₹${Number(v).toLocaleString("en-IN")}</td>`;
   if (typeof v === "number") return `<td class="num">${v.toLocaleString("en-IN")}</td>`;
-  if (typeof v === "object") return `<td>${esc(JSON.stringify(v).slice(0, 80))}</td>`;
-  return `<td title="${esc(String(v))}">${esc(String(v))}</td>`;
+  if (typeof v === "object") v = JSON.stringify(v);
+  return `<td class="${kind}" title="${esc(String(v))}">${esc(String(v))}</td>`;
 }
-function showSnippet(fn, body) {
-  const auth = who === "user" && session ? `"Bearer " + session.access_token` : `"Bearer " + ANON_KEY`;
-  $("#snippet").innerHTML =
-`<span class="k">fetch</span>(<span class="s">"${esc(P.url)}/rest/v1/rpc/${esc(fn)}"</span>, {
-  method: <span class="s">"POST"</span>,
-  headers: { apikey: ANON_KEY, Authorization: ${esc(auth)}, <span class="s">"Content-Profile"</span>: <span class="s">"serpapi"</span> },
-  body: JSON.stringify(${esc(JSON.stringify(body))})
-})`;
+
+function showMarkdown(data) {
+  const md = typeof data === "string" ? data : Array.isArray(data) ? data.map(r => typeof r === "string" ? r : r.markdown || "").join("\n\n") : "";
+  // SerpApi's Markdown opens with YAML front matter (search metadata); fold it so the content leads
+  const m = md.match(/^---\n[\s\S]*?\n---\n/);
+  const text = m ? md.slice(m[0].length) : md;
+  $("#count").innerHTML = `<b>Markdown</b> · same search`;
+  receipt();
+  const html = window.marked ? marked.parse(text) : `<pre>${esc(text)}</pre>`;
+  body(`<div class="md">${m ? `<p class="fm">search metadata folded</p>` : ""}${html}</div>`);
+  document.querySelectorAll(".md a").forEach(a => { a.target = "_blank"; a.rel = "noopener"; });
 }
-async function refreshMeter() { lastBudget = await budget(); paintMeter(lastBudget); }
-function paintMeter(rows) {
-  const w = k => (rows || []).find(x => x.window === k);
-  $("#m-hour").textContent = w("hour") ? `${w("hour").used} / ${w("hour").cap}` : "–";
-  $("#m-month").textContent = w("month") ? `${w("month").used} / ${w("month").cap}` : "–";
-  const me = (rows || []).find(x => x.window === "day" && String(x.scope).startsWith("user:"));
-  $("#m-user").textContent = me ? `${me.used} / ${me.cap}` : (who === "user" ? "–" : "anonymous");
+
+function receipt() {
+  $("#mdtoggle").disabled = !last;
+  if (!last) { $("#receipt").innerHTML = ""; return; }
+  const id = last.searchId, short = id.length > 18 ? id.slice(0, 18) + "…" : id;
+  $("#receipt").innerHTML = `<span class="chip" id="replay" title="Replay from SerpApi's archive, free for 31 days"><span class="k">search_id</span>${esc(short)}<span class="go">↺ replay</span></span>`;
+  $("#replay").addEventListener("click", () => replay(view === "md" ? "md" : "rows"));
 }
+
+function refused(r) {
+  const msg = String((r.data && (r.data.message || r.data.msg)) || "");
+  const code = (r.data && r.data.code) || "";
+  let m;
+  if (r.status === 401 || r.status === 403 || code === "42501") {
+    if (who === "anon") notice("anon", "Anonymous visitors can't search.", "Sign in to search.", r);
+    else notice("anon", "This account can't call that search.", "Ask the project owner to grant it.", r);
+  } else if ((m = msg.match(/hourly cap reached \((\d+)\/(\d+)/))) {
+    const mins = (msg.match(/resets in (\d+) min/) || msg.match(/~(\d+) min/) || [])[1];
+    notice("cap", `Hourly cap reached (${m[1]}/${m[2]}).`, mins ? `Resets in ${mins} min.` : "Resets at the top of the hour.", r, true);
+  } else if ((m = msg.match(/monthly cap reached \((\d+)\/(\d+)/))) {
+    notice("cap", `Monthly cap reached (${m[1]}/${m[2]}).`, "Resets on the 1st. Replays from the archive stay free.", r, true);
+  } else if ((m = msg.match(/daily quota exceeded[^(]*\((\d+)\/(\d+)/))) {
+    notice("cap", `Daily quota used (${m[1]}/${m[2]}).`, "Resets at midnight UTC. Replays from the archive stay free.", r, true);
+  } else {
+    notice("err", "That search didn't go through.", msg ? msg.replace(/^serpapi:\s*/, "").split(". ")[0] + "." : "Try again in a moment.", r);
+  }
+  $("#count").textContent = "Not searched";
+  $("#receipt").innerHTML = ""; $("#mdtoggle").disabled = true; last = null; setView("rows");
+  reqline(r);
+}
+const ICON = {
+  anon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>`,
+  cap:  `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>`,
+  err:  `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg>`,
+};
+function notice(kind, title, sub, r, notSent) {
+  const http = r ? `<div class="http">HTTP ${r.status}</div>` : "";
+  const sent = notSent ? `<div class="sent">No request was sent · <b>0 credits</b></div>` : "";
+  body(`<div class="state ${kind}"><div class="icon">${ICON[kind] || ICON.err}</div><div><h2>${esc(title)}</h2><p>${esc(sub)}</p>${sent}${http}</div></div>`);
+}
+function body(html) { const b = $("#body"); b.innerHTML = html; b.classList.remove("fading"); }
+
+// ---------------------------------------------------------------- quota
+async function refreshQuota() { paintQuota(await budget()); }
+function paintQuota(rows) {
+  const h = row(rows, "hour"), mo = row(rows, "month"), me = mine(rows);
+  $("#m-account").textContent = h && mo ? `hour ${h.used} / ${h.cap} · month ${mo.used} / ${mo.cap}` : "hour – · month –";
+  const u = $("#m-user");
+  if (who === "user" && me) { u.className = ""; u.innerHTML = `you: <b>${me.used} / ${me.cap}</b> today`; }
+  else { u.className = "anon"; u.textContent = who === "user" ? "you: –" : "you: not signed in"; }
+}
+
+function setSnippet(call) {
+  $("#snippet").innerHTML = `supabase.schema(<span class="s">'serpapi'</span>).<span class="f">${call}</span>`;
+}
+setSnippet(`rpc(<span class="s">'google_shopping'</span>, { q })`);
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c])); }
 </script>
 </body>
