@@ -63,15 +63,15 @@ Needs the tools under [Prerequisites](#prerequisites). Everything runs on your m
 
 ```bash
 git clone https://github.com/krishna-fire/serpapi_fdw && cd serpapi_fdw
-scripts/dev-up.sh            # local Supabase (Postgres 17 + Wrappers) and the fixture mock on :8787
-scripts/build.sh --docker    # builds dist/serpapi_fdw.wasm in a pinned container; no Rust needed
-<!-- RELEASE-WASM: fetch note goes here -->
+scripts/dev-up.sh            # local Supabase (Postgres 17 + Wrappers, Auth) + fixture mock on :8787 + a demo user
 SERPAPI_API_URL=http://host.docker.internal:8787 SERPAPI_API_KEY=mock-key scripts/load-local.sh
 scripts/apply-sql.sh
-psql "$(supabase status -o env | sed -n 's/^DB_URL=//p' | tr -d '"')" -f scripts/smoke.sql
+scripts/smoke-assert.sh      # the 17-check suite, with its expected counts asserted
 ```
 
-`smoke.sql` prints 17 numbered checks. Five `ERROR` lines are deliberate: three guards (missing `q`, `pages` over `max_pages`, a `LIKE` on the private table) and two hits on a temporarily lowered hourly cap. `scripts/smoke-assert.sh` runs the same file and checks those counts for you; it also calls `serpapi.reset_budget()` first, which a plain re-run within the hour needs (the mock's responses count against the 50-per-hour cap like real ones). Then try queries by hand in the same `psql`:
+No Rust toolchain needed: with no local build in `dist/`, `load-local.sh` downloads the v0.1.0 release `.wasm` and verifies its sha256. To build from source instead, run `scripts/build.sh` (or `scripts/build.sh --docker`) before `load-local.sh`. `dev-up.sh` checks for its prerequisites first and creates the playground's demo user (`priya@example.com` / `serpapi-demo`, local only).
+
+To watch the checks run, use `psql "$(supabase status -o env | sed -n 's/^DB_URL=//p' | tr -d '"')" -f scripts/smoke.sql`: it prints 17 numbered checks. Five `ERROR` lines are deliberate: three guards (missing `q`, `pages` over `max_pages`, a `LIKE` on the private table) and two hits on a temporarily lowered hourly cap. `scripts/smoke-assert.sh` runs the same file and checks those counts for you; it also calls `serpapi.reset_budget()` first, which a plain re-run within the hour needs (the mock's responses count against the 50-per-hour cap like real ones). Then try queries by hand in `psql`:
 
 ```sql
 select source, extracted_price, old_price from serpapi.google_shopping('boAt Airdopes 141');
