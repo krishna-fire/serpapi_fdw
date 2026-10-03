@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Install the wrapper into a hosted Supabase project from a GitHub release URL.
-#   PROJECT_REF=yaqhoyzxwwynwwjotmgh RELEASE=v0.1.0-rc1 scripts/load-hosted.sh
+#   PROJECT_REF=<your-project-ref> RELEASE=v0.1.0 scripts/load-hosted.sh
 # Needs: ~/.supabase-db-password (or SUPABASE_DB_PASSWORD), ~/.serpapi_key (or SERPAPI_API_KEY).
 # Uses the direct IPv6 host by default; set POOLER=1 to use the session pooler on IPv4-only networks.
 set -euo pipefail
