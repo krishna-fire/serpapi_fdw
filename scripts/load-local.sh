@@ -13,7 +13,7 @@ WASM=dist/serpapi_fdw.wasm
 if [[ ! -f "$WASM" ]]; then
   REL="${SERPAPI_FDW_VERSION:-v0.1.0}"
   BASE="https://github.com/krishna-fire/serpapi_fdw/releases/download/$REL"
-  echo "no $WASM; downloading release $REL (or build it: scripts/build.sh [--docker])"
+  echo "no $WASM; downloading release $REL from GitHub, can take a minute (or build it: scripts/build.sh [--docker])"
   TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
   curl -fsSL -o "$TMP/serpapi_fdw.wasm" "$BASE/serpapi_fdw.wasm" \
     && curl -fsSL -o "$TMP/checksum.txt" "$BASE/checksum.txt" \

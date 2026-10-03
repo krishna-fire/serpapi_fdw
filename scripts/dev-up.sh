@@ -35,7 +35,9 @@ fi
 EXCLUDE=realtime,storage-api,imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
 [[ $AUTH -eq 1 ]] || EXCLUDE="gotrue,$EXCLUDE"
 
-supabase start -x "$EXCLUDE" --ignore-health-check 2>&1 | grep -E "DB_URL|API_URL|error" || true
+# Print only the URLs (the CLI's status output also lists the local demo keys and JWT secret).
+supabase start -x "$EXCLUDE" --ignore-health-check 2>&1 | grep -iE "^[[:space:]]*error" || true
+supabase status -o env 2>/dev/null | grep -E '^(API_URL|DB_URL)=' || true
 
 for _ in $(seq 1 30); do
   docker inspect -f '{{.State.Health.Status}}' "$(docker ps --filter 'name=supabase_db_' --format '{{.Names}}' | head -1)" 2>/dev/null | grep -q healthy && break
@@ -51,7 +53,7 @@ if [[ $MOCK -eq 1 ]]; then
   nohup python3 mock/server.py --port 8787 --fixtures fixtures/serp > /tmp/serpapi-mock.log 2>&1 &
   sleep 1
   curl -sf -m 5 "http://127.0.0.1:8787/account.json?api_key=x" >/dev/null && echo "mock serpapi on :8787 (log: /tmp/serpapi-mock.log)"
-  echo "next: SERPAPI_API_URL=http://host.docker.internal:8787 SERPAPI_API_KEY=mock-key scripts/load-local.sh && scripts/apply-sql.sh"
+  echo "next: SERPAPI_API_URL=http://host.docker.internal:8787 SERPAPI_API_KEY=mock-key scripts/load-local.sh && scripts/apply-sql.sh && scripts/smoke-assert.sh"
 else
   echo "next: scripts/load-local.sh && scripts/apply-sql.sh   (key from ~/.serpapi_key)"
 fi
