@@ -1,0 +1,12 @@
+\set QUIET 1
+\pset border 0
+\pset footer off
+\pset null ''
+\pset linestyle unicode
+\pset format aligned
+\timing off
+\set VERBOSITY terse
+\set PROMPT1 '%[%033[38;5;110m%]❯ %[%033[0m%]'
+\set PROMPT2 '  '
+\set ON_ERROR_STOP 0
+\set QUIET 0

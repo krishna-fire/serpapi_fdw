@@ -1,0 +1,125 @@
+{
+  "output": "out/serpapi_fdw.mp4",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "card_fade": 0.6,
+  "voice_engine": "chirp",
+  "voice": "en-IN-Chirp3-HD-Algenib",
+  "voice_speed": 0.92,
+  "pronounce": {
+    "serpapi_fdw": "Serp A-P-I F-D-W",
+    "SerpApi": "Serp A-P-I",
+    "pg_cron": "P-G cron",
+    "Wasm": "wazum",
+    "JSON": "jay-son",
+    "PostgREST": "Postgres REST"
+  },
+  "segments": [
+    {
+      "type": "card",
+      "id": "c00",
+      "seconds": 4.6,
+      "title": "Every SerpApi tutorial ends the same way.",
+      "subtitle": "",
+      "vo": "Every SerpApi tutorial ends the same way."
+    },
+    {
+      "type": "card",
+      "id": "c01",
+      "seconds": 3.0,
+      "title": "Export to Sheets.",
+      "subtitle": "",
+      "vo": "Export to Sheets."
+    },
+    {
+      "type": "card",
+      "id": "c02",
+      "seconds": 10.0,
+      "title": "Supabase has a catalog of wrappers.",
+      "subtitle": "Stripe · Airtable · BigQuery · Notion · Slack  ·  none for search",
+      "vo": "Supabase has a catalog of wrappers. Stripe. Airtable. BigQuery. None for search. Until now."
+    },
+    {
+      "type": "browser",
+      "id": "s01-install",
+      "vo": "Ten lines in the SQL editor. No SDK. No server. Google Shopping, India, as a table in your database."
+    },
+    {
+      "type": "card",
+      "id": "c03",
+      "seconds": 6.0,
+      "title": "serpapi_fdw",
+      "subtitle": "SerpApi, as SQL. For Supabase and Postgres.",
+      "vo": "This is serpapi F D W. SerpApi, as SQL."
+    },
+    {
+      "type": "card",
+      "id": "c04",
+      "seconds": 4.5,
+      "title": "A page with no backend.",
+      "subtitle": "",
+      "vo": "First. A page with no backend."
+    },
+    {
+      "type": "browser",
+      "id": "p01-page",
+      "vo": "This page has no server. It is a file on disk. It asked Supabase; Supabase asked SerpApi. Anonymous visitors are refused. Signed-in users get twenty searches a day, each. The key stays in Vault. And every row carries its receipt: replay it from SerpApi's archive for a month, for zero credits."
+    },
+    {
+      "type": "card",
+      "id": "c05",
+      "seconds": 5.0,
+      "title": "The same function. At 2:30 AM.",
+      "subtitle": "",
+      "vo": "Second. The same function, at two thirty in the morning."
+    },
+    {
+      "type": "browser",
+      "id": "s02-ledger",
+      "vo": "pg cron calls it every night. Every iPhone on Amazon India, into a table that outlives the sale. Three credits a night. SerpApi as a standing workload, not a tutorial you run once."
+    },
+    {
+      "type": "card",
+      "id": "c06",
+      "seconds": 4.0,
+      "title": "October.",
+      "subtitle": "Festive sale season.",
+      "vo": "October. Festive sale season."
+    },
+    {
+      "type": "browser",
+      "id": "s03-forensics",
+      "vo": "A discount is a claim. The ledger is the record. Whichever way the prices move."
+    },
+    {
+      "type": "card",
+      "id": "c07",
+      "seconds": 13.0,
+      "title": "One Rust wrapper. Compiled to Wasm.",
+      "subtitle": "Installs from a URL  ·  Supabase hosted  ·  Supabase local  ·  Postgres 17",
+      "vo": "Under the hood: one Rust wrapper, compiled to Wasm, installed from a URL. It fails closed at the cap, before the HTTP call, and never prints the key in an error."
+    },
+    {
+      "type": "card",
+      "id": "c08",
+      "seconds": 2.5,
+      "title": "One more thing.",
+      "subtitle": "",
+      "vo": "One more thing."
+    },
+    {
+      "type": "browser",
+      "id": "p02-markdown",
+      "vo": "The same search as Markdown, straight from the database. An agent's SQL tool reads a page instead of parsing JSON."
+    },
+    {
+      "type": "card",
+      "id": "c09",
+      "seconds": 7.0,
+      "title": "serpapi_fdw",
+      "subtitle": "github.com/krishna-fire/serpapi_fdw  ·  Open-Source Integrations  ·  Krishna Janaswamy, Bengaluru",
+      "vo": "serpapi F D W. Open source. Built in Bengaluru."
+    }
+  ]
+}
