@@ -29,3 +29,9 @@ src/bindings.rs
 
 # build outputs
 dist/
+
+# rendered video, tokens
+demo/out/
+demo/playground/config.js
+supabase/snippets/
+demo/.venv-tts/
