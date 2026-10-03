@@ -1,0 +1,79 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>a09 caps gauge</title>
+<script>const DURATION = 4.2; /* voice 3.4s · 1:23 (ANIM half) · "Hourly and monthly caps live inside the wrapper," */</script>
+<link rel="stylesheet" href="style.css">
+<style>
+  .fdw { position: absolute; left: 150px; top: 236px; width: 1160px; height: 700px; padding: 40px 48px; }
+  .fdw .t { font-size: 40px; font-weight: 600; letter-spacing: -.02em; }
+  .fdw .s { margin-top: 8px; font-size: 26px; color: var(--muted); }
+  .gauges { position: absolute; left: 48px; right: 48px; top: 190px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .g { border-radius: 22px; border: 1.5px solid var(--line); background: #0f1312; padding: 34px 30px 30px; text-align: center; }
+  .g svg { width: 400px; height: 236px; overflow: visible; }
+  .g .name { font-family: var(--mono); font-size: 28px; color: var(--fg-2); margin-top: 14px; }
+  .g .val { font-family: var(--mono); font-size: 54px; color: var(--fg); margin-top: 6px; letter-spacing: -.02em; }
+  .g .val i { font-style: normal; color: var(--muted); }
+  .trk { fill: none; stroke: #222a27; stroke-width: 22; stroke-linecap: round; }
+  .arc { fill: none; stroke: var(--accent); stroke-width: 22; stroke-linecap: round; stroke-dasharray: 1 1; filter: drop-shadow(0 0 10px rgba(62,207,142,.45)); }
+  .needle { stroke: var(--fg); stroke-width: 5; stroke-linecap: round; }
+  .hub { fill: var(--fg); }
+  .capmark { stroke: #5d6662; stroke-width: 5; stroke-linecap: round; }
+  .serp { position: absolute; left: 1540px; top: 474px; width: 260px; height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .serp .t, .serp .s { opacity: .4; }
+  .serp .t { font-size: 40px; font-weight: 600; letter-spacing: -.02em; }
+  .serp .s { margin-top: 8px; font-family: var(--mono); font-size: 20px; color: var(--muted); }
+  svg.wire { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
+</style>
+</head><body>
+<div class="stage">
+  <nav class="chapters" data-chapter="4" data-from=".405" data-to=".52"></nav>
+
+  <div class="fdw panel in" style="--d:.05s">
+    <div class="t">foreign data wrapper</div>
+    <div class="s">caps are checked here, before any request leaves</div>
+    <div class="gauges">
+      <div class="g in" style="--d:.35s;--dy:18px">
+        <svg viewBox="0 0 400 236"><path class="trk" d="M50 210 A150 150 0 0 1 350 210"/><path class="arc" id="a0" pathLength="1" d="M50 210 A150 150 0 0 1 350 210"/>
+          <line class="capmark" id="m0" x1="364" y1="210" x2="392" y2="210"/>
+          <line class="needle" id="n0" x1="200" y1="210" x2="200" y2="86"/><circle class="hub" cx="200" cy="210" r="11"/></svg>
+        <div class="name">hourly_cap</div><div class="val"><span id="v0">0</span> <i>/ 3</i></div>
+      </div>
+      <div class="g in" style="--d:.5s;--dy:18px">
+        <svg viewBox="0 0 400 236"><path class="trk" d="M50 210 A150 150 0 0 1 350 210"/><path class="arc" id="a1" pathLength="1" d="M50 210 A150 150 0 0 1 350 210"/>
+          <line class="capmark" x1="364" y1="210" x2="392" y2="210"/>
+          <line class="needle" id="n1" x1="200" y1="210" x2="200" y2="86"/><circle class="hub" cx="200" cy="210" r="11"/></svg>
+        <div class="name">monthly_cap</div><div class="val"><span id="v1">0</span> <i>/ 250</i></div>
+      </div>
+    </div>
+  </div>
+
+  <svg class="wire" viewBox="0 0 1920 1080">
+    <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#333b38"/></marker></defs>
+    <path d="M1312 594 H1530" stroke="#2a312e" stroke-width="3" stroke-dasharray="10 10" marker-end="url(#ah)" class="fade" style="--d:.6s"/>
+    <text x="1421" y="572" text-anchor="middle" font-family="SF Mono, Menlo, monospace" font-size="22" fill="#5d6662" class="fade" style="--d:.6s">HTTPS</text>
+    <rect id="gate" x="1306" y="550" width="8" height="88" rx="4" fill="#ff5f57" opacity="0"/>
+  </svg>
+  <div class="serp panel fade" style="--d:.6s"><div class="t">SerpApi</div><div class="s">not reached</div></div>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  function frame(t) {
+    const h = A.p(t, 1.0, 1.5, "io");                 // hourly: up to the cap
+    const m = A.p(t, 1.1, 1.4, "io") * (41 / 250);    // monthly: some way along (illustrative)
+    [[h, 0], [m, 1]].forEach(([v, i]) => {
+      $("a" + i).style.strokeDashoffset = 1 - v;
+      $("n" + i).setAttribute("transform", `rotate(${(v - 0.5) * 180} 200 210)`);
+    });
+    $("v0").textContent = Math.round(h * 3);
+    $("v1").textContent = Math.round(m * 250);
+    const hit = A.p(t, 2.5, 0.3, "soft");
+    $("a0").style.stroke = hit > 0 ? `rgb(${Math.round(A.lerp(62, 255, hit))},${Math.round(A.lerp(207, 95, hit))},${Math.round(A.lerp(142, 87, hit))})` : "";
+    $("a0").style.filter = hit > 0 ? `drop-shadow(0 0 ${10 + 8 * hit}px rgba(255,95,87,${.5 * hit}))` : "";
+    $("m0").style.stroke = hit > 0 ? "#ff5f57" : "";
+    $("gate").setAttribute("opacity", A.p(t, 2.7, 0.3, "soft"));
+    // tiny shake when the cap is hit
+    const sh = t > 2.5 && t < 2.9 ? Math.sin((t - 2.5) * 60) * 4 * (1 - (t - 2.5) / 0.4) : 0;
+    $("n0").setAttribute("transform", `rotate(${(h - 0.5) * 180 + sh} 200 210)`);
+  }
+</script>
+<script src="anim.js"></script>
+</body></html>

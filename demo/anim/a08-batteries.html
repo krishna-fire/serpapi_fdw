@@ -1,0 +1,40 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>a08 batteries</title>
+<script>const DURATION = 3.9; /* voice 3.1s · 1:08–1:13 · "And it comes with the parts you'd otherwise have to build." */</script>
+<link rel="stylesheet" href="style.css">
+<style>
+  .head { position: absolute; left: 0; right: 0; top: 300px; text-align: center; }
+  .cells { position: absolute; left: 0; right: 0; top: 590px; display: flex; justify-content: center; gap: 44px; }
+  .cell { width: 288px; display: flex; flex-direction: column; align-items: center; }
+  .bat { position: relative; width: 252px; height: 112px; border-radius: 22px; border: 2.5px solid var(--line-2); padding: 9px; }
+  .bat::after { content: ""; position: absolute; right: -14px; top: 36px; width: 9px; height: 36px; border-radius: 0 6px 6px 0; background: var(--line-2); }
+  .bat .lvl { height: 100%; width: 0; border-radius: 13px;
+    background: linear-gradient(90deg, rgba(62,207,142,.55), #3ECF8E); box-shadow: 0 0 26px rgba(62,207,142,.35); }
+  .bat .n { position: absolute; left: 22px; top: 50%; translate: 0 -50%; font-family: var(--mono); font-size: 24px; color: var(--muted); z-index: 1; }
+  .cell .lab { margin-top: 30px; font-size: 32px; font-weight: 500; color: var(--fg); letter-spacing: -.01em; white-space: nowrap; }
+</style>
+</head><body>
+<div class="stage">
+  <nav class="chapters" data-chapter="4" data-from="0" data-to=".135"></nav>
+  <div class="head"><h1 class="headline rise" style="--d:.1s">Batteries <span class="accent">included</span>.</h1></div>
+  <div class="cells">
+    <div class="cell in" style="--d:.55s"><div class="bat"><div class="n">01</div><div class="lvl"></div></div><div class="lab">per-user quotas</div></div>
+    <div class="cell in" style="--d:.65s"><div class="bat"><div class="n">02</div><div class="lvl"></div></div><div class="lab">account caps</div></div>
+    <div class="cell in" style="--d:.75s"><div class="bat"><div class="n">03</div><div class="lvl"></div></div><div class="lab">cache-friendly</div></div>
+    <div class="cell in" style="--d:.85s"><div class="bat"><div class="n">04</div><div class="lvl"></div></div><div class="lab">free replay</div></div>
+    <div class="cell in" style="--d:.95s"><div class="bat"><div class="n">05</div><div class="lvl"></div></div><div class="lab">no key leaks</div></div>
+  </div>
+</div>
+<script>
+  const bats = [...document.querySelectorAll(".bat")];
+  function frame(t) {
+    bats.forEach((b, i) => {
+      const k = A.p(t, 1.0 + i * 0.36, 0.6, "io");
+      b.querySelector(".lvl").style.width = (k * 100).toFixed(2) + "%";
+      b.querySelector(".n").style.color = k > 0.25 ? "#0b0d0c" : "";
+      b.style.borderColor = k >= 1 ? "rgba(62,207,142,.55)" : "";
+    });
+  }
+</script>
+<script src="anim.js"></script>
+</body></html>

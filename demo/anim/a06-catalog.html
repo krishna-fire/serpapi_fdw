@@ -1,0 +1,97 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>a06 catalog</title>
+<script>const DURATION = 9.9; /* voice 9.1s · 0:40–0:50 · "Every engine is generated from one catalog…" */</script>
+<link rel="stylesheet" href="style.css">
+<style>
+  .file { position: absolute; left: 120px; top: 250px; width: 600px; height: 372px; padding: 0; overflow: hidden; }
+  .file .tab { height: 74px; display: flex; align-items: center; gap: 16px; padding: 0 28px; border-bottom: 1.5px solid var(--line);
+    font-family: var(--mono); font-size: 28px; color: var(--fg); }
+  .file pre { margin: 0; padding: 24px 30px; font-family: var(--mono); font-size: 21px; line-height: 1.6; color: #5f6864; }
+  .file pre b { font-weight: 400; color: var(--fg-2); }
+  .out { position: absolute; left: 1180px; width: 620px; height: 132px; padding: 26px 32px; }
+  .out .t { font-size: 34px; font-weight: 600; letter-spacing: -.015em; }
+  .out .s { margin-top: 10px; font-family: var(--mono); font-size: 22px; color: var(--muted); }
+  .out .n { position: absolute; right: 30px; top: 28px; font-family: var(--mono); font-size: 20px; color: var(--dim); }
+  #o1 { top: 200px; } #o2 { top: 372px; } #o3 { top: 544px; }
+  svg.wires { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; }
+  .wire { fill: none; stroke: #4a5450; stroke-width: 3; }
+  .pkt { fill: var(--accent); filter: drop-shadow(0 0 8px rgba(62,207,142,.9)); }
+
+  .engines { position: absolute; left: 0; right: 0; top: 752px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .erow { display: flex; gap: 18px; }
+  .eng { padding: 14px 26px 16px; border-radius: 18px; border: 1.5px solid var(--line-2); background: var(--panel); }
+  .eng .t { font-size: 28px; font-weight: 600; color: var(--fg); letter-spacing: -.01em; }
+  .eng .s { margin-top: 4px; font-family: var(--mono); font-size: 20px; color: var(--muted); }
+  .eng.any { border-style: dashed; }
+  .count { position: absolute; left: 120px; top: 700px; }
+</style>
+</head><body>
+<div class="stage">
+  <nav class="chapters" data-chapter="2" data-from=".667" data-to="1"></nav>
+
+  <div class="file panel in" style="--d:.15s">
+    <div class="tab"><svg width="26" height="30" viewBox="0 0 26 30" fill="none" stroke="#3ECF8E" stroke-width="2.2" stroke-linejoin="round"><path d="M3 2h13l7 7v19H3z"/><path d="M16 2v7h7"/></svg>catalog/engines.json</div>
+<pre>{ "engines": {
+    <b>"google_shopping"</b>: {
+      "block": "shopping_results",
+      "params":  [ … ],
+      "columns": [ … ] },
+    <b>"amazon"</b>: { … },
+    <b>"google_jobs"</b>: { … }, …</pre>
+  </div>
+
+  <svg class="wires" viewBox="0 0 1920 1080">
+    <path class="wire draw" id="c1" pathLength="1" style="--d:.8s;--dur:.7s" d="M720 436 C 950 436, 950 266, 1176 266"/>
+    <path class="wire draw" id="c2" pathLength="1" style="--d:1.05s;--dur:.7s" d="M720 436 C 950 436, 950 438, 1176 438"/>
+    <path class="wire draw" id="c3" pathLength="1" style="--d:1.3s;--dur:.7s" d="M720 436 C 950 436, 950 610, 1176 610"/>
+    <circle class="pkt" id="k1" r="7"/><circle class="pkt" id="k2" r="7"/><circle class="pkt" id="k3" r="7"/>
+  </svg>
+
+  <div class="out panel in" id="o1" style="--d:1.35s;--dy:16px"><div class="t">wrapper parser</div><div class="s">Rust · include_str!</div><div class="n">01</div></div>
+  <div class="out panel in" id="o2" style="--d:1.6s;--dy:16px"><div class="t">foreign tables</div><div class="s">import foreign schema</div><div class="n">02</div></div>
+  <div class="out panel in" id="o3" style="--d:1.85s;--dy:16px"><div class="t">SQL functions</div><div class="s">sql/20_generated.sql</div><div class="n">03</div></div>
+
+  <div class="engines">
+    <div class="erow">
+      <div class="eng" id="e0"><div class="t">Shopping</div><div class="s">google_shopping</div></div>
+      <div class="eng" id="e1"><div class="t">Amazon</div><div class="s">amazon</div></div>
+      <div class="eng" id="e2"><div class="t">Jobs</div><div class="s">google_jobs</div></div>
+      <div class="eng" id="e3"><div class="t">Maps</div><div class="s">google_maps</div></div>
+      <div class="eng" id="e4"><div class="t">Maps Reviews</div><div class="s">google_maps_reviews</div></div>
+    </div>
+    <div class="erow">
+      <div class="eng" id="e5"><div class="t">News</div><div class="s">google_news</div></div>
+      <div class="eng" id="e6"><div class="t">Google</div><div class="s">google</div></div>
+      <div class="eng" id="e7"><div class="t">Google Light</div><div class="s">google_light</div></div>
+      <div class="eng any hl-host" id="e8"><div class="t">any engine</div><div class="s">search(engine, params)</div>
+        <svg class="hl" style="--d:6.9s;--pad:10px;--r:24px"><rect pathLength="1"/></svg></div>
+    </div>
+  </div>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  const curves = [["c1", "k1", .8], ["c2", "k2", 1.05], ["c3", "k3", 1.3]];
+  function frame(t) {
+    for (const [c, k, st] of curves) {
+      const path = $(c), pk = $(k), q = A.p(t, st, 0.7, "io");
+      const pt = path.getPointAtLength(q * path.getTotalLength());
+      pk.setAttribute("cx", pt.x); pk.setAttribute("cy", pt.y);
+      pk.style.opacity = q > 0 && q < 1 ? 1 : 0;
+    }
+    // engine chips: appear dim at 3.0, light one by one (the order the voice reads them), ninth last
+    const rows = document.querySelector(".engines");
+    rows.style.opacity = A.p(t, 2.8, 0.6, "soft");
+    rows.style.transform = `translateY(${(1 - A.p(t, 2.8, 0.9)) * 24}px)`;
+    for (let i = 0; i < 9; i++) {
+      const on = i < 8 ? 3.5 + i * 0.3 : 6.4;
+      const k = A.p(t, on, 0.35, "soft");
+      const e = $("e" + i);
+      e.style.opacity = A.lerp(0.32, 1, k);
+      e.style.borderColor = i < 8 ? `rgba(62,207,142,${0.55 * k})` : "";
+      e.style.background = i < 8 ? `rgba(62,207,142,${0.06 * k})` : "";
+      e.style.transform = `scale(${1 + 0.06 * Math.sin(Math.PI * A.clamp((t - on) / 0.35))})`;
+    }
+  }
+</script>
+<script src="anim.js"></script>
+</body></html>

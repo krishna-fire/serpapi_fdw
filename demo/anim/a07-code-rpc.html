@@ -1,0 +1,30 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>a07 code rpc</title>
+<script>const DURATION = 4.5; /* voice 3.7s · 0:50–0:55 · "Your app calls it the way it calls everything else in Supabase." */</script>
+<link rel="stylesheet" href="style.css">
+<style>
+  .card { position: absolute; left: 240px; top: 292px; width: 1440px; padding: 0; overflow: visible; }
+  .card .tab { height: 72px; display: flex; align-items: center; gap: 22px; padding: 0 32px; border-bottom: 1.5px solid var(--line); }
+  .card .tab .lights { display: flex; gap: 10px; }
+  .card .tab .lights i { width: 14px; height: 14px; border-radius: 50%; background: #2c3431; display: block; }
+  .card .tab span { font-family: var(--mono); font-size: 22px; color: var(--muted); }
+  pre { margin: 0; padding: 60px 80px 66px; font-family: var(--mono); font-size: 66px; line-height: 1.5; color: var(--fg); letter-spacing: -.02em; }
+  .ln { display: block; }
+  .kw { color: #7f8a86; }
+  .str { color: #b9c8c0; }
+  .p { color: #6b7571; }
+  .rpc { color: var(--accent); }
+  .note { position: absolute; left: 0; right: 0; top: 880px; text-align: center; font-family: var(--mono); font-size: 30px; color: var(--muted); }
+  .note b { font-weight: 400; color: var(--fg-2); }
+</style>
+</head><body>
+<div class="stage">
+  <nav class="chapters" data-chapter="3" data-from="0" data-to=".25"></nav>
+  <div class="card panel rise" style="--d:.1s;--dy:30px">
+    <div class="tab"><div class="lights"><i></i><i></i><i></i></div><span>app.js</span></div>
+<pre><span class="ln in" style="--d:.45s;--dy:14px"><span class="kw">const</span> <span class="p">{</span> data <span class="p">}</span> <span class="p">=</span> <span class="kw">await</span> supabase</span><span class="ln in" style="--d:.6s;--dy:14px">  <span class="p">.</span>schema<span class="p">(</span><span class="str">'serpapi'</span><span class="p">)</span></span><span class="ln in" style="--d:.75s;--dy:14px">  <span class="p">.</span><span class="hl-host rpc">rpc<svg class="hl" style="--d:1.4s;--pad:6px;--r:12px"><rect pathLength="1"/></svg></span><span class="p">(</span><span class="str">'google_shopping'</span><span class="p">,</span> <span class="p">{</span> q <span class="p">})</span></span></pre>
+  </div>
+  <div class="note in" style="--d:2.3s;--dy:12px">POST <b>/rest/v1/rpc/google_shopping</b></div>
+</div>
+<script src="anim.js"></script>
+</body></html>

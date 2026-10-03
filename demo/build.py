@@ -8,7 +8,7 @@ or macOS `say`), then one 1080p MP4 plus a timeline.
   python3 demo/build.py --skip-tapes --no-voice   # silent cut, for a human voice-over
 
 Segment types in film.json: card (HTML → PNG → clip), tape (VHS terminal, demo/tapes/<id>.tape),
-browser (Playwright scene in demo/playground/record.py; the playground server must be running).
+browser (Playwright scene in demo/playground/record.py), anim (animated scene, demo/anim/<id>.html).
 
 Narration: film.json "voice_engine" kokoro (local Kokoro-82M via mlx-audio in demo/.venv-tts), chirp (Google
 Chirp 3 HD; API key in ~/.google-tts-key), elevenlabs (API key in ~/.elevenlabs_key; "voice" is a voice id,
@@ -36,9 +36,10 @@ FILM = json.loads((DEMO / "film.json").read_text())
 OUT = DEMO / "out"
 TAPES_OUT = OUT / "tapes"
 BROWSER_OUT = OUT / "browser"
+ANIM_OUT = OUT / "anim"
 CLIPS = OUT / "clips"
 AUDIO = OUT / "audio"
-for d in (TAPES_OUT, BROWSER_OUT, CLIPS, AUDIO):
+for d in (TAPES_OUT, BROWSER_OUT, ANIM_OUT, CLIPS, AUDIO):
     d.mkdir(parents=True, exist_ok=True)
 
 W, H, FPS = FILM["width"], FILM["height"], FILM["fps"]
@@ -95,9 +96,29 @@ def render_browser(scene_id: str) -> Path:
     return out
 
 
+def render_anim(scene_id: str) -> Path:
+    """Record one animated scene (demo/anim/<id>.html) with demo/anim/record.py."""
+    py = DEMO / ".venv-tts" / "bin" / "python"
+    print(f"  animating {scene_id} …", flush=True)
+    subprocess.run([str(py), str(DEMO / "anim" / "record.py"), scene_id], check=True)
+    out = ANIM_OUT / f"{scene_id}.mp4"
+    if not out.exists():
+        sys.exit(f"scene did not produce {out}")
+    return out
+
+
+def source(seg: dict) -> Path:
+    """The recorded clip behind a non-card segment."""
+    base = {"browser": BROWSER_OUT, "anim": ANIM_OUT}.get(seg["type"], TAPES_OUT)
+    return base / f"{seg['id']}.mp4"
+
+
+RENDER = {"tape": render_tape, "browser": render_browser, "anim": render_anim}
+
+
 # ---------------------------------------------------------------- cards → clips
 
-VO_PAD = 0.9   # seconds of air after a narration line ends
+VO_PAD = FILM.get("vo_pad", 0.9)   # seconds of air after a narration line ends
 
 
 def card_clip(seg: dict, min_secs: float = 0.0) -> Path:
@@ -112,7 +133,7 @@ def card_clip(seg: dict, min_secs: float = 0.0) -> Path:
 
 
 def tape_clip(seg: dict, min_secs: float = 0.0) -> Path:
-    src = (BROWSER_OUT if seg["type"] == "browser" else TAPES_OUT) / f"{seg['id']}.mp4"
+    src = source(seg)
     clip = CLIPS / f"{seg['id']}.mp4"
     # normalise every recording to the film's size/fps, hold the last frame if the narration runs longer,
     # and add a short fade in/out so cuts breathe
@@ -120,9 +141,12 @@ def tape_clip(seg: dict, min_secs: float = 0.0) -> Path:
     hold = max(min_secs - d, 0.0)
     total = d + hold
     pad = f"tpad=stop_mode=clone:stop_duration={hold:.2f}," if hold > 0 else ""
+    # "fade": false for match cuts and animations that carry their own transition
+    fade = (f"fade=t=in:st=0:d=0.35,fade=t=out:st={max(total-0.35,0)}:d=0.35,"
+            if seg.get("fade", seg["type"] != "anim") else "")
     sh(["ffmpeg", "-y", "-i", str(src), "-vf",
         f"scale={W}:{H}:force_original_aspect_ratio=decrease,pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:color=#0b0b0d,{pad}"
-        f"fade=t=in:st=0:d=0.35,fade=t=out:st={max(total-0.35,0)}:d=0.35,format=yuv420p",
+        f"{fade}format=yuv420p",
         "-r", str(FPS), "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-an", str(clip)])
     return clip
 
@@ -284,7 +308,7 @@ def main() -> int:
 
     if args.only:
         kind = next((x["type"] for x in FILM["segments"] if x["id"] == args.only), "tape")
-        (render_browser if kind == "browser" else render_tape)(args.only)
+        RENDER.get(kind, render_tape)(args.only)
         return 0
 
     segs = FILM["segments"]
@@ -293,10 +317,8 @@ def main() -> int:
         sh([sys.executable, str(DEMO / "cards" / "render.py")])
         print("tapes")
         for seg in segs:
-            if seg["type"] == "tape":
-                render_tape(seg["id"])
-            elif seg["type"] == "browser":
-                render_browser(seg["id"])
+            if seg["type"] in RENDER:
+                RENDER[seg["type"]](seg["id"])
 
     wavs = {} if args.no_voice else synth_all(segs)
     print("clips")
@@ -305,7 +327,7 @@ def main() -> int:
         need = duration(wavs[seg["id"]]) + 0.4 + VO_PAD if seg["id"] in wavs else 0.0
         clips.append(card_clip(seg, need) if seg["type"] == "card" else tape_clip(seg, need))
         d = duration(clips[-1])
-        if seg["type"] != "card" and need > 0 and d + 0.05 >= need and need > duration((BROWSER_OUT if seg["type"] == "browser" else TAPES_OUT) / f"{seg['id']}.mp4"):
+        if seg["type"] != "card" and need > 0 and d + 0.05 >= need and need > duration(source(seg)):
             print(f"  held last frame of {seg['id']} to {d:.1f}s for the narration")
 
     starts, t = [], 0.0

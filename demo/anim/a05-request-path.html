@@ -1,0 +1,166 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>a05 request path</title>
+<script>const DURATION = 13.5; /* voice 12.7s · 0:27–0:40 · "Underneath is a foreign data wrapper… JSON into typed columns." */</script>
+<link rel="stylesheet" href="style.css">
+<style>
+  #world { position: absolute; inset: 0; transform-origin: 370px 820px; }
+  .pg { position: absolute; left: 96px; top: 196px; width: 1262px; height: 808px; border-radius: 30px;
+    border: 2px dashed #2b3330; }
+  .pg-label { position: absolute; left: 132px; top: 178px; padding: 0 14px; background: #0b0e0d; display: flex; gap: 12px; align-items: center; }
+  .pg-label .eyebrow { color: var(--dim); }
+
+  .node { position: absolute; border-radius: 20px; border: 1.5px solid var(--line-2);
+    background: linear-gradient(180deg, #161b19, #111514); box-shadow: 0 24px 60px -30px rgba(0,0,0,.9);
+    padding: 26px 30px; }
+  .node .k { font-size: 22px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .node .v { margin-top: 12px; font-size: 32px; color: var(--fg); }
+  .node .mono { font-size: 30px; }
+  .ring { position: absolute; inset: -1.5px; border-radius: 20px; border: 2px solid var(--accent); opacity: 0;
+    box-shadow: 0 0 22px rgba(62,207,142,.35), inset 0 0 22px rgba(62,207,142,.08); pointer-events: none; }
+
+  #sql { left: 140px; top: 290px; width: 460px; height: 150px; }
+  #fdw { left: 700px; top: 262px; width: 600px; height: 196px; padding: 30px 34px; }
+  #fdw .t { font-size: 40px; font-weight: 600; letter-spacing: -.02em; }
+  #fdw .s { margin-top: 12px; font-size: 28px; color: var(--fg-2); }
+  #fdw .tag { position: absolute; right: 26px; top: 26px; font-family: var(--mono); font-size: 20px; color: var(--muted);
+    border: 1.5px solid var(--line-2); border-radius: 8px; padding: 4px 10px; }
+  #vault { position: absolute; left: 872px; top: 548px; width: 260px; display: flex; align-items: center; gap: 20px; }
+  #vault svg { width: 110px; height: 104px; flex: none; }
+  #vault .t { font-size: 32px; font-weight: 600; }
+  #vault .s { font-size: 22px; color: var(--muted); margin-top: 2px; }
+  #types { left: 700px; top: 722px; width: 600px; height: 206px; }
+  .cols { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .col { font-family: var(--mono); font-size: 23px; padding: 8px 14px; border-radius: 10px; border: 1.5px solid var(--line-2);
+    background: #0f1312; color: var(--fg); white-space: nowrap; }
+  .col i { font-style: normal; color: var(--muted); }
+  #row { left: 140px; top: 746px; width: 460px; height: 158px; padding: 22px 26px; }
+  .cells { margin-top: 16px; display: grid; grid-template-columns: 1.7fr 1fr 1fr; border: 1.5px solid var(--line-2); border-radius: 10px; overflow: hidden; }
+  .cells div { padding: 12px 14px; font-size: 22px; white-space: nowrap; overflow: hidden; color: var(--fg); border-left: 1.5px solid var(--line); }
+  .cells div:first-child { border-left: 0; }
+  .cells .num { font-family: var(--mono); text-align: right; }
+  #serp { left: 1478px; top: 262px; width: 330px; height: 666px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  #serp .t { font-size: 46px; font-weight: 600; letter-spacing: -.02em; }
+  #serp .s { margin-top: 10px; font-family: var(--mono); font-size: 22px; color: var(--muted); }
+
+  svg.wires { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
+  .track { stroke: #262e2b; stroke-width: 3; fill: none; }
+  .wire { stroke: #8b9490; stroke-width: 3; fill: none; stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+  .wlabel { font-family: var(--mono); font-size: 22px; fill: var(--muted); }
+  .pkt { fill: var(--accent); filter: drop-shadow(0 0 8px rgba(62,207,142,.9)); opacity: 0; }
+</style>
+</head><body>
+<div class="stage">
+  <nav class="chapters" data-chapter="2" data-from=".233" data-to=".667"></nav>
+  <div style="position:absolute;inset:0;clip-path:inset(124px 0 0 0)"><div id="world">
+    <div class="pg" id="pg"></div>
+    <div class="pg-label" id="pglabel"><span class="dot" id="pgdot" style="opacity:0"></span><span class="eyebrow" id="pgtext">Inside Postgres</span></div>
+
+    <svg class="wires" viewBox="0 0 1920 1080">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8b9490"/></marker></defs>
+      <!-- tracks -->
+      <path class="track" d="M600 365 H696"/>
+      <path class="track" d="M1002 548 V462"/>
+      <path class="track" d="M1300 360 H1474"/>
+      <path class="track" d="M1478 825 H1304"/>
+      <path class="track" d="M700 825 H604"/>
+      <!-- lit wires -->
+      <path class="wire" id="w1" pathLength="1" marker-end="url(#ah)" d="M600 365 H690"/>
+      <path class="wire" id="w2" pathLength="1" marker-end="url(#ah)" d="M1002 548 V468"/>
+      <path class="wire" id="w3" pathLength="1" marker-end="url(#ah)" d="M1300 360 H1468"/>
+      <path class="wire" id="w4" pathLength="1" marker-end="url(#ah)" d="M1478 825 H1310"/>
+      <path class="wire" id="w5" pathLength="1" marker-end="url(#ah)" d="M700 825 H610"/>
+      <text class="wlabel" id="l2" x="1020" y="512">reads key</text>
+      <text class="wlabel" id="l3" x="1417" y="340" text-anchor="middle">HTTPS</text>
+      <text class="wlabel" id="l4" x="1417" y="805" text-anchor="middle">JSON</text>
+      <circle class="pkt" id="p1" r="7"/><circle class="pkt" id="p2" r="7"/><circle class="pkt" id="p3" r="7"/><circle class="pkt" id="p4" r="7"/><circle class="pkt" id="p5" r="7"/>
+    </svg>
+
+    <div class="node" id="sql"><div class="k">SQL function</div><div class="v mono">google_shopping(q)</div><div class="ring"></div></div>
+    <div class="node" id="fdw">
+      <div class="t">foreign data wrapper</div>
+      <div class="s">Rust → Wasm · inside Postgres</div>
+      <div class="tag" style="top:auto;bottom:26px">serpapi_fdw.wasm</div>
+      <svg class="hl" style="--d:2.9s;--pad:12px;--r:26px"><rect pathLength="1"/></svg>
+      <div class="ring"></div>
+    </div>
+    <div id="vault">
+      <svg viewBox="-3 -3 116 110">
+        <path d="M0 18 V86 A55 16 0 0 0 110 86 V18" fill="#121615" stroke="#3a4440" stroke-width="2"/>
+        <ellipse cx="55" cy="18" rx="55" ry="16" fill="#171c1a" stroke="#3a4440" stroke-width="2" id="vtop"/>
+        <g transform="translate(55 60)"><path d="M-9 -4 V-12 A9 9 0 0 1 9 -12 V-4" fill="none" stroke="#3ECF8E" stroke-width="3.5" stroke-linecap="round"/><rect x="-14" y="-5" width="28" height="23" rx="5" fill="#0f1714" stroke="#3ECF8E" stroke-width="3"/></g>
+      </svg>
+      <div><div class="t">Vault</div><div class="s">the API key</div></div>
+    </div>
+    <div class="node" id="serp"><div class="t">SerpApi</div><div class="s">/search.json</div><div class="ring"></div></div>
+    <div class="node" id="types"><div class="k">typed columns</div>
+      <div class="cols">
+        <span class="col" id="c1">title <i>text</i></span><span class="col" id="c2">source <i>text</i></span><span class="col" id="c3">extracted_price <i>numeric</i></span>
+      </div><div class="ring"></div></div>
+    <div class="node" id="row"><div class="k">row</div>
+      <div class="cells" id="cells"><div>iPhone 16 128 GB</div><div>Croma</div><div class="num">69900</div></div>
+      <div class="ring"></div></div>
+  </div></div>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  const world = $("world");
+  const nodes = { sql: 1.8, fdw: 2.6, serp: 8.5, types: 9.8, row: 11.2 };
+  const wires = [ // id, start, dur, path start/end for packet
+    ["1", 2.1, 0.45, [600, 365], [690, 365]],
+    ["2", 6.6, 0.75, [1002, 548], [1002, 468]],
+    ["3", 7.9, 0.6, [1300, 360], [1468, 360]],
+    ["4", 9.15, 0.6, [1478, 825], [1310, 825]],
+    ["5", 10.75, 0.45, [700, 825], [610, 825]],
+  ];
+  const DIM = 0.28;
+  function nodeState(el, t, on, keepRing = 1.4) {
+    const k = A.p(t, on, 0.5, "soft");
+    el.style.opacity = A.lerp(DIM, 1, k);
+    const ring = el.querySelector(".ring");
+    if (ring) ring.style.opacity = A.p(t, on, 0.3, "soft") * (1 - A.p(t, on + keepRing, 0.7, "soft"));
+  }
+  function frame(t) {
+    // camera: from the grid row (big, centred) back to the whole path
+    const z = A.p(t, 0.1, 1.8, "io");
+    const s = A.lerp(2.5, 1, z);
+    world.style.transform = `translate(${(960 - 370) * (1 - z)}px, ${(560 - 820) * (1 - z)}px) scale(${s})`;
+
+    for (const [id, on] of Object.entries(nodes)) {
+      if (id === "row") continue;
+      nodeState($(id), t, on);
+    }
+    // row: lit at the start (it is the row we zoomed out of), dims, then lights again at the end
+    const rowOn = 1 - A.p(t, 1.6, 0.5, "soft") + A.p(t, nodes.row, 0.5, "soft");
+    $("row").style.opacity = A.lerp(DIM, 1, Math.min(1, rowOn));
+    $("row").querySelector(".ring").style.opacity = A.p(t, nodes.row, 0.3) ;
+    $("cells").style.opacity = A.lerp(1, 0.25, A.p(t, 1.6, 0.4)) + 0.75 * A.p(t, nodes.row + 0.15, 0.4);
+    $("fdw").querySelector(".ring").style.opacity = 0;   // the FDW gets the persistent highlight box instead
+
+    // vault (no ring, it is not a box)
+    $("vault").style.opacity = A.lerp(DIM, 1, A.p(t, 6.2, 0.5, "soft"));
+    $("vtop").style.stroke = A.p(t, 6.2, 0.4) > 0.5 && t < 7.8 ? "#3ECF8E" : "#3a4440";
+    // Postgres boundary lights when the voice says "inside Postgres"
+    const pg = A.p(t, 4.6, 0.6, "soft");
+    $("pg").style.borderColor = `rgba(62,207,142,${0.12 + 0.45 * pg * (1 - 0.6 * A.p(t, 6.0, 1))})`;
+    $("pgtext").style.color = pg > 0.01 ? `rgb(${Math.round(A.lerp(93, 243, pg))},${Math.round(A.lerp(102, 245, pg))},${Math.round(A.lerp(98, 244, pg))})` : "";
+    $("pgdot").style.opacity = pg;
+
+    for (const [id, st, du, a, b] of wires) {
+      const k = A.p(t, st, du, "io");
+      $("w" + id).style.strokeDashoffset = 1 - k;
+      $("w" + id).style.opacity = k > 0 ? 1 : 0;
+      const pk = $("p" + id);
+      pk.setAttribute("cx", A.lerp(a[0], b[0], k)); pk.setAttribute("cy", A.lerp(a[1], b[1], k));
+      pk.style.opacity = k > 0 && k < 1 ? 1 : A.clamp(1 - (t - st - du) / 0.25) * (k >= 1 ? 1 : 0);
+      const lab = $("l" + id); if (lab) lab.style.opacity = A.lerp(0.35, 1, A.p(t, st, 0.4));
+    }
+    // column chips pop as JSON becomes typed
+    ["c1", "c2", "c3"].forEach((c, i) => {
+      const k = A.p(t, 9.9 + i * 0.18, 0.5, "back");
+      $(c).style.transform = `scale(${A.lerp(0.85, 1, k)})`;
+      $(c).style.borderColor = k > 0.05 && t < 11.4 ? "rgba(62,207,142,.6)" : "";
+    });
+  }
+</script>
+<script src="anim.js"></script>
+</body></html>

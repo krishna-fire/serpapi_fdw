@@ -1,0 +1,56 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>a04 title</title>
+<script>const DURATION = 5.0; /* voice 4.2s · 0:17–0:20 · "SerpApi, as Postgres functions." */</script>
+<link rel="stylesheet" href="style.css">
+<style>
+  .vault { position: absolute; left: 1277px; top: 470px; width: 300px; transform-origin: 150px 165px; }
+  .vault svg { width: 300px; height: 330px; overflow: visible; display: block; }
+  .vault .label { text-align: center; margin-top: 26px; font-size: 44px; font-weight: 600; letter-spacing: -.02em; }
+  .vault .sub { text-align: center; margin-top: 6px; font-size: 24px; color: var(--muted); }
+  .cyl-body { fill: #121615; stroke: #3a4440; stroke-width: 2; }
+  .cyl-top { fill: #171c1a; stroke: #3ECF8E; stroke-width: 2.5; filter: drop-shadow(0 0 12px rgba(62,207,142,.6)); }
+  .title { position: absolute; left: 0; right: 0; top: 384px; text-align: center; }
+  .title h1 { margin: 0; font-family: var(--mono); font-weight: 500; font-size: 132px; letter-spacing: -.03em; color: var(--fg); }
+  .title p { margin: 62px 0 0; font-size: 48px; font-weight: 500; letter-spacing: -.015em; color: var(--fg-2); }
+  .rule { position: absolute; left: 50%; top: 578px; width: 620px; height: 2px; margin-left: -310px; background: var(--accent);
+    box-shadow: 0 0 14px var(--accent-glow); transform-origin: 50% 50%; }
+</style>
+</head><body>
+<div class="stage">
+  <div class="vault" id="vault">
+    <svg viewBox="-4 -4 308 338">
+      <path class="cyl-body" d="M0 44 V286 A150 44 0 0 0 300 286 V44"/>
+      <path d="M0 125 A150 44 0 0 0 300 125 M0 205 A150 44 0 0 0 300 205" fill="none" stroke="#262d2a" stroke-width="2"/>
+      <ellipse class="cyl-top" cx="150" cy="44" rx="150" ry="44"/>
+      <g transform="translate(150 196)">
+        <path d="M-20 -8 V-26 A20 20 0 0 1 20 -26 V-8" fill="none" stroke="#3ECF8E" stroke-width="6" stroke-linecap="round"/>
+        <rect x="-32" y="-10" width="64" height="52" rx="10" fill="#0f1714" stroke="#3ECF8E" stroke-width="4"/>
+        <circle cx="0" cy="12" r="6" fill="#3ECF8E"/>
+      </g>
+    </svg>
+    <div class="label" id="vlabel">Vault</div>
+    <div class="sub" id="vsub">in your database</div>
+  </div>
+  <div class="rule" id="rule"></div>
+  <div class="title">
+    <h1 class="rise" style="--d:.55s">serpapi_fdw</h1>
+    <p class="in" style="--d:1.0s">SerpApi, as <span class="accent">Postgres</span> functions.</p>
+  </div>
+</div>
+<script>
+  const vault = document.getElementById("vault"), rule = document.getElementById("rule");
+  const vl = document.getElementById("vlabel"), vs = document.getElementById("vsub");
+  function frame(t) {
+    // cylinder glides to centre, flattens toward its rim, and hands off to the title's rule
+    const m = A.p(t, 0, 0.8, "io");
+    const dx = (960 - 1427) * m, dy = (578 - 517) * m;
+    vault.style.transform = `translate(${dx}px, ${dy}px) scale(${1 + 1.1 * m}, ${1 - 0.95 * m})`;
+    vault.style.opacity = 1 - A.p(t, 0.45, 0.35, "lin");
+    vl.style.opacity = vs.style.opacity = 1 - A.p(t, 0, 0.25, "lin");
+    const r = A.p(t, 0.5, 0.7, "out");
+    rule.style.opacity = r * (1 - 0.65 * A.p(t, 1.4, 0.8, "soft"));
+    rule.style.transform = `scaleX(${0.5 + 0.5 * r})`;
+  }
+</script>
+<script src="anim.js"></script>
+</body></html>

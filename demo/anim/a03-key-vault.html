@@ -1,0 +1,126 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>a03 key vault</title>
+<script>const DURATION = 3.6; /* voice 2.8s · 0:14–0:17 · "So keep it where your data already lives." */</script>
+<link rel="stylesheet" href="style.css">
+<style>
+  /* opening frame = last frame of a02 */
+  #auth { left: 56px; top: 248px; }
+  #db { right: 56px; top: 248px; }
+  .search { position: absolute; left: 56px; right: 56px; top: 98px; height: 92px; border-radius: 18px;
+    border: 1.5px solid var(--line-2); background: #0e1211; display: flex; align-items: center; padding: 0 16px 0 30px; gap: 20px; }
+  .search .ph { font-size: 30px; color: var(--muted); }
+  .slot { margin-left: auto; width: 210px; height: 60px; border-radius: 30px; border: 1.5px solid var(--line-2); background: var(--panel);
+    display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 500; }
+  .browser.panel { border-color: rgba(255,95,87,.45); animation: frame-calm .6s ease .2s both; }
+  @keyframes frame-calm { to { border-color: var(--line); } }
+  .veil { position: absolute; inset: 64px 0 0 0; border-radius: 0 0 24px 24px; background: rgba(8,10,9,.62); z-index: 20; }
+  #group { position: absolute; inset: 0; transform-origin: 960px 598px; }
+
+  .stamp { position: absolute; left: 960px; top: 630px; transform: translate(-50%, -50%); z-index: 25; animation: stamp-out .35s ease 0s both; }
+  @keyframes stamp-out { to { opacity: 0; scale: .9; } }
+  .stamp div { border: 4px solid var(--red); color: var(--red); border-radius: 16px; padding: 18px 40px; rotate: -4deg;
+    font-size: 58px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; background: rgba(31,14,13,.85); }
+
+  .keypos { position: absolute; left: 1306px; top: 244px; z-index: 30; transform-origin: 50% 50%; }
+  .keychip { height: 48px; padding: 0 20px 0 16px; border-radius: 24px; display: flex; align-items: center; gap: 12px;
+    background: #141817; border: 1.5px solid; font-family: var(--mono); font-size: 22px; }
+  .keychip svg { width: 46px; height: 24px; }
+
+  .vault { position: absolute; left: 1277px; top: 470px; width: 300px; z-index: 10; }
+  .vault svg.cyl { width: 300px; height: 330px; overflow: visible; display: block; }
+  .vault .label { text-align: center; margin-top: 26px; font-size: 44px; font-weight: 600; letter-spacing: -.02em; }
+  .vault .sub { text-align: center; margin-top: 6px; font-size: 24px; color: var(--muted); }
+  .cyl .body { fill: #121615; stroke: #3a4440; stroke-width: 2; }
+  .cyl .top { fill: #171c1a; stroke: #3a4440; stroke-width: 2; }
+  .cyl .glow { fill: none; stroke: var(--accent); stroke-width: 2.5; opacity: 0; filter: drop-shadow(0 0 12px rgba(62,207,142,.6)); animation: k-fade .5s ease 1.75s both; }
+  .lock-shackle { animation: shackle .35s var(--ease-back) 1.95s both; }
+  @keyframes shackle { from { translate: 0 -9px; } to { translate: 0 0; } }
+</style>
+</head><body>
+<div class="stage">
+  <nav class="chapters" data-chapter="1" data-from=".70" data-to=".85"></nav>
+
+  <div id="group">
+    <div class="browser panel">
+      <div class="bar"><div class="lights"><i></i><i></i><i></i></div><div class="url">your-app.com</div></div>
+      <div class="body">
+        <div class="wf-nav"><div class="wf-logo"></div><div class="bar-g" style="width:120px"></div><div class="bar-g" style="width:84px;background:#1d2321"></div><div class="bar-g" style="width:84px;background:#1d2321"></div><div class="wf-avatar"></div></div>
+        <div class="search">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#8b9490" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20"/></svg>
+          <span class="ph">Search live results…</span><div class="slot">Shopping</div>
+        </div>
+        <div class="wf-card" id="auth">
+          <h4>Sign in</h4>
+          <div class="wf-field"><div class="bar-g" style="width:42%"></div></div>
+          <div class="wf-field"><div class="bar-g" style="width:30%"></div></div>
+          <div class="wf-btn"><div class="bar-g" style="width:22%;background:#46504c"></div></div>
+          <div class="check">Auth<svg viewBox="0 0 24 24" fill="none" stroke="#3ECF8E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+        </div>
+        <div class="wf-card" id="db">
+          <h4 class="mono" style="font-weight:500">products</h4>
+          <div class="wf-grid">
+            <div class="wf-row"><div class="bar-g" style="width:60%;background:#3a4440"></div><div class="bar-g" style="width:55%;background:#3a4440"></div><div class="bar-g" style="width:70%;background:#3a4440"></div></div>
+            <div class="wf-row"><div class="bar-g" style="width:80%"></div><div class="bar-g" style="width:50%"></div><div class="bar-g" style="width:60%"></div></div>
+            <div class="wf-row"><div class="bar-g" style="width:66%"></div><div class="bar-g" style="width:70%"></div><div class="bar-g" style="width:45%"></div></div>
+            <div class="wf-row"><div class="bar-g" style="width:74%"></div><div class="bar-g" style="width:40%"></div><div class="bar-g" style="width:66%"></div></div>
+            <div class="wf-row"><div class="bar-g" style="width:58%"></div><div class="bar-g" style="width:62%"></div><div class="bar-g" style="width:52%"></div></div>
+          </div>
+          <div class="check">Database<svg viewBox="0 0 24 24" fill="none" stroke="#3ECF8E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+        </div>
+        <div class="veil"></div>
+      </div>
+    </div>
+    <div class="stamp"><div>visible to every user</div></div>
+  </div>
+
+  <div class="vault" id="vault">
+    <svg class="cyl" viewBox="-4 -4 308 338">
+      <path class="body" d="M0 44 V286 A150 44 0 0 0 300 286 V44"/>
+      <ellipse class="top" cx="150" cy="44" rx="150" ry="44"/>
+      <path d="M0 125 A150 44 0 0 0 300 125 M0 205 A150 44 0 0 0 300 205" fill="none" stroke="#262d2a" stroke-width="2"/>
+      <ellipse class="glow" cx="150" cy="44" rx="150" ry="44"/>
+      <g transform="translate(150 196)">
+        <path class="lock-shackle" d="M-20 -8 V-26 A20 20 0 0 1 20 -26 V-8" fill="none" stroke="#3ECF8E" stroke-width="6" stroke-linecap="round"/>
+        <rect x="-32" y="-10" width="64" height="52" rx="10" fill="#0f1714" stroke="#3ECF8E" stroke-width="4"/>
+        <circle cx="0" cy="12" r="6" fill="#3ECF8E"/>
+      </g>
+    </svg>
+    <div class="label">Vault</div>
+    <div class="sub">in your database</div>
+  </div>
+
+  <div class="keypos" id="key"><div class="keychip" id="chip">
+    <svg viewBox="0 0 48 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="6.5"/><path d="M15.5 12H45M37 12v6M43 12v5"/></svg>
+    SERPAPI_KEY</div></div>
+</div>
+<script>
+  const g = document.getElementById("group"), key = document.getElementById("key"), chip = document.getElementById("chip");
+  const vault = document.getElementById("vault");
+  const RED = [255, 95, 87], WHITE = [201, 208, 204], GREEN = [62, 207, 142];
+  const mix = (a, b, k) => a.map((v, i) => Math.round(A.lerp(v, b[i], k)));
+  function frame(t) {
+    // browser slides left and recedes
+    const b = A.p(t, 0.25, 1.1, "io");
+    g.style.transform = `translate(${-470 * b}px, ${30 * b}px) scale(${1 - 0.42 * b})`;
+    g.style.opacity = 1 - 0.55 * b;
+    // vault rises in
+    const v = A.p(t, 0.7, 0.8, "out");
+    vault.style.opacity = v; vault.style.transform = `translateY(${(1 - v) * 50}px)`;
+    // key: lift (0.1–0.6), then drop into the vault top (0.9–1.8)
+    const lift = A.p(t, 0.1, 0.55, "out"), drop = A.p(t, 0.85, 0.95, "in");
+    const x = 1427 + (0 - 0) , y = -70 * lift + (514 - 268 + 70) * drop;
+    const s = 1 - 0.35 * A.p(t, 0.6, 1.1, "soft");
+    key.style.transform = `translate(${-6 * lift}px, ${y}px) scale(${s})`;
+    key.style.opacity = 1 - A.p(t, 1.62, 0.18, "lin");
+    const c = t < 0.6 ? mix(RED, WHITE, A.p(t, 0.05, 0.5, "soft")) : mix(WHITE, GREEN, A.p(t, 0.6, 0.6, "soft"));
+    const col = `rgb(${c.join(",")})`;
+    chip.style.color = col; chip.style.borderColor = col;
+    chip.style.boxShadow = `0 0 ${28 * (1 - A.p(t, 0, 0.5, "lin")) + 20 * A.p(t, 0.8, 0.5, "lin")}px rgba(${c.join(",")},.45)`;
+    // clip the key behind the vault's top rim once it reaches it
+    const clipY = 514 - 268 + 24;   // chip-local y of the rim's centre line at full drop
+    const below = Math.max(0, (y + 24) - (514 - 268));
+    key.style.clipPath = drop > 0 ? `inset(0 0 ${Math.min(48, below / s)}px 0)` : "none";
+  }
+</script>
+<script src="anim.js"></script>
+</body></html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>a11 cron collapse</title>
+<script>const DURATION = 9.9; /* voice 9.1s · 1:45–1:55 · "Scheduled search usually means a cron server… one line of pg_cron." */</script>
+<link rel="stylesheet" href="style.css">
+<style>
+  .eb { position: absolute; left: 140px; top: 236px; }
+  .eb .eyebrow { position: absolute; left: 0; top: 0; white-space: nowrap; }
+  .row { position: absolute; left: 140px; top: 470px; width: 1640px; height: 160px; }
+  .box { position: absolute; top: 0; width: 272px; height: 160px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .box .t { font-size: 32px; font-weight: 600; letter-spacing: -.015em; }
+  .box .s { margin-top: 8px; font-size: 22px; color: var(--muted); }
+  svg.arr { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; }
+  .sql { position: absolute; left: 50%; top: 452px; width: 1540px; margin-left: -770px; padding: 54px 64px; opacity: 0; }
+  .sql pre { margin: 0; font-family: var(--mono); font-size: 44px; line-height: 1.55; color: var(--fg); letter-spacing: -.01em; }
+  .kw { color: #7f8a86; } .str { color: #b9c8c0; } .p { color: #6b7571; }
+  .foot { position: absolute; left: 0; right: 0; top: 800px; text-align: center; font-size: 30px; color: var(--muted); opacity: 0; }
+  .foot b { color: var(--fg); font-weight: 500; }
+</style>
+</head><body>
+<div class="stage">
+  <nav class="chapters" data-chapter="5" data-from="0" data-to=".37"></nav>
+  <div class="eb">
+    <div class="eyebrow" id="eb1">The usual way</div>
+    <div class="eyebrow" id="eb2" style="opacity:0;color:var(--fg)">With serpapi_fdw</div>
+  </div>
+
+  <div class="row" id="row">
+    <div class="box panel" id="b0" style="left:0"><div class="t">cron server</div><div class="s">always on</div></div>
+    <div class="box panel" id="b1" style="left:342px"><div class="t">queue</div><div class="s">jobs</div></div>
+    <div class="box panel" id="b2" style="left:684px"><div class="t">worker</div><div class="s">calls the API</div></div>
+    <div class="box panel" id="b3" style="left:1026px"><div class="t">retries</div><div class="s">backoff</div></div>
+    <div class="box panel" id="b4" style="left:1368px"><div class="t">storage</div><div class="s">the results</div></div>
+  </div>
+  <svg class="arr" viewBox="0 0 1920 1080" id="arrows">
+    <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5d6662"/></marker></defs>
+    <path id="a0" d="M416 550 H476" stroke="#5d6662" stroke-width="3" marker-end="url(#ah)"/>
+    <path id="a1" d="M758 550 H818" stroke="#5d6662" stroke-width="3" marker-end="url(#ah)"/>
+    <path id="a2" d="M1100 550 H1160" stroke="#5d6662" stroke-width="3" marker-end="url(#ah)"/>
+    <path id="a3" d="M1442 550 H1502" stroke="#5d6662" stroke-width="3" marker-end="url(#ah)"/>
+  </svg>
+
+  <div class="sql panel" id="sql">
+<pre><span class="kw">select</span> cron<span class="p">.</span>schedule<span class="p">(</span><span class="str">'nightly-prices'</span><span class="p">,</span> <span class="hl-host str">'0 21 * * *'<svg class="hl" style="--d:7.7s;--pad:8px;--r:10px"><rect pathLength="1"/></svg></span><span class="p">,</span>
+                     <span class="str">'call serpapi.snapshot_prices()'</span><span class="p">);</span></pre>
+  </div>
+  <div class="foot" id="foot"><b>pg_cron</b>, inside the database · no servers to schedule</div>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  const CX = 960, CY = 550;
+  function frame(t) {
+    for (let i = 0; i < 5; i++) {
+      const b = $("b" + i);
+      const on = A.p(t, 0.4 + i * 0.62, 0.7, "out");
+      const dim = A.p(t, 4.7, 0.6, "soft");
+      // collapse: outer boxes first, all into the centre point
+      const order = [0, 4, 1, 3, 2][i] ;
+      const c = A.p(t, 5.3 + Math.abs(i - 2) * -0.08 + 0.16, 0.9, "io");
+      const bx = 140 + i * 342 + 136, dx = (CX - bx) * c;
+      b.style.opacity = on * A.lerp(1, 0.4, dim) * (1 - A.p(t, 5.75, 0.5, "lin"));
+      b.style.transform = `translate(${dx}px, ${(1 - on) * 24}px) scale(${A.lerp(1, 0.25, c)})`;
+      b.style.filter = dim > 0 ? `saturate(${1 - dim})` : "";
+    }
+    for (let i = 0; i < 4; i++) {
+      const a = $("a" + i);
+      a.style.opacity = A.p(t, 0.75 + i * 0.62, 0.4) * (1 - A.p(t, 4.7, 0.6)) ;
+    }
+    $("eb1").style.opacity = A.p(t, 0.1, 0.6) * (1 - A.p(t, 5.6, 0.4));
+    $("eb2").style.opacity = A.p(t, 6.2, 0.5);
+    // the SQL line unfolds out of the collapse point
+    const s = A.p(t, 5.95, 0.9, "out");
+    const sql = $("sql");
+    sql.style.opacity = A.p(t, 5.95, 0.4, "lin");
+    sql.style.clipPath = `inset(0 ${(1 - s) * 50}% 0 ${(1 - s) * 50}% round 22px)`;
+    sql.style.transform = `scale(${A.lerp(0.96, 1, s)})`;
+    $("foot").style.opacity = A.p(t, 7.9, 0.6);
+    $("foot").style.transform = `translateY(${(1 - A.p(t, 7.9, 0.8)) * 14}px)`;
+  }
+</script>
+<script src="anim.js"></script>
+</body></html>

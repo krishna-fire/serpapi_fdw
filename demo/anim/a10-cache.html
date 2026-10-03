@@ -1,0 +1,93 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>a10 cache</title>
+<script>const DURATION = 6.3; /* voice 5.5s · 1:32–1:37 · "Identical searches are normalised, so repeats hit SerpApi's own cache." */</script>
+<link rel="stylesheet" href="style.css">
+<style>
+  .call { position: absolute; left: 110px; width: 690px; padding: 26px 34px; }
+  .call .k { font-size: 21px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .call pre { margin: 12px 0 0; font-family: var(--mono); font-size: 30px; line-height: 1.45; color: var(--fg); }
+  .call pre i { font-style: normal; color: var(--muted); }
+  #q1 { top: 240px; } #q2 { top: 640px; }
+  .canon { position: absolute; left: 930px; top: 418px; width: 450px; padding: 28px 34px; }
+  .canon .k { font-size: 21px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .canon pre { margin: 14px 0 0; font-family: var(--mono); font-size: 29px; line-height: 1.55; color: var(--fg); }
+  .canon pre i { font-style: normal; color: var(--dim); }
+  .canon .note { margin-top: 14px; font-size: 22px; color: var(--muted); }
+  .serp { position: absolute; left: 1500px; top: 300px; width: 320px; height: 600px; padding: 30px; display: flex; flex-direction: column; }
+  .serp .t { font-size: 42px; font-weight: 600; letter-spacing: -.02em; text-align: center; margin-top: 6px; }
+  .zone { margin-top: 30px; flex: 1; border-radius: 16px; border: 1.5px solid var(--line-2); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 10px; }
+  .zone + .zone { margin-top: 18px; }
+  .zone b { font-size: 30px; font-weight: 600; }
+  .zone span { margin-top: 6px; font-family: var(--mono); font-size: 22px; color: var(--muted); }
+  #cache { position: relative; }
+  svg.wires { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; }
+  .wire { fill: none; stroke: #4a5450; stroke-width: 3; }
+  .pkt { fill: var(--accent); filter: drop-shadow(0 0 8px rgba(62,207,142,.9)); opacity: 0; }
+</style>
+</head><body>
+<div class="stage">
+  <nav class="chapters" data-chapter="4" data-from=".649" data-to=".784"></nav>
+
+  <div class="call panel in" id="q1" style="--d:.1s"><div class="k">search 1</div>
+<pre>google_shopping(
+  <i>q =></i> 'iPhone 16', <i>gl =></i> 'in')</pre></div>
+  <div class="call panel in" id="q2" style="--d:.4s"><div class="k">search 2 · written differently</div>
+<pre>GOOGLE_SHOPPING(
+  <i>gl =></i> 'in', <i>q =></i> 'iPhone 16')</pre></div>
+
+  <svg class="wires" viewBox="0 0 1920 1080">
+    <path class="wire draw" id="r1" pathLength="1" style="--d:1.0s;--dur:.7s" d="M800 330 C 870 330, 860 520, 926 520"/>
+    <path class="wire draw" id="r2" pathLength="1" style="--d:1.15s;--dur:.7s" d="M800 730 C 870 730, 860 560, 926 560"/>
+    <path class="wire" id="o1" pathLength="1" d="M1380 520 C 1440 520, 1440 715, 1520 715" style="stroke-dasharray:1 1;stroke-dashoffset:1"/>
+    <path class="wire" id="o2" pathLength="1" d="M1380 560 C 1440 560, 1440 470, 1520 470" style="stroke-dasharray:1 1;stroke-dashoffset:1"/>
+    <circle class="pkt" id="k1" r="8"/><circle class="pkt" id="k2" r="8"/>
+  </svg>
+
+  <div class="canon panel" id="canon"><div class="k">one canonical URL</div>
+<pre><i>/search.json?</i>
+engine=google_shopping
+<i>&amp;</i>gl=in
+<i>&amp;</i>q=iPhone 16</pre>
+    <div class="note">sorted · unset args dropped</div></div>
+
+  <div class="serp panel in" style="--d:.5s">
+    <div class="t">SerpApi</div>
+    <div class="zone hl-host" id="cache"><b>cache</b><span>repeat · free</span>
+      <svg class="hl" style="--d:4.15s;--pad:8px;--r:20px"><rect pathLength="1"/></svg></div>
+    <div class="zone" id="search"><b>search</b><span>1 credit</span></div>
+  </div>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  function along(path, k) { const p = path.getPointAtLength(k * path.getTotalLength()); return p; }
+  function frame(t) {
+    // the two calls converge into one canonical key
+    const c = A.p(t, 1.55, 0.7, "out");
+    $("canon").style.opacity = c; $("canon").style.transform = `scale(${A.lerp(0.94, 1, c)})`;
+    [["r1", "k1", 1.0], ["r2", "k2", 1.15]].forEach(([r, k, st]) => {
+      const q = A.p(t, st, 0.7, "io"), pt = along($(r), q);
+      $(k).setAttribute("cx", pt.x); $(k).setAttribute("cy", pt.y);
+      $(k).style.opacity = q > 0 && q < 1 ? 1 : 0;
+    });
+    // search 1 goes out first: a real search (1 credit)
+    const s1 = A.p(t, 2.4, 0.75, "io");
+    $("o1").style.strokeDashoffset = 1 - s1;
+    // search 2 repeats: answered by the cache (free)
+    const s2 = A.p(t, 3.45, 0.75, "io");
+    $("o2").style.strokeDashoffset = 1 - s2;
+    const pk = s2 > 0 ? $("k2") : $("k1");
+    if (t >= 2.4 && t < 4.3) {
+      const live = s2 > 0 ? along($("o2"), s2) : along($("o1"), s1);
+      pk.setAttribute("cx", live.x); pk.setAttribute("cy", live.y);
+      pk.style.opacity = (s2 > 0 ? s2 : s1) < 1 ? 1 : 0;
+    }
+    const se = A.p(t, 3.1, 0.4, "soft");
+    $("search").style.borderColor = se > 0 ? `rgba(139,148,144,${0.3 + 0.5 * se})` : "";
+    $("search").style.opacity = A.lerp(0.45, 1, se) * (1 - 0.45 * A.p(t, 3.6, 0.5));
+    const ca = A.p(t, 4.15, 0.4, "soft");
+    $("cache").style.opacity = A.lerp(0.45, 1, ca);
+    $("cache").querySelector("b").style.color = ca > 0.5 ? "#3ECF8E" : "";
+  }
+</script>
+<script src="anim.js"></script>
+</body></html>

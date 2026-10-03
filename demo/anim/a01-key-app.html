@@ -1,0 +1,51 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>a01 key app</title>
+<script>const DURATION = 6.6; /* voice 5.8s · 0:00–0:07 · "You have an idea for an app…" */</script>
+<link rel="stylesheet" href="style.css">
+<style>
+  .browser { animation: br-in 1.2s var(--ease) .25s both; }
+  @keyframes br-in { from { opacity: 0; translate: 0 50px; scale: .965; } to { opacity: 1; translate: 0 0; scale: 1; } }
+  #auth { left: 56px; top: 194px; }
+  #db { right: 56px; top: 194px; }
+</style>
+</head><body>
+<div class="stage">
+  <nav class="chapters intro" data-chapter="1" data-from="0" data-to=".35"></nav>
+
+  <div class="browser panel">
+    <div class="bar">
+      <div class="lights"><i></i><i></i><i></i></div>
+      <div class="url fade" style="--d:.9s">your-app.com</div>
+    </div>
+    <div class="body">
+      <div class="wf-nav fade" style="--d:1.0s">
+        <div class="wf-logo"></div><div class="bar-g" style="width:120px"></div><div class="bar-g" style="width:84px;background:#1d2321"></div><div class="bar-g" style="width:84px;background:#1d2321"></div>
+        <div class="wf-avatar"></div>
+      </div>
+
+      <div class="wf-card in" id="auth" style="--d:1.35s">
+        <h4>Sign in</h4>
+        <div class="wf-field in" style="--d:1.6s;--dy:12px"><div class="bar-g" style="width:42%"></div></div>
+        <div class="wf-field in" style="--d:1.75s;--dy:12px"><div class="bar-g" style="width:30%;letter-spacing:.3em"></div></div>
+        <div class="wf-btn in" style="--d:1.9s;--dy:12px"><div class="bar-g" style="width:22%;background:#46504c"></div></div>
+        <div class="check pop" style="--d:2.6s">Auth<svg viewBox="0 0 24 24" fill="none" stroke="#3ECF8E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path class="draw" pathLength="1" style="--d:2.8s;--dur:.5s" d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      </div>
+
+      <div class="wf-card in" id="db" style="--d:3.1s">
+        <h4 class="mono" style="font-weight:500">products</h4>
+        <div class="wf-grid">
+          <div class="wf-row in" style="--d:3.35s;--dy:10px"><div class="bar-g" style="width:60%;background:#3a4440"></div><div class="bar-g" style="width:55%;background:#3a4440"></div><div class="bar-g" style="width:70%;background:#3a4440"></div></div>
+          <div class="wf-row in" style="--d:3.5s;--dy:10px"><div class="bar-g" style="width:80%"></div><div class="bar-g" style="width:50%"></div><div class="bar-g" style="width:60%"></div></div>
+          <div class="wf-row in" style="--d:3.62s;--dy:10px"><div class="bar-g" style="width:66%"></div><div class="bar-g" style="width:70%"></div><div class="bar-g" style="width:45%"></div></div>
+          <div class="wf-row in" style="--d:3.74s;--dy:10px"><div class="bar-g" style="width:74%"></div><div class="bar-g" style="width:40%"></div><div class="bar-g" style="width:66%"></div></div>
+          <div class="wf-row in" style="--d:3.86s;--dy:10px"><div class="bar-g" style="width:58%"></div><div class="bar-g" style="width:62%"></div><div class="bar-g" style="width:52%"></div></div>
+        </div>
+        <div class="check pop" style="--d:4.4s">Database<svg viewBox="0 0 24 24" fill="none" stroke="#3ECF8E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path class="draw" pathLength="1" style="--d:4.6s;--dur:.5s" d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      </div>
+
+      <div class="badge in" style="--d:5.2s;--dy:14px"><span class="dot"></span>Supabase <span class="muted">· done in an afternoon</span></div>
+    </div>
+  </div>
+</div>
+<script src="anim.js"></script>
+</body></html>

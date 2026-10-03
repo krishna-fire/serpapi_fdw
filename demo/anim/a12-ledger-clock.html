@@ -1,0 +1,111 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>a12 ledger clock</title>
+<script>const DURATION = 9.1; /* voice 8.3s · 2:03–2:12 · "For example, a nightly price history…" (ILLUSTRATION: values are made up) */</script>
+<link rel="stylesheet" href="style.css">
+<style>
+  .clock { position: absolute; left: 160px; top: 250px; width: 440px; text-align: center; }
+  .clock svg { width: 400px; height: 400px; overflow: visible; }
+  .clock .when { margin-top: 26px; font-family: var(--mono); font-size: 34px; color: var(--fg); }
+  .clock .cron { margin-top: 10px; font-family: var(--mono); font-size: 24px; color: var(--muted); }
+  .face { fill: #111514; stroke: #2c3431; stroke-width: 3; }
+  .tick { stroke: #3a4440; stroke-width: 4; stroke-linecap: round; }
+  .hand { stroke: var(--fg); stroke-linecap: round; }
+  .pulse { fill: none; stroke: var(--accent); stroke-width: 3; opacity: 0; }
+
+  .tbl { position: absolute; left: 720px; top: 210px; width: 1080px; height: 690px; padding: 0; overflow: hidden; }
+  .tbl .name { height: 76px; display: flex; align-items: center; gap: 14px; padding: 0 30px; border-bottom: 1.5px solid var(--line);
+    font-family: var(--mono); font-size: 28px; color: var(--fg); }
+  .tbl .name span { color: var(--muted); }
+  .grid { display: grid; grid-template-columns: 210px 260px 1fr 170px; padding: 0 30px; }
+  .hdr { height: 58px; align-items: center; border-bottom: 1.5px solid var(--line); font-family: var(--mono); font-size: 22px; color: var(--muted); }
+  .hdr div:last-child, .r div:last-child { text-align: right; }
+  .rows { position: relative; height: 556px; -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%); mask-image: linear-gradient(to bottom, #000 78%, transparent 100%); }
+  .r { position: absolute; left: 0; right: 0; height: 58px; align-items: center; font-size: 25px; color: var(--fg-2); border-bottom: 1.5px solid #1b211f; }
+  .r .d, .r .pr { font-family: var(--mono); font-size: 24px; }
+  .r .d { color: var(--muted); }
+  .r.fresh { color: var(--fg); }
+  .caption { position: absolute; left: 0; right: 0; top: 952px; text-align: center; }
+</style>
+</head><body>
+<div class="stage">
+  <nav class="chapters" data-chapter="5" data-from=".667" data-to="1"></nav>
+  <div class="illus fade" style="--d:.2s">illustration</div>
+
+  <div class="clock in" style="--d:.1s">
+    <svg viewBox="-200 -200 400 400">
+      <circle class="face" r="186"/>
+      <g id="ticks"></g>
+      <circle class="pulse" id="pulse" r="186"/>
+      <line class="hand" id="hh" x1="0" y1="18" x2="0" y2="-100" stroke-width="9"/>
+      <line class="hand" id="mh" x1="0" y1="22" x2="0" y2="-150" stroke-width="5" style="stroke:#c9d0cc"/>
+      <circle r="10" fill="#3ECF8E"/>
+    </svg>
+    <div class="when" id="when">night 1 · 02:30 IST</div>
+    <div class="cron">0 21 * * *  (UTC)</div>
+  </div>
+
+  <div class="tbl panel in" style="--d:.25s">
+    <div class="name">public.price_snapshots <span id="count"></span></div>
+    <div class="grid hdr"><div>captured_on</div><div>source</div><div>title</div><div>price</div></div>
+    <div class="rows" id="rows"></div>
+  </div>
+
+  <div class="caption caption fade" style="--d:.6s">example: iPhone prices on Amazon India and Google Shopping · 3 credits a night</div>
+</div>
+<script>
+  // made-up but plausible values; this scene is labelled "illustration"
+  const NIGHTS = [
+    ["2026-09-28", [["Amazon.in", "iPhone 16 (128 GB)", "69,900"], ["Croma", "iPhone 16 128GB", "69,490"]]],
+    ["2026-09-29", [["Amazon.in", "iPhone 16 (128 GB)", "67,999"], ["Flipkart", "iPhone 16 128GB", "68,999"]]],
+    ["2026-09-30", [["Amazon.in", "iPhone 16 (128 GB)", "66,499"], ["Croma", "iPhone 16 128GB", "67,990"]]],
+    ["2026-10-01", [["Amazon.in", "iPhone 16 (128 GB)", "64,900"], ["Reliance Digital", "iPhone 16 128GB", "66,900"]]],
+    ["2026-10-02", [["Amazon.in", "iPhone 16 (128 GB)", "62,999"], ["Flipkart", "iPhone 16 128GB", "63,999"]]],
+  ];
+  const T0 = 1.2, STEP = 1.35, ROWH = 58;
+  const rowsEl = document.getElementById("rows");
+  const rows = [];
+  NIGHTS.forEach(([d, items], n) => items.forEach(([src, title, price], j) => {
+    const el = document.createElement("div");
+    el.className = "grid r";
+    el.innerHTML = `<div class="d">${d}</div><div>${src}</div><div>${title}</div><div class="pr">₹${price}</div>`;
+    rowsEl.appendChild(el);
+    rows.push({ el, at: T0 + n * STEP + 0.15 + j * 0.12, idx: rows.length });
+  }));
+  const ticks = document.getElementById("ticks");
+  for (let i = 0; i < 12; i++) {
+    const a = i * Math.PI / 6, r1 = i % 3 ? 160 : 150;
+    ticks.insertAdjacentHTML("beforeend", `<line class="tick" x1="${Math.sin(a) * r1}" y1="${-Math.cos(a) * r1}" x2="${Math.sin(a) * 172}" y2="${-Math.cos(a) * 172}"/>`);
+  }
+  const $ = id => document.getElementById(id);
+  function frame(t) {
+    // clock: from 21:00 IST to the first 02:30, then a full day per night, pausing on each run
+    let hours = 21 + 5.5 * A.p(t, 0.2, T0 - 0.2, "io");
+    let night = 0;
+    for (let n = 0; n < NIGHTS.length; n++) {
+      if (t >= T0 + n * STEP) night = n + 1;
+      if (n > 0) hours += 24 * A.p(t, T0 + (n - 1) * STEP + 0.45, STEP - 0.45, "io");
+    }
+    $("hh").setAttribute("transform", `rotate(${(hours % 12) * 30})`);
+    $("mh").setAttribute("transform", `rotate(${(hours % 1) * 360})`);
+    const since = night ? t - (T0 + (night - 1) * STEP) : 99;
+    $("pulse").style.opacity = Math.max(0, 1 - since / 0.6);
+    $("pulse").setAttribute("r", 186 + 16 * Math.min(1, since / 0.6));
+    $("when").textContent = night ? `night ${night} · 02:30 IST` : "21:00 IST";
+    $("when").style.color = since < 0.6 ? "#3ECF8E" : "";
+    // rows: newest on top, older ones pushed down
+    let shown = 0;
+    rows.forEach(r => { if (t >= r.at) shown++; });
+    rows.forEach(r => {
+      const k = A.p(t, r.at, 0.55, "out");
+      const newer = rows.filter(o => o.idx > r.idx && t >= o.at).length;
+      const slotK = rows.filter(o => o.idx > r.idx).reduce((s, o) => s + A.p(t, o.at, 0.55, "out"), 0);
+      r.el.style.top = (slotK * ROWH) + "px";
+      r.el.style.opacity = k;
+      r.el.style.transform = `translateY(${(1 - k) * -26}px)`;
+      r.el.classList.toggle("fresh", newer < 2);
+    });
+    $("count").textContent = shown ? `· ${shown} rows` : "";
+  }
+</script>
+<script src="anim.js"></script>
+</body></html>

@@ -1,0 +1,177 @@
+/* serpapi_fdw film: shared look for the animated scenes (demo/anim/*.html).
+   Deterministic: only CSS animations (seeked by anim.js) and anim.js frame() code move things.
+   Never use CSS transitions here; they would not follow the virtual clock. */
+
+:root {
+  --bg: #0b0d0c;
+  --panel: #121615;
+  --panel-2: #161b19;
+  --line: #242b28;
+  --line-2: #323b37;
+  --fg: #f3f5f4;
+  --fg-2: #c9d0cc;
+  --muted: #8b9490;
+  --dim: #5d6662;
+  --faint: #343b38;
+  --accent: #3ECF8E;
+  --accent-soft: rgba(62, 207, 142, .10);
+  --accent-glow: rgba(62, 207, 142, .45);
+  --red: #ff5f57;
+  --red-soft: rgba(255, 95, 87, .12);
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --ease-io: cubic-bezier(.65, 0, .35, 1);
+  --ease-back: cubic-bezier(.34, 1.4, .64, 1);
+  --sans: -apple-system, "SF Pro Display", BlinkMacSystemFont, Inter, "Helvetica Neue", sans-serif;
+  --mono: "SF Mono", SFMono-Regular, ui-monospace, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+body {
+  font-family: var(--sans); color: var(--fg);
+  -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision;
+  font-feature-settings: "ss01", "cv11";
+}
+.mono { font-family: var(--mono); letter-spacing: -.01em; }
+
+/* ---------------------------------------------------------------- ground */
+.stage {
+  position: absolute; inset: 0; overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 46%, rgba(255,255,255,.028), rgba(255,255,255,0) 70%),
+    radial-gradient(ellipse 120% 100% at 50% 50%, #0c0f0e 40%, #070908 100%);
+}
+.layer { position: absolute; inset: 0; }
+
+/* ---------------------------------------------------------------- type */
+.eyebrow {
+  font-size: 22px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--muted);
+}
+.headline {
+  font-size: 100px; font-weight: 600; letter-spacing: -.035em; line-height: 1.04;
+  color: var(--fg); margin: 0;
+}
+.accent { color: var(--accent); }
+.body { font-size: 30px; color: var(--muted); line-height: 1.4; }
+.caption { font-size: 28px; color: var(--muted); letter-spacing: .005em; }
+
+/* ---------------------------------------------------------------- chapter bar */
+.chapters {
+  position: absolute; left: 96px; right: 96px; top: 52px; height: 48px;
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 28px; z-index: 50;
+}
+.chapters.intro { animation: k-fade 1s ease .2s both; }
+.chapter { display: flex; flex-direction: column; justify-content: space-between; }
+.chapter .label { display: flex; gap: 12px; align-items: baseline; white-space: nowrap; }
+.chapter .num { font-family: var(--mono); font-size: 17px; color: var(--dim); }
+.chapter .name { font-size: 21px; font-weight: 500; color: var(--dim); letter-spacing: -.005em; }
+.chapter .track { position: relative; height: 2px; background: #1c2220; border-radius: 2px; overflow: hidden; }
+.chapter .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--line-2); border-radius: 2px; }
+.chapter.past .name, .chapter.past .num { color: var(--muted); }
+.chapter.past .fill { width: 100%; background: #46504c; }
+.chapter.now .name { color: var(--fg); }
+.chapter.now .num { color: var(--accent); }
+.chapter.now .fill { background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+
+/* ---------------------------------------------------------------- panels */
+.panel {
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1.5px solid var(--line); border-radius: 22px;
+  box-shadow: 0 30px 80px -30px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.04);
+}
+.chip {
+  display: inline-flex; align-items: center; gap: 12px;
+  height: 56px; padding: 0 24px; border-radius: 28px;
+  border: 1.5px solid var(--line-2); background: var(--panel);
+  font-size: 26px; font-weight: 500; color: var(--fg-2); white-space: nowrap;
+}
+.chip.on { border-color: rgba(62,207,142,.6); color: var(--fg); background: rgba(62,207,142,.08); }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+
+/* ---------------------------------------------------------------- highlight box
+   <span class="hl-host">thing<svg class="hl" style="--d:2s"><rect pathLength="1"/></svg></span>   */
+.hl-host { position: relative; display: inline-block; }
+.hl {
+  position: absolute; pointer-events: none; overflow: visible; z-index: 5;
+  left: calc(var(--pad, 14px) * -1); top: calc(var(--pad, 14px) * -1);
+  width: calc(100% + var(--pad, 14px) * 2); height: calc(100% + var(--pad, 14px) * 2);
+  filter: drop-shadow(0 0 12px var(--accent-glow));
+}
+.hl rect {
+  x: 1.5px; y: 1.5px; width: calc(100% - 3px); height: calc(100% - 3px); rx: var(--r, 14px);
+  fill: rgba(62,207,142,.07); stroke: var(--accent); stroke-width: 2.5;
+  stroke-dasharray: 1 1; stroke-linecap: round;
+  animation: hl-draw 1s var(--ease-io) var(--d, 0s) both;
+}
+@keyframes hl-draw {
+  0% { stroke-dashoffset: 1; fill-opacity: 0; opacity: 1; }
+  70% { fill-opacity: .4; }
+  100% { stroke-dashoffset: 0; fill-opacity: 1; opacity: 1; }
+}
+
+/* ---------------------------------------------------------------- entrances (seekable) */
+.in    { animation: k-in   .9s var(--ease) var(--d, 0s) both; }
+.rise  { animation: k-rise 1.1s var(--ease) var(--d, 0s) both; }
+.fade  { animation: k-fade .8s ease var(--d, 0s) both; }
+.pop   { animation: k-pop  .7s var(--ease-back) var(--d, 0s) both; }
+.drop  { animation: k-drop .9s var(--ease) var(--d, 0s) both; }
+@keyframes k-in   { from { opacity: 0; translate: 0 var(--dy, 26px); } to { opacity: 1; translate: 0 0; } }
+@keyframes k-rise { from { opacity: 0; translate: 0 var(--dy, 40px); filter: blur(10px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
+@keyframes k-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes k-pop  { from { opacity: 0; scale: .6; } to { opacity: 1; scale: 1; } }
+@keyframes k-drop { from { opacity: 0; translate: 0 calc(var(--dy, 60px) * -1); } to { opacity: 1; translate: 0 0; } }
+
+/* lines drawn with pathLength="1" */
+.draw { stroke-dasharray: 1 1; animation: k-draw var(--dur, .8s) var(--ease-io) var(--d, 0s) both; }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+/* "illustration" tag */
+.illus {
+  position: absolute; right: 96px; top: 136px; z-index: 40;
+  padding: 10px 20px; border-radius: 10px; border: 1.5px dashed #4a5450;
+  font-size: 20px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--muted);
+}
+
+.caret { display: inline-block; width: .5em; height: 1.05em; margin-left: 3px; vertical-align: -.17em;
+  background: var(--accent); border-radius: 2px; }
+
+/* ---------------------------------------------------------------- wireframe browser (a01–a03) */
+.browser { position: absolute; left: 340px; top: 236px; width: 1240px; height: 724px; border-radius: 26px; overflow: visible; }
+.browser .bar { height: 64px; display: flex; align-items: center; padding: 0 26px; border-bottom: 1.5px solid var(--line); position: relative; }
+.browser .lights { display: flex; gap: 10px; }
+.browser .lights i { width: 14px; height: 14px; border-radius: 50%; background: #2c3431; display: block; }
+.browser .url { position: absolute; left: 50%; top: 13px; translate: -50% 0; width: 460px; height: 38px; border-radius: 10px;
+  background: #0e1211; border: 1.5px solid var(--line); display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 19px; color: var(--muted); }
+.browser .body { position: absolute; left: 0; right: 0; top: 64px; bottom: 0; }
+.wf-nav { position: absolute; left: 56px; right: 56px; top: 24px; height: 40px; display: flex; align-items: center; gap: 22px; }
+.wf-logo { width: 36px; height: 36px; border-radius: 10px; border: 2px solid var(--line-2); }
+.bar-g { height: 12px; border-radius: 6px; background: #252c29; }
+.wf-avatar { margin-left: auto; width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--line-2); }
+.wf-card { position: absolute; width: 520px; height: 340px; border-radius: 20px; border: 1.5px solid var(--line-2);
+  background: #101413; padding: 34px 36px; }
+.wf-card h4 { margin: 0 0 26px; font-size: 28px; font-weight: 600; letter-spacing: -.01em; color: var(--fg-2); }
+.wf-field { height: 56px; border-radius: 12px; border: 1.5px solid var(--line-2); margin-bottom: 16px; display: flex; align-items: center; padding: 0 20px; }
+.wf-btn { height: 56px; border-radius: 12px; background: #262e2b; display: flex; align-items: center; justify-content: center; }
+.wf-grid { border: 1.5px solid var(--line-2); border-radius: 12px; overflow: hidden; }
+.wf-row { height: 46px; display: grid; grid-template-columns: 1.4fr 1fr .8fr; gap: 18px; align-items: center; padding: 0 18px; border-top: 1.5px solid var(--line); }
+.wf-row:first-child { border-top: 0; background: #151a18; }
+.check { position: absolute; top: -27px; right: 26px; height: 54px; padding: 0 18px 0 22px; border-radius: 27px;
+  background: #0f1714; border: 1.5px solid rgba(62,207,142,.65); display: flex; align-items: center; gap: 10px;
+  font-size: 25px; font-weight: 600; color: var(--fg); box-shadow: 0 0 24px rgba(62,207,142,.18); }
+.check svg { width: 26px; height: 26px; }
+.badge { position: absolute; right: 40px; bottom: 34px; height: 46px; padding: 0 20px; border-radius: 23px; border: 1.5px solid var(--line-2);
+  display: flex; align-items: center; gap: 12px; font-size: 22px; font-weight: 500; color: var(--fg-2); background: #0f1312; }
+.badge .muted { color: var(--muted); font-weight: 400; }
+
+/* ---------------------------------------------------------------- deployment slots (a13–a14) */
+.slots { position: absolute; left: 240px; top: 450px; width: 1440px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; }
+.slot { height: 270px; padding: 34px 36px; display: flex; flex-direction: column; }
+.slot .t { font-size: 40px; font-weight: 600; letter-spacing: -.02em; }
+.slot .s { margin-top: 6px; font-size: 28px; color: var(--muted); }
+.socket { margin-top: auto; height: 84px; border-radius: 16px; border: 2px dashed #323b37; display: flex; align-items: center; justify-content: center; }
+.wasm { display: inline-flex; align-items: center; gap: 14px; height: 60px; padding: 0 22px; border-radius: 14px;
+  background: #111715; border: 1.5px solid rgba(62,207,142,.55); font-family: var(--mono); font-size: 26px; color: var(--fg);
+  box-shadow: 0 0 24px rgba(62,207,142,.18); white-space: nowrap; }
+.wasm svg { width: 24px; height: 28px; flex: none; }

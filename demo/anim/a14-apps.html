@@ -1,0 +1,99 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>a14 apps</title>
+<script>const DURATION = 6.5; /* voice 5.7s · 2:28–2:36 · "So any app on Postgres can put SerpApi in front of its users, safely." */</script>
+<link rel="stylesheet" href="style.css">
+<style>
+  .src { position: absolute; left: 960px; top: 268px; }
+  .src .wasm { position: absolute; left: 0; top: 0; translate: -50% -50%; scale: 1.25; }
+  .src .rel { position: absolute; left: 0; top: 62px; translate: -50% 0; font-size: 24px; color: var(--muted); white-space: nowrap; }
+  .install { position: absolute; left: 240px; top: 800px; width: 1440px; height: 104px; padding: 0 40px; display: flex; align-items: center;
+    font-family: var(--mono); font-size: 32px; color: var(--fg); white-space: pre; }
+  .install .pr { color: var(--accent); margin-right: 18px; }
+  .socket { border-style: solid; border-color: rgba(62,207,142,.65); background: rgba(62,207,142,.05); }
+  .slot.panel { border-color: rgba(62,207,142,.35); }
+  svg.net { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; }
+  .link { fill: none; stroke: #2c3431; stroke-width: 2.5; }
+  .pill { fill: var(--accent); filter: drop-shadow(0 0 6px rgba(62,207,142,.8)); }
+  .app { position: absolute; top: 800px; translate: -50% 0; border: 2.5px solid #3a4440; border-radius: 14px; background: #101413; padding: 14px 12px; display: flex; flex-direction: column; gap: 9px; }
+  .app.phone { width: 74px; height: 128px; border-radius: 16px; padding: 18px 10px; }
+  .app.web { width: 170px; height: 118px; padding-top: 26px; }
+  .app.web::before { content: ""; position: absolute; left: 0; right: 0; top: 14px; height: 0; border-top: 2px solid #2a312e; }
+  .app i { display: block; height: 9px; border-radius: 5px; background: #252c29; }
+  .apps-cap { position: absolute; left: 0; right: 0; top: 968px; text-align: center; font-size: 28px; color: var(--muted); }
+</style>
+</head><body>
+<div class="stage">
+  <nav class="chapters" data-chapter="6" data-from=".667" data-to="1"></nav>
+
+  <div class="src" id="src"><div class="wasm"><svg viewBox="0 0 24 28" fill="none" stroke="#3ECF8E" stroke-width="2" stroke-linejoin="round"><path d="M2 1h13l7 7v19H2z"/><path d="M15 1v7h7"/></svg>serpapi_fdw.wasm</div>
+    <div class="rel">one file · from the GitHub release</div></div>
+  <div class="install panel" id="inst"><span class="pr">›</span>create server serpapi … fdw_package_url '…/serpapi_fdw.wasm'</div>
+
+  <div class="slots" id="slots">
+    <div class="slot panel" id="s0"><div class="t">Supabase</div><div class="s">hosted</div><div class="socket"><div class="wasm"><svg viewBox="0 0 24 28" fill="none" stroke="#3ECF8E" stroke-width="2" stroke-linejoin="round"><path d="M2 1h13l7 7v19H2z"/><path d="M15 1v7h7"/></svg>serpapi_fdw.wasm</div></div></div>
+    <div class="slot panel" id="s1"><div class="t">Supabase</div><div class="s">local</div><div class="socket"><div class="wasm"><svg viewBox="0 0 24 28" fill="none" stroke="#3ECF8E" stroke-width="2" stroke-linejoin="round"><path d="M2 1h13l7 7v19H2z"/><path d="M15 1v7h7"/></svg>serpapi_fdw.wasm</div></div></div>
+    <div class="slot panel" id="s2"><div class="t">Postgres 14–18</div><div class="s">your own server</div><div class="socket"><div class="wasm"><svg viewBox="0 0 24 28" fill="none" stroke="#3ECF8E" stroke-width="2" stroke-linejoin="round"><path d="M2 1h13l7 7v19H2z"/><path d="M15 1v7h7"/></svg>serpapi_fdw.wasm</div></div></div>
+  </div>
+
+  <svg class="net" viewBox="0 0 1920 1080" id="net"></svg>
+  <div id="apps"></div>
+  <div class="apps-cap" id="cap">your apps · your users</div>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  const SLOT_X = [460, 960, 1460], UP = 150, SLOT_BOTTOM = 720 - UP;
+  const APPS = [[300, "web"], [600, "phone"], [840, "web"], [1080, "phone"], [1330, "phone"], [1610, "web"]];
+  const LINKS = APPS.map((a, i) => [Math.floor(i / 2), i]);
+  const net = $("net"), appsEl = $("apps");
+  const paths = LINKS.map(([s, a]) => {
+    const x1 = SLOT_X[s], x2 = APPS[a][0], y1 = SLOT_BOTTOM, y2 = 798;
+    const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    p.setAttribute("class", "link"); p.setAttribute("pathLength", "1");
+    p.setAttribute("d", `M${x1} ${y1} C ${x1} ${y1 + 120}, ${x2} ${y2 - 120}, ${x2} ${y2}`);
+    net.appendChild(p); return p;
+  });
+  const PILLS = [];
+  LINKS.forEach((l, i) => { for (let j = 0; j < 3; j++) {
+    const r = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    r.setAttribute("class", "pill"); r.setAttribute("width", 30); r.setAttribute("height", 10); r.setAttribute("rx", 5);
+    net.appendChild(r); PILLS.push({ r, path: paths[i], at: 1.6 + j * 0.5 + (i % 3) * 0.09 + Math.floor(i / 2) * 0.05, app: i });
+  }});
+  const appEls = APPS.map(([x, kind], i) => {
+    const d = document.createElement("div");
+    d.className = "app " + kind; d.style.left = x + "px";
+    d.innerHTML = "<i></i><i style='width:70%'></i><i style='width:85%'></i>" + (kind === "web" ? "<i style='width:55%'></i>" : "");
+    appsEl.appendChild(d); return d;
+  });
+  function frame(t) {
+    // the a13 leftovers clear away, slots rise to make room
+    const out = A.p(t, 0, 0.5, "soft");
+    $("src").style.opacity = 1 - out; $("inst").style.opacity = 1 - out;
+    const up = A.p(t, 0.25, 0.9, "io");
+    $("slots").style.transform = `translateY(${-UP * up}px)`;
+    const lit = A.p(t, 1.0, 0.5, "soft");
+    for (let s = 0; s < 3; s++) {
+      $("s" + s).style.boxShadow = `0 0 ${40 * lit}px rgba(62,207,142,${0.22 * lit}), 0 30px 80px -30px rgba(0,0,0,.8)`;
+      $("s" + s).style.borderColor = `rgba(62,207,142,${0.35 + 0.35 * lit})`;
+    }
+    paths.forEach((p, i) => { const k = A.p(t, 1.0 + i * 0.05, 0.7, "io"); p.style.strokeDasharray = "1 1"; p.style.strokeDashoffset = 1 - k; });
+    appEls.forEach((a, i) => {
+      const k = A.p(t, 0.9 + i * 0.07, 0.7, "out");
+      a.style.opacity = k; a.style.transform = `translateY(${(1 - k) * 24}px)`;
+    });
+    $("cap").style.opacity = A.p(t, 1.6, 0.6);
+    const got = APPS.map(() => 0);
+    PILLS.forEach(pl => {
+      const k = A.p(t, pl.at, 0.8, "io");
+      const L = pl.path.getTotalLength(), pt = pl.path.getPointAtLength(k * L);
+      pl.r.setAttribute("x", pt.x - 15); pl.r.setAttribute("y", pt.y - 5);
+      pl.r.style.opacity = k > 0 && k < 1 ? 1 : 0;
+      if (k >= 1) got[pl.app]++;
+    });
+    appEls.forEach((a, i) => {
+      a.style.borderColor = got[i] ? "rgba(62,207,142,.6)" : "";
+      [...a.querySelectorAll("i")].forEach((b, j) => { b.style.background = j < got[i] ? "rgba(62,207,142,.6)" : ""; });
+    });
+  }
+</script>
+<script src="anim.js"></script>
+</body></html>

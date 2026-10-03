@@ -1,0 +1,102 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>a02 key search</title>
+<script>const DURATION = 8.1; /* voice 7.3s · 0:07–0:14 · "Then it needs live search… a key can't live in the browser." */</script>
+<link rel="stylesheet" href="style.css">
+<style>
+  #auth { left: 56px; top: 194px; animation: shift .9s var(--ease) .15s both; }
+  #db { right: 56px; top: 194px; animation: shift .9s var(--ease) .22s both; }
+  @keyframes shift { to { translate: 0 54px; } }
+  .badge { animation: out .5s ease .1s both; }
+  @keyframes out { to { opacity: 0; } }
+
+  .search { position: absolute; left: 56px; right: 56px; top: 98px; height: 92px; border-radius: 18px;
+    border: 1.5px solid var(--line-2); background: #0e1211; display: flex; align-items: center; padding: 0 16px 0 30px; gap: 20px;
+    box-shadow: 0 20px 50px -20px rgba(0,0,0,.9); }
+  .search .ph { font-size: 30px; color: var(--muted); }
+  .slot { margin-left: auto; position: relative; width: 210px; height: 60px; overflow: hidden; border-radius: 30px;
+    border: 1.5px solid var(--line-2); background: var(--panel); }
+  .slot .reel { position: absolute; left: 0; right: 0; top: 0; }
+  .slot .reel div { height: 60px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 500; color: var(--fg); }
+
+  .keypos { position: absolute; left: 1306px; top: 244px; z-index: 30; animation: key-in 1.2s var(--ease) 3.6s both; }
+  @keyframes key-in { from { translate: 700px 0; opacity: 0; } 15% { opacity: 1; } to { translate: 0 0; opacity: 1; } }
+  .keychip { height: 48px; padding: 0 20px 0 16px; border-radius: 24px; display: flex; align-items: center; gap: 12px;
+    background: #121716; border: 1.5px solid #5d6662; color: var(--fg-2); font-family: var(--mono); font-size: 22px;
+    animation: go-red .5s ease 4.95s both; }
+  .keychip svg { width: 46px; height: 24px; }
+  @keyframes go-red { to { border-color: var(--red); color: var(--red); background: #1f1211; box-shadow: 0 0 28px rgba(255,95,87,.45); } }
+  .browser.panel { animation: frame-red .6s ease 5.0s both; }
+  @keyframes frame-red { to { border-color: rgba(255,95,87,.45); } }
+
+  .veil { position: absolute; left: 342px; top: 302px; width: 1236px; height: 656px; border-radius: 0 0 24px 24px;
+    background: rgba(8,10,9,.62); animation: k-fade .5s ease 5.45s both; z-index: 20; }
+  .stamp { position: absolute; left: 960px; top: 630px; transform: translate(-50%, -50%); z-index: 25; }
+  .stamp div { border: 4px solid var(--red); color: var(--red); border-radius: 16px; padding: 18px 40px;
+    font-size: 58px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap;
+    background: rgba(31,14,13,.85); box-shadow: 0 0 60px rgba(255,95,87,.25);
+    animation: stamp .55s cubic-bezier(.5,0,.75,0) 5.55s both; rotate: -4deg; }
+  @keyframes stamp { from { opacity: 0; scale: 1.7; } 80% { opacity: 1; scale: .97; } to { opacity: 1; scale: 1; } }
+</style>
+</head><body>
+<div class="stage">
+  <nav class="chapters" data-chapter="1" data-from=".35" data-to=".70"></nav>
+
+  <div class="browser panel">
+    <div class="bar">
+      <div class="lights"><i></i><i></i><i></i></div>
+      <div class="url">your-app.com</div>
+    </div>
+    <div class="body">
+      <div class="wf-nav">
+        <div class="wf-logo"></div><div class="bar-g" style="width:120px"></div><div class="bar-g" style="width:84px;background:#1d2321"></div><div class="bar-g" style="width:84px;background:#1d2321"></div>
+        <div class="wf-avatar"></div>
+      </div>
+
+      <div class="search drop" style="--d:.3s;--dy:70px">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#8b9490" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20"/></svg>
+        <span class="ph">Search live results…</span>
+        <div class="slot"><div class="reel" id="reel">
+          <div>Shopping</div><div>Maps</div><div>Jobs</div><div>News</div><div>Shopping</div><div>Maps</div><div>Jobs</div><div>News</div><div>Shopping</div>
+        </div></div>
+      </div>
+
+      <div class="wf-card" id="auth">
+        <h4>Sign in</h4>
+        <div class="wf-field"><div class="bar-g" style="width:42%"></div></div>
+        <div class="wf-field"><div class="bar-g" style="width:30%"></div></div>
+        <div class="wf-btn"><div class="bar-g" style="width:22%;background:#46504c"></div></div>
+        <div class="check">Auth<svg viewBox="0 0 24 24" fill="none" stroke="#3ECF8E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      </div>
+
+      <div class="wf-card" id="db">
+        <h4 class="mono" style="font-weight:500">products</h4>
+        <div class="wf-grid">
+          <div class="wf-row"><div class="bar-g" style="width:60%;background:#3a4440"></div><div class="bar-g" style="width:55%;background:#3a4440"></div><div class="bar-g" style="width:70%;background:#3a4440"></div></div>
+          <div class="wf-row"><div class="bar-g" style="width:80%"></div><div class="bar-g" style="width:50%"></div><div class="bar-g" style="width:60%"></div></div>
+          <div class="wf-row"><div class="bar-g" style="width:66%"></div><div class="bar-g" style="width:70%"></div><div class="bar-g" style="width:45%"></div></div>
+          <div class="wf-row"><div class="bar-g" style="width:74%"></div><div class="bar-g" style="width:40%"></div><div class="bar-g" style="width:66%"></div></div>
+          <div class="wf-row"><div class="bar-g" style="width:58%"></div><div class="bar-g" style="width:62%"></div><div class="bar-g" style="width:52%"></div></div>
+        </div>
+        <div class="check">Database<svg viewBox="0 0 24 24" fill="none" stroke="#3ECF8E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      </div>
+
+      <div class="badge"><span class="dot"></span>Supabase <span class="muted">· done in an afternoon</span></div>
+    </div>
+  </div>
+
+  <div class="veil"></div>
+  <div class="keypos"><div class="keychip">
+    <svg viewBox="0 0 48 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="6.5"/><path d="M15.5 12H45M37 12v6M43 12v5"/></svg>
+    SERPAPI_KEY</div></div>
+  <div class="stamp"><div>visible to every user</div></div>
+</div>
+<script>
+  // engine reel: flicks Shopping → Maps → Jobs → News twice, settles on Shopping
+  const reel = document.getElementById("reel");
+  function frame(t) {
+    const k = A.p(t, 1.1, 1.9, "soft");     // 0..1 across 8 steps
+    reel.style.transform = `translateY(${-k * 8 * 60}px)`;
+  }
+</script>
+<script src="anim.js"></script>
+</body></html>

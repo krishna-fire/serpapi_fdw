@@ -1,0 +1,60 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>a13 anywhere</title>
+<script>const DURATION = 9.4; /* voice 8.6s · 2:12–2:22 · "It installs from a release URL. On Supabase, or on your own Postgres…" */</script>
+<link rel="stylesheet" href="style.css">
+<style>
+  .src { position: absolute; left: 960px; top: 268px; }
+  .src .wasm, .fly .wasm { position: absolute; left: 0; top: 0; translate: -50% -50%; }
+  .src .wasm { scale: 1.25; }
+  .src .rel { position: absolute; left: 0; top: 62px; translate: -50% 0; font-size: 24px; color: var(--muted); white-space: nowrap; }
+  .fly { position: absolute; left: 0; top: 0; z-index: 20; opacity: 0; }
+  .install { position: absolute; left: 240px; top: 800px; width: 1440px; height: 104px; padding: 0 40px; display: flex; align-items: center;
+    font-family: var(--mono); font-size: 32px; color: var(--fg); white-space: pre; }
+  .install .pr { color: var(--accent); margin-right: 18px; }
+</style>
+</head><body>
+<div class="stage">
+  <nav class="chapters" data-chapter="6" data-from="0" data-to=".417"></nav>
+
+  <div class="src"><div class="drop" style="--d:.1s;--dy:40px">
+    <div class="wasm" id="srcw"><svg viewBox="0 0 24 28" fill="none" stroke="#3ECF8E" stroke-width="2" stroke-linejoin="round"><path d="M2 1h13l7 7v19H2z"/><path d="M15 1v7h7"/></svg>serpapi_fdw.wasm</div>
+    <div class="rel">one file · from the GitHub release</div>
+  </div></div>
+
+  <div class="slots">
+    <div class="slot panel in" id="s0" style="--d:.55s"><div class="t">Supabase</div><div class="s">hosted</div><div class="socket"></div></div>
+    <div class="slot panel in" id="s1" style="--d:.7s"><div class="t">Supabase</div><div class="s">local</div><div class="socket"></div></div>
+    <div class="slot panel in" id="s2" style="--d:.85s"><div class="t">Postgres 14–18</div><div class="s">your own server</div><div class="socket"></div></div>
+  </div>
+
+  <div class="fly" id="f0"><div class="wasm"><svg viewBox="0 0 24 28" fill="none" stroke="#3ECF8E" stroke-width="2" stroke-linejoin="round"><path d="M2 1h13l7 7v19H2z"/><path d="M15 1v7h7"/></svg>serpapi_fdw.wasm</div></div>
+  <div class="fly" id="f1"><div class="wasm"><svg viewBox="0 0 24 28" fill="none" stroke="#3ECF8E" stroke-width="2" stroke-linejoin="round"><path d="M2 1h13l7 7v19H2z"/><path d="M15 1v7h7"/></svg>serpapi_fdw.wasm</div></div>
+  <div class="fly" id="f2"><div class="wasm"><svg viewBox="0 0 24 28" fill="none" stroke="#3ECF8E" stroke-width="2" stroke-linejoin="round"><path d="M2 1h13l7 7v19H2z"/><path d="M15 1v7h7"/></svg>serpapi_fdw.wasm</div></div>
+
+  <div class="install panel in" style="--d:4.0s;--dy:16px"><span class="pr">›</span><span id="ln"></span></div>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  const LINE = "create server serpapi … fdw_package_url '…/serpapi_fdw.wasm'";
+  const CX = [460, 960, 1460], CY = 644, FROM = [960, 268];
+  const AT = [1.5, 2.4, 3.3];
+  function frame(t) {
+    for (let i = 0; i < 3; i++) {
+      const k = A.p(t, AT[i], 0.85, "io");
+      const x = A.lerp(FROM[0], CX[i], k);
+      const y = A.lerp(FROM[1], CY, k) - Math.sin(Math.PI * k) * 70;   // a small arc
+      const f = $("f" + i);
+      f.style.opacity = t >= AT[i] ? 1 : 0;
+      f.style.transform = `translate(${x}px, ${y}px) scale(${A.lerp(1.25, 1, k)})`;
+      const sock = $("s" + i).querySelector(".socket");
+      const land = A.p(t, AT[i] + 0.8, 0.4, "soft");
+      sock.style.borderColor = land > 0 ? `rgba(62,207,142,${0.2 + 0.45 * land})` : "";
+      sock.style.borderStyle = land > 0.5 ? "solid" : "dashed";
+      sock.style.background = land > 0 ? `rgba(62,207,142,${0.05 * land})` : "";
+      $("s" + i).style.borderColor = land > 0 ? `rgba(62,207,142,${0.35 * land})` : "";
+    }
+    A.typeText($("ln"), LINE, t, 4.4, 30);
+  }
+</script>
+<script src="anim.js"></script>
+</body></html>
