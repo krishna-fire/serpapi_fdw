@@ -1,77 +1,87 @@
 # serpapi_fdw
 
-**SerpApi as Postgres functions for Supabase.** Live Google Shopping, Amazon.in, Google Jobs, Maps, News and every other SerpApi engine become SQL you can join, schedule and expose through PostgREST — with a credit budget enforced inside the wrapper.
+SerpApi as Postgres functions. Live Google Shopping, Amazon, Jobs, Maps, News, or any other SerpApi engine, callable from SQL, from a Supabase app, or from `pg_cron`. The API key stays in the database, and quotas and credit caps are enforced before a request leaves it.
 
 ```sql
 select title, source, extracted_price, old_price
-from serpapi.google_shopping('boAt Airdopes 141');           -- gl=in from the server defaults
+from serpapi.google_shopping('iPhone 16');
 
 select p.sku, s.source, s.extracted_price
-from products p, lateral serpapi.google_shopping(p.query) s; -- one search per row, visibly
+from products p, lateral serpapi.google_shopping(p.query) s;   -- one search per row
 
-select * from serpapi.budget_status();                        -- used / cap / resets_at, costs nothing
+select * from serpapi.budget_status();                          -- caps and your quota; costs nothing
 ```
 
-Built for the [SerpApi India Hackathon 2026](https://serpapi.github.io/serpapi-india-hackathon-2026/) (Open-Source Integrations). The bundled example, **Strikethrough**, snapshots every iPhone on Amazon.in (and Google Shopping) nightly through the wrapper, so when the October festive sales land (Amazon's Great Indian Festival, Flipkart's Big Billion Days) you can check whether a "was" price was ever a real price.
+```js
+const { data } = await supabase.schema('serpapi').rpc('google_shopping', { q: 'iPhone 16' })
+```
 
-Design and request flow: [docs/architecture.md](docs/architecture.md). Every function's arguments and columns: [docs/engines.md](docs/engines.md).
+Built for the [SerpApi India Hackathon 2026](https://serpapi.github.io/serpapi-india-hackathon-2026/), Open-Source Integrations track.
 
 ## Why
 
-Every SerpApi tutorial ends with "export to Sheets". The analysis happens in a query engine, and for a Supabase app that engine is already Postgres. A search API is not a table, though, so this project has two layers:
+A Supabase app has auth and a database, and often no server of its own. Search needs a SerpApi key, and a key shipped to the browser is visible to every user. Hiding it behind a function is the easy part; the hard part is that every user who can trigger a search can spend your credits.
 
-* **`serpapi_fdw.wasm`** — a [Supabase Wrappers](https://fdw.dev) Wasm foreign data wrapper. It owns HTTP, the API key (from Vault), canonical parameters (so repeats hit SerpApi's free one-hour cache), typed parsing, pagination, and an account-wide hourly/monthly credit cap persisted in the wrapper's metadata. Its foreign tables live in a private schema nobody is granted.
-* **Generated SQL functions** — one `security definer` function per engine with named, defaulted arguments, a per-caller daily quota, a request log, and `replay_*` functions that re-read past searches from SerpApi's archive for free.
+serpapi_fdw puts search next to your data and your access rules:
 
-The result: named arguments instead of `WHERE q = …`, an explicit `LATERAL` when you mean one call per row, and nothing an app can call that spends credits without a quota check.
+- **The key lives in Vault.** The app calls a Postgres function; only the wrapper ever reads the key.
+- **Anonymous callers are refused.** Signed-in users get a daily quota (20 searches by default).
+- **Caps fail closed.** Hourly and monthly credit caps are checked inside the wrapper, before the HTTP request.
+- **Results are rows.** Join them to your tables, keep them, or schedule them with `pg_cron`. No extra service.
+
+## How it works
+
+- **`serpapi_fdw.wasm`**: a [Supabase Wrappers](https://fdw.dev) foreign data wrapper in Rust, compiled to Wasm and run inside Postgres. It reads the key from Vault, builds canonical requests, follows pagination, parses JSON into typed columns, and keeps the account-wide credit budget. Its foreign tables live in a private schema nobody is granted.
+- **Generated SQL functions**: one `security definer` function per engine, with named, defaulted arguments, a per-caller daily quota, a request log, and replays from SerpApi's archive.
+
+The wrapper, the foreign tables and the functions are all generated from [`catalog/engines.json`](catalog/engines.json) by `scripts/gen.py`, so adding an engine is a catalog entry. Design and request flow: [docs/architecture.md](docs/architecture.md). Every argument and column: [docs/engines.md](docs/engines.md).
+
+## Functions
+
+| Function | Engine | Notes |
+|---|---|---|
+| `google(q, …)`, `google_light(q, …)` | `google`, `google_light` | organic results; `start` pagination |
+| `google_shopping(q, …)` | `google_shopping` | Indian merchants with `gl=in`; `old_price` is the strikethrough |
+| `amazon(q, amazon_domain => 'amazon.in', …)` | `amazon` | ASIN, `bought_last_month`, `sponsored`; `page` pagination |
+| `google_jobs(q, location => …, pages => 2)` | `google_jobs` | `apply_options`; token pagination |
+| `google_maps(q, ll => '@12.97,77.59,14z')` | `google_maps` | `data_id` feeds reviews; `start` pagination |
+| `google_maps_reviews(data_id => …)` | `google_maps_reviews` | translated snippets; token pagination |
+| `google_news(q, hl => 'hi')` | `google_news` | regional editions |
+| `search(engine, params jsonb)` | any | the whole response as `jsonb`, one row per page |
+| `replay_<engine>(search_id)`, `replay(search_id)` | archive | re-read a past search, free for 31 days |
+| `search_md(engine, params)` | any | one search, returned as Markdown from the archive (for LLM prompts) |
+| `replay_md(search_id)` | archive | a past search as Markdown, free |
+| `account()` | account | credits left; never returns the key |
+| `budget_status()` | none | caps and your quota; no HTTP |
+
+All live in the `serpapi` schema. `pages => n` follows pagination where the engine has it, up to the server's `max_pages`.
 
 ## How it uses SerpApi
 
-Three SerpApi products, all over plain HTTPS from the Wasm wrapper:
+| SerpApi API | Endpoint | Used for |
+|---|---|---|
+| Search API | `/search.json` | every live row; the only call that spends credits |
+| Search Archive API | `/searches/{search_id}.json` | `replay_*`: re-reading a search without running it again |
+| Search Archive API (Markdown) | `/searches/{search_id}.md` | `search_md`, `replay_md` |
+| Account API | `/account.json` | `account()`, with the key stripped from the row |
 
-| Product | Endpoint | SQL that calls it | Why it is load-bearing |
-|---|---|---|---|
-| Search API | `GET /search.json?engine=…` | the eight typed functions, `serpapi.search(engine, params)`, `serpapi.search_md(...)` | every live row comes from it; it is the only call that spends credits and the only one the wrapper's budget counts |
-| Search Archive API | `GET /searches/{search_id}.json` | `serpapi.replay_<engine>(search_id)`, `serpapi.replay(search_id)` | re-reads a past search by id, kept 31 days, without a new search; the Strikethrough ledger stores the id with every price so the demo replays for free |
-| Search Archive API, Markdown | `GET /searches/{search_id}.md` | `serpapi.search_md(...)`, `serpapi.replay_md(search_id)` | the same search as Markdown (for LLM prompts) without paying for it twice |
-| Account API | `GET /account.json` | `serpapi.account()` | live credits left; the `api_key` field is stripped before it becomes a row |
+The wrapper keeps the bill down in three ways. Requests are canonical (unset arguments omitted, server defaults filled in, parameters sorted), so a repeat within the hour hits SerpApi's free cache; `no_cache` is never sent. Typed functions send a `json_restrictor`, so only the results block and its metadata come back. And every successful `/search.json` call counts against the caps; cached responses look identical, so the count errs high. Archive and account calls are free and uncounted.
 
-Engines on the Search API, with the pagination the wrapper drives for `pages => n`:
+No SDK or MCP server is involved: the wrapper runs inside Postgres, where there is no Python or Node runtime, so it builds requests itself (`src/request.rs`) and sends them through the Wrappers host's HTTP client.
 
-| Function | `engine=` | Results block | Pagination |
-|---|---|---|---|
-| `google`, `google_light` | `google`, `google_light` | `organic_results` | `start`, step 10 |
-| `google_shopping` | `google_shopping` | `shopping_results` | none (SerpApi ignores `start` here) |
-| `amazon` | `amazon` (`q` is sent as `k`) | `organic_results` | `page`, 1-based |
-| `google_jobs` | `google_jobs` | `jobs_results` | `next_page_token` |
-| `google_maps` | `google_maps` (`type=search`) | `local_results` | `start`, step 20 |
-| `google_maps_reviews` | `google_maps_reviews` | `reviews` | `next_page_token` |
-| `google_news` | `google_news` | `news_results` | none |
-| `search(engine, params)` | any | whole response, one row per page | `next_page_token` from `serpapi_pagination`, when present |
+## Try it in ten minutes
 
-How the wrapper keeps the bill down:
-
-- **Canonical requests.** Unset arguments are omitted, server defaults (`default_gl`, …) are filled in, and parameters are sorted, so the same question always produces the same URL and a repeat within the hour hits SerpApi's cache, which SerpApi does not charge for. `no_cache` is never sent; `search()` strips `no_cache`, `async`, `output`, `json_restrictor`, `engine` and `api_key` from its `params`.
-- **`json_restrictor`.** Typed functions ask only for `search_metadata,search_parameters,error,serpapi_pagination,<block>`, which trims the payload the host has to buffer. The server option `json_restrictor 'off'` disables it. `search()` always gets the full response.
-- **Counting.** Every HTTP 200 from `/search.json` counts as one credit against `hourly_cap` / `monthly_cap`. A cached response looks the same as a fresh one, so the count errs high. Archive and account calls are not counted.
-
-No SerpApi SDK or MCP server is used. The wrapper runs inside Postgres as a Wasm component, where there is no Python or Node runtime to host an SDK; it builds the URLs and maps status codes itself (`src/request.rs`) and sends them through the Wrappers host's HTTP client.
-
-## Try it in ten minutes (offline, no key, no credits)
-
-Needs the tools under [Prerequisites](#prerequisites). Everything runs on your machine against recorded fixtures served by `mock/server.py`; nothing reaches serpapi.com.
+Offline: recorded fixtures served by a local mock, no key, no credits. Needs Docker (running), the [Supabase CLI](https://supabase.com/docs/guides/cli), `psql` and `python3`.
 
 ```bash
 git clone https://github.com/krishna-fire/serpapi_fdw && cd serpapi_fdw
-scripts/dev-up.sh            # local Supabase (Postgres 17 + Wrappers, Auth) + fixture mock on :8787 + a demo user
+scripts/dev-up.sh            # local Supabase (Postgres 17, Wrappers, Auth), the mock on :8787, a demo user
 SERPAPI_API_URL=http://host.docker.internal:8787 SERPAPI_API_KEY=mock-key scripts/load-local.sh
 scripts/apply-sql.sh
-scripts/smoke-assert.sh      # the 17-check suite, with its expected counts asserted
+scripts/smoke-assert.sh      # 17 checks
 ```
 
-No Rust toolchain needed: with no local build in `dist/`, `load-local.sh` downloads the v0.1.0 release `.wasm` and verifies its sha256. To build from source instead, run `scripts/build.sh` (or `scripts/build.sh --docker`) before `load-local.sh`. `dev-up.sh` checks for its prerequisites first and creates the playground's demo user (`priya@example.com` / `serpapi-demo`, local only).
-
-To watch the checks run, use `psql "$(supabase status -o env | sed -n 's/^DB_URL=//p' | tr -d '"')" -f scripts/smoke.sql`: it prints 17 numbered checks. Five `ERROR` lines are deliberate: three guards (missing `q`, `pages` over `max_pages`, a `LIKE` on the private table) and two hits on a temporarily lowered hourly cap. `scripts/smoke-assert.sh` runs the same file and checks those counts for you; it also calls `serpapi.reset_budget()` first, which a plain re-run within the hour needs (the mock's responses count against the 50-per-hour cap like real ones). Then try queries by hand in `psql`:
+No Rust needed: `load-local.sh` downloads the release `.wasm` and verifies its checksum. To build it yourself, run `scripts/build.sh` (Rust 1.97.1 and `cargo-component` 0.21.1) or `scripts/build.sh --docker` first. Then try it in `psql "$(supabase status -o env | sed -n 's/^DB_URL=//p' | tr -d '"')"`:
 
 ```sql
 select source, extracted_price, old_price from serpapi.google_shopping('boAt Airdopes 141');
@@ -79,56 +89,20 @@ select asin, extracted_price, extracted_old_price from serpapi.amazon('iPhone');
 select * from serpapi.budget_status();
 ```
 
-From an app, the same functions are PostgREST RPC calls in the `serpapi` schema: `POST /rest/v1/rpc/google_shopping` with the headers `Content-Profile: serpapi` and `Accept-Profile: serpapi` (supabase-js: `supabase.schema('serpapi').rpc('google_shopping', { q })`). Anonymous callers get `401 permission denied`; a signed-in user gets rows, metered by the daily quota. `demo/playground/index.html` is a static page that does exactly this: copy `demo/playground/config.example.js` to `config.js` (locally: `url` `http://127.0.0.1:54321`, `anonKey` = `ANON_KEY` from `supabase status -o env`, `demoEmail` `priya@example.com`), open the file in a browser and sign in as the demo user.
+Over HTTP, the functions are PostgREST RPC calls with `Content-Profile: serpapi`. Anonymous calls get `401`; the demo user (`priya@example.com` / `serpapi-demo`) gets rows. [`demo/playground/index.html`](demo/playground/index.html) is a static page that does this: copy `config.example.js` to `config.js`, set `url` to `http://127.0.0.1:54321` and `anonKey` to `ANON_KEY` from `supabase status -o env`, and open the file.
 
-Stop with `supabase stop`.
+For live data, put your key in `~/.serpapi_key`, run `scripts/dev-up.sh --no-mock`, then `scripts/load-local.sh` without `SERPAPI_API_URL`. On Linux, if `host.docker.internal` does not resolve, use the Docker bridge address (often `http://172.17.0.1:8787`).
 
-## Where it runs
+## Install
 
-| Platform | Wrappers host | Key storage | Status |
-|---|---|---|---|
-| Supabase hosted | preinstalled | Vault (`api_key_name`) | install from the release URL with `scripts/load-hosted.sh`. Caveat: `create foreign data wrapper` needs a privilege Supabase grants to `postgres` during provisioning; on projects where it is missing (see [supabase/supabase#46480](https://github.com/supabase/supabase/issues/46480); reported for restored or unpaused projects, and seen here on a freshly created free one) every client including the SQL editor gets `permission denied to create foreign-data wrapper`, and only Supabase can fix the project |
-| Supabase local (`supabase start`) | preinstalled | Vault | `scripts/dev-up.sh` |
-| Self-hosted Postgres 14–18 (Debian trixie / Ubuntu 24.04+, amd64/arm64) | [`wrappers` .deb from the Supabase releases](https://github.com/supabase/wrappers/releases) | plain `api_key` server option, gated by `serpapi.allow_plain_key` | `scripts/plain-pg-up.sh`, verified with the same 17-check suite |
-| Managed clouds that forbid third-party extensions (RDS, Cloud SQL, …) | not installable | — | federate to a sidecar with `postgres_fdw` / `dblink` (below) |
-
-Same wrapper, same SQL, same behaviour on all supported rows; the install scripts detect Vault and the Supabase roles and adapt.
-
-### From RDS or any managed Postgres: a sidecar
-
-RDS for PostgreSQL and Aurora can be given outbound network access (a security-group egress rule, NAT gateway or VPC endpoint, as their `aws_lambda` setup describes), but their supported-extension lists contain nothing that issues HTTP from SQL: no `http`, `pg_net`, `wrappers`, or untrusted procedural languages, and `pg_tle` allows only trusted ones ([RDS list](https://docs.aws.amazon.com/AmazonRDS/latest/PostgreSQLReleaseNotes/postgresql-extensions.html), [Aurora list](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraPostgreSQLReleaseNotes/AuroraPostgreSQL.Extensions.html)). So the wrapper cannot be installed there. Two routes remain. The AWS-native one is `aws_lambda.invoke` (synchronous, returns the Lambda's JSON) with a Lambda that calls SerpApi; that is a separate integration and out of scope here. The one that reuses this project unchanged: RDS ships `postgres_fdw` and `dblink`, so run `serpapi_fdw` in a sidecar (a free Supabase project or a small container) and let the managed database query it. Joins, snapshots and quotas stay next to your data; only the search hop leaves.
+On hosted Supabase, or any Postgres with Wrappers 0.5 or later:
 
 ```sql
--- on RDS
-create extension postgres_fdw;
-create server serpapi_sidecar foreign data wrapper postgres_fdw
-  options (host 'sidecar.example.com', port '5432', dbname 'postgres');
-create user mapping for current_user server serpapi_sidecar options (user 'app', password '…');
-
--- table style: quals are pushed to the sidecar, whose wrapper runs exactly one search
-import foreign schema serpapi_private limit to (google_shopping) from server serpapi_sidecar into sidecar;
-select source, extracted_price from sidecar.google_shopping
-where q = 'boAt Airdopes 141' and gl = '' and hl = '' and location = '' and google_domain = ''
-  and min_price = -1 and max_price = -1 and sort_by = '' and on_sale = false and num = -1 and pages = 1;
-
--- function style: named arguments, quota and log on the sidecar
-select * from dblink('serpapi_sidecar', $$ select source, extracted_price from serpapi.google_shopping('boAt Airdopes 141') $$)
-  as t(source text, extracted_price numeric);
-```
-
-Verified against a contrib-only Postgres federating to the local Supabase stack: rows come back, `EXPLAIN VERBOSE` shows `q = …` in the remote SQL, and the sidecar's guards surface as errors on the RDS side.
-
-## Install (hosted Supabase or any Postgres with Wrappers ≥ 0.5)
-
-```sql
--- 1. once per database
 create extension if not exists wrappers with schema extensions;
 create foreign data wrapper wasm_wrapper handler wasm_fdw_handler validator wasm_fdw_validator;
 
--- 2. the key goes in Vault, never in SQL you commit
 select vault.create_secret('<your serpapi key>', 'serpapi_api_key');
 
--- 3. the server
 create server serpapi foreign data wrapper wasm_wrapper options (
   fdw_package_url 'https://github.com/krishna-fire/serpapi_fdw/releases/download/v0.1.0/serpapi_fdw.wasm',
   fdw_package_name 'serpapi:serpapi-fdw',
@@ -140,90 +114,43 @@ create server serpapi foreign data wrapper wasm_wrapper options (
 );
 ```
 
-The release's `README.txt` has the URL and checksum for that release (with fewer options than above). `fdw_package_checksum` pins the exact `.wasm` you install. `scripts/load-hosted.sh` runs steps 1–3 for you with the checksum fetched from the release.
+Then apply `sql/10_private.sql`, `sql/20_generated.sql` and `sql/30_public.sql` (`scripts/apply-sql.sh`), and add `serpapi` to the project's exposed schemas for RPC. `scripts/load-hosted.sh` runs the SQL above with the checksum fetched from the release. The caps above match SerpApi's free plan (250 searches a month, 50 an hour).
 
-On hosted Supabase, step 1 can fail with `permission denied to create foreign-data wrapper` when the project lacks a grant Supabase applies to `postgres` at provisioning ([supabase/supabase#46480](https://github.com/supabase/supabase/issues/46480); details in [docs/notes.md](docs/notes.md)). Nothing a user can run fixes it; only Supabase can repair the project.
+On some hosted projects the second line fails with `permission denied to create foreign-data wrapper`, because a grant Supabase applies at provisioning is missing ([supabase/supabase#46480](https://github.com/supabase/supabase/issues/46480), details in [docs/notes.md](docs/notes.md)). Only Supabase can repair such a project.
 
-Then apply `sql/10_private.sql`, `sql/20_generated.sql`, `sql/30_public.sql` (as migrations or with `psql -f`). That creates the private foreign tables via `import foreign schema`, the public functions, quotas and the log. Add `serpapi` to your project's exposed API schemas if you want PostgREST RPC.
+## Where it runs
 
-Free SerpApi accounts get 250 searches a month at 50 per hour; the server options above mirror that.
-
-## Prerequisites
-
-- Docker (Docker Desktop on macOS), running.
-- [Supabase CLI](https://supabase.com/docs/guides/cli); developed with 2.118.0.
-- `psql` (any recent client; 16 was used).
-- `python3` (the fixture mock and `scripts/gen.py`; standard library only).
-- Only to build from source without `--docker`: Rust 1.97.1 (pinned in `rust-toolchain.toml`) and `cargo-component` 0.21.1 (`cargo install --locked cargo-component --version 0.21.1`). Otherwise use `scripts/build.sh --docker`, which builds inside `Dockerfile.build` with the same versions, or the `.wasm` from the GitHub release.
-
-On Linux without Docker Desktop, `host.docker.internal` (how the database container reaches the mock on the host) may not resolve. Docker's fix is `--add-host=host.docker.internal:host-gateway` on the container; otherwise point `SERPAPI_API_URL` at the host's address on the Docker bridge (often `http://172.17.0.1:8787`).
-
-## Local development
-
-```bash
-scripts/dev-up.sh                    # Postgres 17 + Wrappers 0.6.2, PostgREST, Kong, and the fixture mock on :8787
-scripts/build.sh                     # or scripts/build.sh --docker if you have no Rust toolchain
-SERPAPI_API_URL=http://host.docker.internal:8787 SERPAPI_API_KEY=mock-key scripts/load-local.sh
-scripts/apply-sql.sh                 # 10/20/30/40: functions, quotas, log, the Strikethrough ledger
-psql "$(supabase status -o env | sed -n 's/^DB_URL=//p' | tr -d '"')" -f scripts/smoke.sql
-```
-
-That runs entirely offline against recorded fixtures (no key, no credits). For live data, put your key in `~/.serpapi_key`, run `scripts/dev-up.sh --no-mock`, and call `scripts/load-local.sh` without `SERPAPI_API_URL`. `scripts/smoke.sql` is the 17-check acceptance suite (typed functions, echo-back, LATERAL, pagination, replay, account, budget, guards, repeated calls, cap fail-closed).
-
-On macOS, if `ld: library 'System' not found`, export `SDKROOT="$(xcrun --show-sdk-path)"`; `scripts/build.sh` does this for you.
-
-## What you get
-
-| Function | Engine | Notes |
+| Platform | Key storage | Setup |
 |---|---|---|
-| `serpapi.google(q, …)` / `google_light` | organic results | `start` pagination |
-| `serpapi.google_shopping(q, …)` | Shopping | `gl=in` returns Indian merchants; `old_price` is the strikethrough |
-| `serpapi.amazon(q, amazon_domain => 'amazon.in', …)` | Amazon | `bought_last_month`, `sponsored` |
-| `serpapi.google_jobs(q, location => …, pages => 2)` | Jobs | token pagination, `apply_options` |
-| `serpapi.google_maps(q, ll => '@12.97,77.59,14z')` | Maps | `data_id` feeds reviews |
-| `serpapi.google_maps_reviews(data_id => …)` | Reviews | `contributor_id`, translated snippets |
-| `serpapi.google_news(q, hl => 'hi')` | News | regional editions |
-| `serpapi.search(engine, params jsonb)` | any SerpApi engine | one row per page, `result jsonb` |
-| `serpapi.search_md(engine, params)` | any | the same search as Markdown, fetched free from the archive |
-| `serpapi.replay_md(search_id)` | archive | a past search as Markdown |
-| `serpapi.replay_<engine>(search_id)` / `serpapi.replay(search_id)` | archive | free for 31 days |
-| `serpapi.account()` | account | live credits left; never returns the key |
-| `serpapi.budget_status()` | — | wrapper caps + your daily quota, no HTTP |
+| Supabase, hosted | Vault | `scripts/load-hosted.sh` (see the caveat above) |
+| Supabase, local | Vault | `scripts/dev-up.sh` |
+| Postgres 14–18, self-hosted (Debian trixie, Ubuntu 24.04+) | `api_key` server option, gated by `serpapi.allow_plain_key` | the [Wrappers .deb](https://github.com/supabase/wrappers/releases), `scripts/plain-pg-up.sh` |
+| RDS, Cloud SQL and other managed Postgres | — | not installable; query a sidecar with `postgres_fdw` ([docs/managed-postgres.md](docs/managed-postgres.md)) |
 
-Full argument lists: [docs/engines.md](docs/engines.md). Add an engine by editing `catalog/engines.json` and running `scripts/gen.py`; the wrapper, the DDL and the functions are all generated from it.
+The same wrapper, SQL and 17-check suite run on every supported row; CI runs them on stock Postgres 17.
 
-## Guards
+## Example: a nightly price ledger
 
-- `q` (or the engine's required parameter) is required; the wrapper refuses to call SerpApi without it.
-- Only `=` on parameter columns (`IN (...)` on `q`); `pages` is capped by `max_pages`.
-- Hourly and monthly caps live in the wrapper and fail closed before the HTTP call.
-- A per-caller daily quota (`serpapi_private.settings`) applies to app users; `postgres` / `service_role` are exempt.
-- Errors never contain the request URL, so the key cannot leak through Postgres logs or a screen recording.
-- Empty results are zero rows plus a `NOTICE` (SerpApi still charges one credit for them).
-
-## Strikethrough (the example)
+`sql/40_snapshots.sql` and `sql/50_cron.sql` record iPhone prices every night at 02:30 IST: Amazon.in for "iPhone" (2 credits) and Google Shopping for "iPhone 16" (1 credit), keyed by ASIN or Google product ID, with sponsored listings skipped. On a sale day, `strikethrough_forensics(day)` compares each "was" price with the highest real price seen in the previous twelve nights.
 
 ```sql
-call serpapi.snapshot_prices();                                   -- or via pg_cron, sql/50_cron.sql
+select cron.schedule('serpapi-nightly-prices', '0 21 * * *', $$ call serpapi.snapshot_prices() $$);
 select * from public.strikethrough_forensics('2026-10-09') where inflated;
 ```
 
-`public.tracked_searches` holds two searches: Amazon.in for "iPhone" (two pages, every current model and variant with its ASIN, price and strikethrough, 2 credits a night) and Google Shopping for "iPhone 16" (cross-merchant rows keyed by Google's product ID, 1 credit a night). `snapshot_prices()` keys every row by ASIN or product ID, filters titles with a regex, skips sponsored listings, and commits per search so one flaky engine does not lose the night. `strikethrough_forensics(day)` compares each product's sale-day "was" price against the maximum real price seen in the previous twelve nights. A free-text query alone is the wrong identity for price tracking: the first live test for a pair of earbuds returned forty rows of cases, covers and a clone, and not one listing of the earbuds themselves.
-
 ## Limits
 
-- Indian OTAs, Flipkart-only listings and some merchants appear or not at Google's discretion; the wrapper reports what SerpApi returns.
-- Google Shopping ignores `start`; `pages` has no effect there. Google Jobs fails intermittently upstream (Sep 2026) — retry.
-- The host HTTP client has no timeout and retries 429 three times; `statement_timeout` (set on every function) is the wall-clock bound.
-- Metadata (budget) writes are skipped inside read-only transactions, so expose RPC functions as POST.
-- Row-level security cannot be applied to foreign tables; that is why they are private and the functions are `security definer`.
+- What Google returns for India (merchants, Flipkart-only listings) is Google's call; the wrapper reports what SerpApi returns.
+- Google Shopping ignores pagination. Google Jobs fails intermittently upstream; retry.
+- Empty results are zero rows and a `NOTICE`; SerpApi still charges a credit.
+- The host HTTP client has no timeout; `statement_timeout` on every function is the bound.
+- Budget writes are skipped in read-only transactions, so call the RPC functions with POST.
+- Row-level security does not apply to foreign tables, which is why they are private and the functions are `security definer`.
 
-## Notes for SerpApi / Supabase
-
-Found while building; written up in [docs/notes.md](docs/notes.md) (to be filed upstream): host retries on 429 ignore `Retry-After`; the Wasm FDW template pins the v1 interface without `import foreign schema`; Jobs pagination is token-only.
+Issues found in Wrappers and SerpApi along the way are written up in [docs/notes.md](docs/notes.md), to be filed upstream.
 
 ## Provenance
 
-Built by Krishna Janaswamy (Bengaluru). A new project, started on 2026-09-26 for the SerpApi India Hackathon 2026; the first commit is dated 2026-09-27. Every module is small enough to explain in a functionality check. MIT.
+Krishna Janaswamy, Bengaluru. A new project, started on 2026-09-26 for the hackathon. MIT licensed.
 
-AI use: Claude Code (Anthropic) was used for design, Rust/SQL scaffolding, tests, docs and the demo-video tooling. The video's voiceover is text-to-speech: ElevenLabs in the final cut; earlier drafts used Kokoro-82M and Google Chirp 3 HD.
+AI use: Claude Code (Anthropic) for design, Rust and SQL scaffolding, tests, docs and the demo-video tooling. The video's voiceover is ElevenLabs text-to-speech; earlier drafts used Kokoro-82M and Google Chirp 3 HD.
