@@ -79,6 +79,8 @@ select asin, extracted_price, extracted_old_price from serpapi.amazon('iPhone');
 select * from serpapi.budget_status();
 ```
 
+From an app, the same functions are PostgREST RPC calls in the `serpapi` schema: `POST /rest/v1/rpc/google_shopping` with the headers `Content-Profile: serpapi` and `Accept-Profile: serpapi` (supabase-js: `supabase.schema('serpapi').rpc('google_shopping', { q })`). Anonymous callers get `401 permission denied`; a signed-in user gets rows, metered by the daily quota. `demo/playground/index.html` is a static page that does exactly this: copy `demo/playground/config.example.js` to `config.js` (locally: `url` `http://127.0.0.1:54321`, `anonKey` = `ANON_KEY` from `supabase status -o env`, `demoEmail` `priya@example.com`), open the file in a browser and sign in as the demo user.
+
 Stop with `supabase stop`.
 
 ## Where it runs
