@@ -1,0 +1,41 @@
+{
+ "search_metadata": {
+  "id": "fixture-news-bengaluru-tech-hiring",
+  "status": "Success"
+ },
+ "search_parameters": {
+  "engine": "google_news",
+  "q": "Bengaluru tech hiring",
+  "gl": "in",
+  "hl": "en"
+ },
+ "news_results": [
+  {
+   "position": 1,
+   "title": "Fixture headline: Bengaluru GCCs add 12,000 roles in Q3",
+   "source": {
+    "name": "Placeholder Business Daily"
+   },
+   "link": "https://example.invalid/0",
+   "date": "09/26/2026, 08:10 AM, +0000 UTC"
+  },
+  {
+   "position": 2,
+   "title": "Fixture headline: Startups shift hiring to Whitefield and Hebbal",
+   "source": {
+    "name": "Placeholder Tech Wire"
+   },
+   "link": "https://example.invalid/1",
+   "date": "09/25/2026, 06:40 PM, +0000 UTC"
+  },
+  {
+   "position": 3,
+   "title": "Fixture headline: Data engineering roles up 18% year on year",
+   "source": {
+    "name": "Placeholder Jobs Monitor"
+   },
+   "link": "https://example.invalid/2",
+   "date": "09/25/2026, 11:05 AM, +0000 UTC"
+  }
+ ]
+}

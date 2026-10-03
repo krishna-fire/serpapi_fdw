@@ -1,0 +1,930 @@
+{
+ "search_metadata": {
+  "id": "6ab918f3d9961244aece3f29",
+  "status": "Success",
+  "markdown_endpoint": "https://serpapi.com/searches/sdqMF3EMx_8DcbBB7_I0Q_8L9NHhBWMRRyqLkgVvc9E/6ab918f3d9961244aece3f29.md",
+  "created_at": "2026-09-27 13:24:03 UTC",
+  "processed_at": "2026-09-27 13:24:03 UTC",
+  "amazon_url": "https://www.amazon.in/s?k=iPhone",
+  "total_time_taken": 2.06
+ },
+ "search_parameters": {
+  "engine": "amazon",
+  "k": "iPhone",
+  "amazon_domain": "amazon.in",
+  "device": "desktop"
+ },
+ "organic_results": [
+  {
+   "position": 1,
+   "asin": "B0HJ9TY8LW",
+   "sponsored": true,
+   "variants": {
+    "more_variants": "+3 other colors/patterns",
+    "more_variants_link": "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo2MjQ5OTM1NzY3OTE4NDc6MTc5MDUxNTQ0NDpzcF9hdGY6MzAxMzU4MzcxNzE5MjMyOjowOjo&url=%2FiPhone-18-Pro-TB-Glacier%2Fdp%2FB0HJ9TY8LW%2Fref%3Dsr_1_1_sspa%3Fdib%3DeyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk%26dib_tag%3Dse%26keywords%3DiPhone%26qid%3D1790515444%26sr%3D8-1-spons%26aref%3DGXMeyjIJPM%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9hdGY%26psc%3D1&aref=GXMeyjIJPM&sp_cr=ZAZ"
+   },
+   "title": "iPhone 18 Pro (1 TB) - Glacier",
+   "link": "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo2MjQ5OTM1NzY3OTE4NDc6MTc5MDUxNTQ0NDpzcF9hdGY6MzAxMzU4MzcxNzE5MjMyOjowOjo&url=%2FiPhone-18-Pro-TB-Glacier%2Fdp%2FB0HJ9TY8LW%2Fref%3Dsr_1_1_sspa%3Fdib%3DeyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk%26dib_tag%3Dse%26keywords%3DiPhone%26qid%3D1790515444%26sr%3D8-1-spons%26aref%3DGXMeyjIJPM%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9hdGY%26psc%3D1&aref=GXMeyjIJPM&sp_cr=ZAZ",
+   "link_clean": "https://www.amazon.in/dp/B0HJ9TY8LW/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0HJ9TY8LW&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/71WbAwLW7OL._AC_UY218_.jpg",
+   "rating": 2.2,
+   "reviews": 13,
+   "price": "₹2,39,900",
+   "extracted_price": 239900,
+   "offers": [
+    "Up to 5% back with Amazon Pay ICICI card"
+   ],
+   "delivery": [
+    "FREE delivery Thu, 1 Oct",
+    "Or fastest delivery Wed, 30 Sept"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹2,39,900",
+     "extracted_primary_price": 239900,
+     "secondary_price": "Up to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI card",
+     "extracted_secondary_price": 5
+    }
+   ]
+  },
+  {
+   "position": 2,
+   "asin": "B0DGJHBX5Y",
+   "sponsored": true,
+   "variants": {
+    "more_variants": "+4 other colors/patterns",
+    "more_variants_link": "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo2MjQ5OTM1NzY3OTE4NDc6MTc5MDUxNTQ0NDpzcF9hdGY6MzAwMzM0MjUyNjIyODMyOjowOjo&url=%2FiPhone-16-128-GB-Control%2Fdp%2FB0DGJHBX5Y%2Fref%3Dsr_1_2_sspa%3Fdib%3DeyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk%26dib_tag%3Dse%26keywords%3DiPhone%26qid%3D1790515444%26sr%3D8-2-spons%26aref%3D2LMvoNnwEz%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9hdGY%26psc%3D1&aref=2LMvoNnwEz&sp_cr=ZAZ"
+   },
+   "brand": "Apple",
+   "title": "iPhone 16 128 GB: 5G Mobile Phone with Camera Control, A18 Chip and a Big Boost in Battery Life. Works with AirPods; Black",
+   "link": "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo2MjQ5OTM1NzY3OTE4NDc6MTc5MDUxNTQ0NDpzcF9hdGY6MzAwMzM0MjUyNjIyODMyOjowOjo&url=%2FiPhone-16-128-GB-Control%2Fdp%2FB0DGJHBX5Y%2Fref%3Dsr_1_2_sspa%3Fdib%3DeyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk%26dib_tag%3Dse%26keywords%3DiPhone%26qid%3D1790515444%26sr%3D8-2-spons%26aref%3D2LMvoNnwEz%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9hdGY%26psc%3D1&aref=2LMvoNnwEz&sp_cr=ZAZ",
+   "link_clean": "https://www.amazon.in/dp/B0DGJHBX5Y/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0DGJHBX5Y&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/61135j8fPJL._AC_UY218_.jpg",
+   "rating": 4.5,
+   "reviews": 2700,
+   "bought_last_month": "100+ bought in past month",
+   "price": "₹86,900",
+   "extracted_price": 86900,
+   "old_price": "₹89,900",
+   "extracted_old_price": 89900,
+   "offers": [
+    "Up to 5% back with Amazon Pay ICICI card"
+   ],
+   "delivery": [
+    "FREE delivery Tue, 29 Sept",
+    "Or fastest delivery Tomorrow 8 am - 12 pm"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹86,900",
+     "extracted_primary_price": 86900,
+     "secondary_price": "Up to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI card",
+     "extracted_secondary_price": 5,
+     "old_primary_price": "₹89,900",
+     "extracted_old_primary_price": 89900
+    }
+   ]
+  },
+  {
+   "position": 3,
+   "asin": "B0DGHZWBYB",
+   "variants": {
+    "options": [
+     {
+      "position": 1,
+      "asin": "B0DGHZWBYB",
+      "title": "White",
+      "link": "https://www.amazon.in/iPhone-16-128-GB-Control/dp/B0DGHZWBYB/ref=cs_sr_dp_1?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-3"
+     },
+     {
+      "position": 2,
+      "asin": "B0DGJHBX5Y",
+      "title": "Black",
+      "link": "https://www.amazon.in/iPhone-16-128-GB-Control/dp/B0DGJHBX5Y/ref=cs_sr_dp_2?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-3"
+     },
+     {
+      "position": 3,
+      "asin": "B0DGJ8YZDF",
+      "title": "Pink",
+      "link": "https://www.amazon.in/iPhone-16-128-GB-Control/dp/B0DGJ8YZDF/ref=cs_sr_dp_3?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-3"
+     },
+     {
+      "position": 4,
+      "asin": "B0DGJH8RYG",
+      "title": "Teal",
+      "link": "https://www.amazon.in/iPhone-16-128-GB-Control/dp/B0DGJH8RYG/ref=cs_sr_dp_4?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-3"
+     },
+     {
+      "position": 5,
+      "asin": "B0DGJ7TGDR",
+      "title": "Ultramarine",
+      "link": "https://www.amazon.in/iPhone-16-128-GB-Control/dp/B0DGJ7TGDR/ref=cs_sr_dp_5?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-3"
+     }
+    ]
+   },
+   "title": "iPhone 16 128 GB: 5G Mobile Phone with Camera Control, A18 Chip and a Big Boost in Battery Life. Works with AirPods; White",
+   "link": "https://www.amazon.in/iPhone-16-128-GB-Control/dp/B0DGHZWBYB/ref=sr_1_3?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-3",
+   "link_clean": "https://www.amazon.in/iPhone-16-128-GB-Control/dp/B0DGHZWBYB/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0DGHZWBYB&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/61d88xzrklL._AC_UY218_.jpg",
+   "rating": 4.5,
+   "reviews": 2700,
+   "bought_last_month": "400+ bought in past month",
+   "price": "₹86,900",
+   "extracted_price": 86900,
+   "old_price": "₹89,900",
+   "extracted_old_price": 89900,
+   "offers": [
+    "Up to 5% back with Amazon Pay ICICI card"
+   ],
+   "delivery": [
+    "FREE delivery Tue, 29 Sept",
+    "Or fastest delivery Tomorrow 8 am - 12 pm"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹86,900",
+     "extracted_primary_price": 86900,
+     "secondary_price": "Up to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI card",
+     "extracted_secondary_price": 5,
+     "old_primary_price": "₹89,900",
+     "extracted_old_primary_price": 89900
+    }
+   ]
+  },
+  {
+   "position": 4,
+   "asin": "B0GQVL6STN",
+   "variants": {
+    "options": [
+     {
+      "position": 1,
+      "asin": "B0GQVL6STN",
+      "title": "Black",
+      "link": "https://www.amazon.in/Apple-iPhone-17e-256-GB/dp/B0GQVL6STN/ref=cs_sr_dp_1?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-4"
+     },
+     {
+      "position": 2,
+      "asin": "B0GQVQY8B7",
+      "title": "Soft Pink",
+      "link": "https://www.amazon.in/Apple-iPhone-17e-256-GB/dp/B0GQVQY8B7/ref=cs_sr_dp_2?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-4"
+     },
+     {
+      "position": 3,
+      "asin": "B0GQW31KLK",
+      "title": "White",
+      "link": "https://www.amazon.in/Apple-iPhone-17e-256-GB/dp/B0GQW31KLK/ref=cs_sr_dp_3?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-4"
+     }
+    ]
+   },
+   "brand": "Apple",
+   "title": "iPhone 17e 256 GB: 15.40 cm (6.1″) Super Retina XDR Display, A19 Chip, All-Day Battery Life, 48MP Fusion Camera, 256GB Starting Storage; Black",
+   "link": "https://www.amazon.in/Apple-iPhone-17e-256-GB/dp/B0GQVL6STN/ref=sr_1_4?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-4",
+   "link_clean": "https://www.amazon.in/Apple-iPhone-17e-256-GB/dp/B0GQVL6STN/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0GQVL6STN&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/61ULimPWODL._AC_UY218_.jpg",
+   "rating": 4.3,
+   "reviews": 155,
+   "bought_last_month": "200+ bought in past month",
+   "price": "₹79,900",
+   "extracted_price": 79900,
+   "offers": [
+    "Up to 5% back with Amazon Pay ICICI card"
+   ],
+   "delivery": [
+    "FREE delivery Tue, 29 Sept",
+    "Or fastest delivery Tomorrow 8 am - 12 pm"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹79,900",
+     "extracted_primary_price": 79900,
+     "secondary_price": "Up to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI card",
+     "extracted_secondary_price": 5
+    }
+   ]
+  },
+  {
+   "position": 5,
+   "asin": "B0FQFBDQJ1",
+   "variants": {
+    "options": [
+     {
+      "position": 1,
+      "asin": "B0FQFBDQJ1",
+      "title": "Space Black",
+      "link": "https://www.amazon.in/iPhone-Air-256-GB-Promotion/dp/B0FQFBDQJ1/ref=cs_sr_dp_1?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-5"
+     },
+     {
+      "position": 2,
+      "asin": "B0GTYWYF7K",
+      "title": "Cloud White",
+      "link": "https://www.amazon.in/iPhone-Air-256-GB-Promotion/dp/B0GTYWYF7K/ref=cs_sr_dp_2?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-5"
+     },
+     {
+      "position": 3,
+      "asin": "B0GTYZ4CBH",
+      "title": "Light Gold",
+      "link": "https://www.amazon.in/iPhone-Air-256-GB-Promotion/dp/B0GTYZ4CBH/ref=cs_sr_dp_3?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-5"
+     },
+     {
+      "position": 4,
+      "asin": "B0GTYN1BF8",
+      "title": "Sky Blue",
+      "link": "https://www.amazon.in/iPhone-Air-256-GB-Promotion/dp/B0GTYN1BF8/ref=cs_sr_dp_4?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-5"
+     }
+    ]
+   },
+   "brand": "Apple",
+   "title": "iPhone Air (256 GB) - Space Black",
+   "link": "https://www.amazon.in/iPhone-Air-256-GB-Promotion/dp/B0FQFBDQJ1/ref=sr_1_5?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-5",
+   "link_clean": "https://www.amazon.in/iPhone-Air-256-GB-Promotion/dp/B0FQFBDQJ1/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0FQFBDQJ1&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/61knPJtYRpL._AC_UY218_.jpg",
+   "rating": 4.5,
+   "reviews": 383,
+   "bought_last_month": "500+ bought in past month",
+   "price": "₹1,19,900",
+   "extracted_price": 119900,
+   "old_price": "₹1,49,900",
+   "extracted_old_price": 149900,
+   "offers": [
+    "Up to 5% back with Amazon Pay ICICI card"
+   ],
+   "delivery": [
+    "FREE delivery Tue, 29 Sept",
+    "Or fastest delivery Tomorrow 8 am - 12 pm"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹1,19,900",
+     "extracted_primary_price": 119900,
+     "secondary_price": "Up to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI card",
+     "extracted_secondary_price": 5,
+     "old_primary_price": "₹1,49,900",
+     "extracted_old_primary_price": 149900
+    }
+   ]
+  },
+  {
+   "position": 6,
+   "asin": "B0GQW31KLK",
+   "variants": {
+    "options": [
+     {
+      "position": 1,
+      "asin": "B0GQW31KLK",
+      "title": "White",
+      "link": "https://www.amazon.in/Apple-iPhone-17e-256-GB/dp/B0GQW31KLK/ref=cs_sr_dp_1?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-6"
+     },
+     {
+      "position": 2,
+      "asin": "B0GQVL6STN",
+      "title": "Black",
+      "link": "https://www.amazon.in/Apple-iPhone-17e-256-GB/dp/B0GQVL6STN/ref=cs_sr_dp_2?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-6"
+     },
+     {
+      "position": 3,
+      "asin": "B0GQVQY8B7",
+      "title": "Soft Pink",
+      "link": "https://www.amazon.in/Apple-iPhone-17e-256-GB/dp/B0GQVQY8B7/ref=cs_sr_dp_3?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-6"
+     }
+    ]
+   },
+   "brand": "Apple",
+   "title": "iPhone 17e 256 GB: 15.40 cm (6.1″) Super Retina XDR Display, A19 Chip, All-Day Battery Life, 48MP Fusion Camera, 256GB Starting Storage; White",
+   "link": "https://www.amazon.in/Apple-iPhone-17e-256-GB/dp/B0GQW31KLK/ref=sr_1_6?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-6",
+   "link_clean": "https://www.amazon.in/Apple-iPhone-17e-256-GB/dp/B0GQW31KLK/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0GQW31KLK&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/61FSUAh5yHL._AC_UY218_.jpg",
+   "rating": 4.3,
+   "reviews": 155,
+   "bought_last_month": "50+ bought in past month",
+   "price": "₹79,900",
+   "extracted_price": 79900,
+   "offers": [
+    "Up to 5% back with Amazon Pay ICICI card"
+   ],
+   "delivery": [
+    "FREE delivery Tue, 29 Sept",
+    "Or fastest delivery Tomorrow 8 am - 12 pm"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹79,900",
+     "extracted_primary_price": 79900,
+     "secondary_price": "Up to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI card",
+     "extracted_secondary_price": 5
+    }
+   ]
+  },
+  {
+   "position": 7,
+   "asin": "B0HJB3HXRB",
+   "variants": {
+    "options": [
+     {
+      "position": 1,
+      "asin": "B0HJB3HXRB",
+      "title": "Glacier",
+      "link": "https://www.amazon.in/iPhone-18-Pro-256-GB/dp/B0HJB3HXRB/ref=cs_sr_dp_1?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-7"
+     },
+     {
+      "position": 2,
+      "asin": "B0HJB7MQ97",
+      "title": "Black",
+      "link": "https://www.amazon.in/iPhone-18-Pro-256-GB/dp/B0HJB7MQ97/ref=cs_sr_dp_2?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-7"
+     },
+     {
+      "position": 3,
+      "asin": "B0HJ9W3ZND",
+      "title": "Burgundy",
+      "link": "https://www.amazon.in/iPhone-18-Pro-256-GB/dp/B0HJ9W3ZND/ref=cs_sr_dp_3?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-7"
+     },
+     {
+      "position": 4,
+      "asin": "B0HJBCGNFM",
+      "title": "Silver",
+      "link": "https://www.amazon.in/iPhone-18-Pro-256-GB/dp/B0HJBCGNFM/ref=cs_sr_dp_4?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-7"
+     }
+    ]
+   },
+   "title": "iPhone 18 Pro (256 GB) - Glacier",
+   "link": "https://www.amazon.in/iPhone-18-Pro-256-GB/dp/B0HJB3HXRB/ref=sr_1_7?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-7",
+   "link_clean": "https://www.amazon.in/iPhone-18-Pro-256-GB/dp/B0HJB3HXRB/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0HJB3HXRB&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/71WbAwLW7OL._AC_UY218_.jpg",
+   "rating": 2.2,
+   "reviews": 13,
+   "price": "₹1,64,900",
+   "extracted_price": 164900,
+   "offers": [
+    "Up to 5% back with Amazon Pay ICICI card"
+   ],
+   "delivery": [
+    "FREE delivery Fri, 2 Oct"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹1,64,900",
+     "extracted_primary_price": 164900,
+     "secondary_price": "Up to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI card",
+     "extracted_secondary_price": 5
+    }
+   ]
+  },
+  {
+   "position": 8,
+   "asin": "B0GQVQY8B7",
+   "variants": {
+    "options": [
+     {
+      "position": 1,
+      "asin": "B0GQVQY8B7",
+      "title": "Soft Pink",
+      "link": "https://www.amazon.in/Apple-iPhone-17e-256-GB/dp/B0GQVQY8B7/ref=cs_sr_dp_1?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-8"
+     },
+     {
+      "position": 2,
+      "asin": "B0GQVL6STN",
+      "title": "Black",
+      "link": "https://www.amazon.in/Apple-iPhone-17e-256-GB/dp/B0GQVL6STN/ref=cs_sr_dp_2?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-8"
+     },
+     {
+      "position": 3,
+      "asin": "B0GQW31KLK",
+      "title": "White",
+      "link": "https://www.amazon.in/Apple-iPhone-17e-256-GB/dp/B0GQW31KLK/ref=cs_sr_dp_3?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-8"
+     }
+    ]
+   },
+   "brand": "Apple",
+   "title": "iPhone 17e 256 GB: 15.40 cm (6.1″) Super Retina XDR Display, A19 Chip, All-Day Battery Life, 48MP Fusion Camera, 256GB Starting Storage; Soft Pink",
+   "link": "https://www.amazon.in/Apple-iPhone-17e-256-GB/dp/B0GQVQY8B7/ref=sr_1_8?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-8",
+   "link_clean": "https://www.amazon.in/Apple-iPhone-17e-256-GB/dp/B0GQVQY8B7/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0GQVQY8B7&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/61zVFiTawKL._AC_UY218_.jpg",
+   "rating": 4.3,
+   "reviews": 155,
+   "bought_last_month": "100+ bought in past month",
+   "price": "₹79,900",
+   "extracted_price": 79900,
+   "offers": [
+    "Up to 5% back with Amazon Pay ICICI card"
+   ],
+   "delivery": [
+    "FREE delivery Tue, 29 Sept",
+    "Or fastest delivery Tomorrow 8 am - 12 pm"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹79,900",
+     "extracted_primary_price": 79900,
+     "secondary_price": "Up to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI card",
+     "extracted_secondary_price": 5
+    }
+   ]
+  },
+  {
+   "position": 9,
+   "asin": "B0FQFQQN24",
+   "variants": {
+    "options": [
+     {
+      "position": 1,
+      "asin": "B0FQFQQN24",
+      "title": "Mist Blue",
+      "link": "https://www.amazon.in/iPhone-17-512-Promotion-Resistance/dp/B0FQFQQN24/ref=cs_sr_dp_1?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-9"
+     },
+     {
+      "position": 2,
+      "asin": "B0FQFYXCC4",
+      "title": "Black",
+      "link": "https://www.amazon.in/iPhone-17-512-Promotion-Resistance/dp/B0FQFYXCC4/ref=cs_sr_dp_2?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-9"
+     },
+     {
+      "position": 3,
+      "asin": "B0G6KMTNR8",
+      "title": "Lavender",
+      "link": "https://www.amazon.in/iPhone-17-512-Promotion-Resistance/dp/B0G6KMTNR8/ref=cs_sr_dp_3?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-9"
+     }
+    ]
+   },
+   "brand": "Apple",
+   "title": "iPhone 17 512 GB: 15.93 cm (6.3″) Display with Promotion, A19 Chip, Center Stage Front Camera for Smarter Group Selfies, Improved Scratch Resistance, All-Day Battery Life; Mist Blue",
+   "link": "https://www.amazon.in/iPhone-17-512-Promotion-Resistance/dp/B0FQFQQN24/ref=sr_1_9?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-9",
+   "link_clean": "https://www.amazon.in/iPhone-17-512-Promotion-Resistance/dp/B0FQFQQN24/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0FQFQQN24&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/61vwtM-DqRL._AC_UY218_.jpg",
+   "rating": 4.7,
+   "reviews": 726,
+   "bought_last_month": "200+ bought in past month",
+   "price": "₹1,24,900",
+   "extracted_price": 124900,
+   "offers": [
+    "Up to 5% back with Amazon Pay ICICI card"
+   ],
+   "delivery": [
+    "FREE delivery Thu, 1 Oct"
+   ],
+   "stock": "Only 1 left in stock.",
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹1,24,900",
+     "extracted_primary_price": 124900,
+     "secondary_price": "Up to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI card",
+     "extracted_secondary_price": 5
+    }
+   ]
+  },
+  {
+   "position": 10,
+   "asin": "B0DXQHMRCP",
+   "options": "See options",
+   "options_link": "https://www.amazon.in/iPhone-16e-128-Intelligence-Supersized/dp/B0DXQHMRCP/ref=sr_1_10_so_CELLULAR_PHONE?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-10",
+   "brand": "Apple",
+   "title": "iPhone 16e 128 GB: Built for Apple Intelligence, A18 Chip, Supersized Battery Life, 48MP Fusion. Camera, 15.40 cm (6.1″) Super Retina XDR Display; White",
+   "link": "https://www.amazon.in/iPhone-16e-128-Intelligence-Supersized/dp/B0DXQHMRCP/ref=sr_1_10?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-10",
+   "link_clean": "https://www.amazon.in/iPhone-16e-128-Intelligence-Supersized/dp/B0DXQHMRCP/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0DXQHMRCP&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/61SKi94cImL._AC_UY218_.jpg",
+   "rating": 4.5,
+   "reviews": 1300,
+   "delivery": [
+    "Currently unavailable."
+   ],
+   "purchase_options": [
+    {
+     "no_featured_offers": true
+    }
+   ]
+  },
+  {
+   "position": 11,
+   "asin": "B0HJB6KG27",
+   "variants": {
+    "more_variants": "+3 other colors/patterns",
+    "more_variants_link": "https://www.amazon.in/iPhone-18-Pro-Max-256/dp/B0HJB6KG27/ref=cs_sr_dp?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-11"
+   },
+   "title": "iPhone 18 Pro Max (256 GB) - Silver",
+   "link": "https://www.amazon.in/iPhone-18-Pro-Max-256/dp/B0HJB6KG27/ref=sr_1_11?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-11",
+   "link_clean": "https://www.amazon.in/iPhone-18-Pro-Max-256/dp/B0HJB6KG27/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0HJB6KG27&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/71VG1Qmy2eL._AC_UY218_.jpg",
+   "rating": 2.0,
+   "reviews": 15,
+   "price": "₹1,79,900",
+   "extracted_price": 179900,
+   "offers": [
+    "Up to 5% back with Amazon Pay ICICI card"
+   ],
+   "delivery": [
+    "FREE delivery 2 - 4 Oct"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹1,79,900",
+     "extracted_primary_price": 179900,
+     "secondary_price": "Up to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI card",
+     "extracted_secondary_price": 5
+    }
+   ]
+  },
+  {
+   "position": 12,
+   "asin": "B0DSKL9MQ8",
+   "variants": {
+    "options": [
+     {
+      "position": 1,
+      "asin": "B0DSKL9MQ8",
+      "title": "Titanium Whitesilver",
+      "link": "https://www.amazon.in/Samsung-Smartphone-Whitesilver-Snapdragon-ProVisual/dp/B0DSKL9MQ8/ref=cs_sr_dp_1?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-12"
+     },
+     {
+      "position": 2,
+      "asin": "B0DSKMKJV5",
+      "title": "Titanium Black",
+      "link": "https://www.amazon.in/Samsung-Smartphone-Whitesilver-Snapdragon-ProVisual/dp/B0DSKMKJV5/ref=cs_sr_dp_2?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-12"
+     },
+     {
+      "position": 3,
+      "asin": "B0DVC8FPVJ",
+      "title": "Titanium Gray",
+      "link": "https://www.amazon.in/Samsung-Smartphone-Whitesilver-Snapdragon-ProVisual/dp/B0DVC8FPVJ/ref=cs_sr_dp_3?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-12"
+     },
+     {
+      "position": 4,
+      "asin": "B0DVC72DF8",
+      "title": "Titanium Silverblue",
+      "link": "https://www.amazon.in/Samsung-Smartphone-Whitesilver-Snapdragon-ProVisual/dp/B0DVC72DF8/ref=cs_sr_dp_4?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-12"
+     }
+    ]
+   },
+   "brand": "Samsung",
+   "title": "Galaxy S25 Ultra 5G AI Smartphone (Titanium Whitesilver, 12GB RAM, 256GB Storage), 200MP Camera, 5000mAh Ultra Long Battery, QHD+ Dynamic AMOLED 2X, Galaxy AI, Knox Security, S Pen Included",
+   "link": "https://www.amazon.in/Samsung-Smartphone-Whitesilver-Snapdragon-ProVisual/dp/B0DSKL9MQ8/ref=sr_1_12?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-12",
+   "link_clean": "https://www.amazon.in/Samsung-Smartphone-Whitesilver-Snapdragon-ProVisual/dp/B0DSKL9MQ8/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0DSKL9MQ8&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/71tAe2OcpcL._AC_UY218_.jpg",
+   "rating": 4.5,
+   "reviews": 2300,
+   "bought_last_month": "50+ bought in past month",
+   "price": "₹99,999",
+   "extracted_price": 99999,
+   "old_price": "₹1,29,999",
+   "extracted_old_price": 129999,
+   "offers": [
+    "Save extra with No Cost EMI"
+   ],
+   "delivery": [
+    "FREE delivery Tue, 29 Sept",
+    "Or fastest delivery Tomorrow 8 am - 12 pm"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹99,999",
+     "extracted_primary_price": 99999,
+     "old_primary_price": "₹1,29,999",
+     "extracted_old_primary_price": 129999
+    }
+   ]
+  },
+  {
+   "position": 13,
+   "asin": "B0HJB77H4Y",
+   "variants": {
+    "options": [
+     {
+      "position": 1,
+      "asin": "B0HJB77H4Y",
+      "title": "Black",
+      "link": "https://www.amazon.in/iPhone-18-Pro-512-GB/dp/B0HJB77H4Y/ref=cs_sr_dp_1?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-13"
+     },
+     {
+      "position": 2,
+      "asin": "B0HJB6S4BH",
+      "title": "Burgundy",
+      "link": "https://www.amazon.in/iPhone-18-Pro-512-GB/dp/B0HJB6S4BH/ref=cs_sr_dp_2?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-13"
+     },
+     {
+      "position": 3,
+      "asin": "B0HJB78346",
+      "title": "Glacier",
+      "link": "https://www.amazon.in/iPhone-18-Pro-512-GB/dp/B0HJB78346/ref=cs_sr_dp_3?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-13"
+     },
+     {
+      "position": 4,
+      "asin": "B0HJB3GZ2C",
+      "title": "Silver",
+      "link": "https://www.amazon.in/iPhone-18-Pro-512-GB/dp/B0HJB3GZ2C/ref=cs_sr_dp_4?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-13"
+     }
+    ]
+   },
+   "title": "iPhone 18 Pro (512 GB) - Black",
+   "link": "https://www.amazon.in/iPhone-18-Pro-512-GB/dp/B0HJB77H4Y/ref=sr_1_13?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-13",
+   "link_clean": "https://www.amazon.in/iPhone-18-Pro-512-GB/dp/B0HJB77H4Y/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0HJB77H4Y&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/71znxpGpOjL._AC_UY218_.jpg",
+   "rating": 2.2,
+   "reviews": 13,
+   "price": "₹1,89,900",
+   "extracted_price": 189900,
+   "offers": [
+    "Up to 5% back with Amazon Pay ICICI card"
+   ],
+   "delivery": [
+    "FREE delivery Wed, 30 Sept"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹1,89,900",
+     "extracted_primary_price": 189900,
+     "secondary_price": "Up to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI card",
+     "extracted_secondary_price": 5
+    }
+   ]
+  },
+  {
+   "position": 14,
+   "asin": "B0HJB696TW",
+   "variants": {
+    "options": [
+     {
+      "position": 1,
+      "asin": "B0HJB696TW",
+      "title": "Burgundy",
+      "link": "https://www.amazon.in/iPhone-18-Pro-TB-Burgundy/dp/B0HJB696TW/ref=cs_sr_dp_1?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-14"
+     },
+     {
+      "position": 2,
+      "asin": "B0HJBHM583",
+      "title": "Black",
+      "link": "https://www.amazon.in/iPhone-18-Pro-TB-Burgundy/dp/B0HJBHM583/ref=cs_sr_dp_2?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-14"
+     },
+     {
+      "position": 3,
+      "asin": "B0HJ9TY8LW",
+      "title": "Glacier",
+      "link": "https://www.amazon.in/iPhone-18-Pro-TB-Burgundy/dp/B0HJ9TY8LW/ref=cs_sr_dp_3?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-14"
+     },
+     {
+      "position": 4,
+      "asin": "B0HJB5VFFX",
+      "title": "Silver",
+      "link": "https://www.amazon.in/iPhone-18-Pro-TB-Burgundy/dp/B0HJB5VFFX/ref=cs_sr_dp_4?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-14"
+     }
+    ]
+   },
+   "title": "iPhone 18 Pro (1 TB) - Burgundy",
+   "link": "https://www.amazon.in/iPhone-18-Pro-TB-Burgundy/dp/B0HJB696TW/ref=sr_1_14?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-14",
+   "link_clean": "https://www.amazon.in/iPhone-18-Pro-TB-Burgundy/dp/B0HJB696TW/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0HJB696TW&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/71PvCbPVCEL._AC_UY218_.jpg",
+   "rating": 2.2,
+   "reviews": 13,
+   "price": "₹2,39,900",
+   "extracted_price": 239900,
+   "offers": [
+    "Up to 5% back with Amazon Pay ICICI card"
+   ],
+   "delivery": [
+    "FREE delivery Thu, 1 Oct",
+    "Or fastest delivery Wed, 30 Sept"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹2,39,900",
+     "extracted_primary_price": 239900,
+     "secondary_price": "Up to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI card",
+     "extracted_secondary_price": 5
+    }
+   ]
+  },
+  {
+   "position": 15,
+   "asin": "B0GRBHNCTZ",
+   "variants": {
+    "options": [
+     {
+      "position": 1,
+      "asin": "B0GRBHNCTZ",
+      "title": "Fresh Mint",
+      "link": "https://www.amazon.in/OnePlus-Snapdragon-Segments-Complete-Personalized/dp/B0GRBHNCTZ/ref=cs_sr_dp_1?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-15"
+     },
+     {
+      "position": 2,
+      "asin": "B0GRBH61FR",
+      "title": "Pitch Black",
+      "link": "https://www.amazon.in/OnePlus-Snapdragon-Segments-Complete-Personalized/dp/B0GRBH61FR/ref=cs_sr_dp_2?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-15"
+     },
+     {
+      "position": 3,
+      "asin": "B0GRB3S1FL",
+      "title": "Quick Silver",
+      "link": "https://www.amazon.in/OnePlus-Snapdragon-Segments-Complete-Personalized/dp/B0GRB3S1FL/ref=cs_sr_dp_3?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-15"
+     }
+    ]
+   },
+   "brand": "OnePlus",
+   "title": "Nord 6 | 12GB+256GB | Fresh Mint | Snapdragon 8s Gen 4 | Segment's First Stable 165FPS Gaming | Segment's Largest 9000mAh Battery | Most Complete IP Rating | Personalized AI",
+   "link": "https://www.amazon.in/OnePlus-Snapdragon-Segments-Complete-Personalized/dp/B0GRBHNCTZ/ref=sr_1_15?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-15",
+   "link_clean": "https://www.amazon.in/OnePlus-Snapdragon-Segments-Complete-Personalized/dp/B0GRBHNCTZ/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0GRBHNCTZ&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/61F1NWYtCKL._AC_UY218_.jpg",
+   "rating": 4.4,
+   "reviews": 1000,
+   "bought_last_month": "300+ bought in past month",
+   "price": "₹52,999",
+   "extracted_price": 52999,
+   "old_price": "₹56,999",
+   "extracted_old_price": 56999,
+   "offers": [
+    "Up to 5% back with Amazon Pay ICICI card"
+   ],
+   "delivery": [
+    "FREE delivery Tue, 29 Sept",
+    "Or fastest delivery Tomorrow 8 am - 12 pm"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹52,999",
+     "extracted_primary_price": 52999,
+     "secondary_price": "Up to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI card",
+     "extracted_secondary_price": 5,
+     "old_primary_price": "₹56,999",
+     "extracted_old_primary_price": 56999
+    }
+   ]
+  },
+  {
+   "position": 16,
+   "asin": "B0H3K981XX",
+   "variants": {
+    "options": [
+     {
+      "position": 1,
+      "asin": "B0H3K981XX",
+      "title": "Mint Breeze",
+      "link": "https://www.amazon.in/OnePlus-Snapdragon%C2%AE-7400mAh-Personalised-Game-Changing/dp/B0H3K981XX/ref=cs_sr_dp_1?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-16"
+     },
+     {
+      "position": 2,
+      "asin": "B0H3KBZ4J9",
+      "title": "Charcoal Black",
+      "link": "https://www.amazon.in/OnePlus-Snapdragon%C2%AE-7400mAh-Personalised-Game-Changing/dp/B0H3KBZ4J9/ref=cs_sr_dp_2?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-16"
+     },
+     {
+      "position": 3,
+      "asin": "B0FZT1D63F",
+      "title": "Electric Violet",
+      "link": "https://www.amazon.in/OnePlus-Snapdragon%C2%AE-7400mAh-Personalised-Game-Changing/dp/B0FZT1D63F/ref=cs_sr_dp_3?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-16"
+     }
+    ]
+   },
+   "brand": "OnePlus",
+   "title": "15R | 16GB+512GB | Mint Breeze | World's First Snapdragon® 8 Gen 5 | 7400mAh Battery | Personalised AI | Game-Changing 165Hz Display | IP68 IP69 IP66 & IP69K | 4K 120fps Video",
+   "link": "https://www.amazon.in/OnePlus-Snapdragon%C2%AE-7400mAh-Personalised-Game-Changing/dp/B0H3K981XX/ref=sr_1_16?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-16",
+   "link_clean": "https://www.amazon.in/OnePlus-Snapdragon%C2%AE-7400mAh-Personalised-Game-Changing/dp/B0H3K981XX/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0H3K981XX&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/61h53LtSVVL._AC_UY218_.jpg",
+   "rating": 4.4,
+   "reviews": 178,
+   "bought_last_month": "400+ bought in past month",
+   "price": "₹66,999",
+   "extracted_price": 66999,
+   "old_price": "₹68,999",
+   "extracted_old_price": 68999,
+   "offers": [
+    "Up to 5% back with Amazon Pay ICICI card"
+   ],
+   "delivery": [
+    "FREE delivery Tue, 29 Sept",
+    "Or fastest delivery Tomorrow 8 am - 12 pm"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹66,999",
+     "extracted_primary_price": 66999,
+     "secondary_price": "Up to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI card",
+     "extracted_secondary_price": 5,
+     "old_primary_price": "₹68,999",
+     "extracted_old_primary_price": 68999
+    }
+   ]
+  },
+  {
+   "position": 17,
+   "asin": "B0FNPNL2D8",
+   "brand": "Google",
+   "title": "Pixel 10 5G (Obsidian, 12GB RAM, 256GB Storage)",
+   "link": "https://www.amazon.in/Google-Pixel-Obsidian-256GB-Storage/dp/B0FNPNL2D8/ref=sr_1_17?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-17",
+   "link_clean": "https://www.amazon.in/Google-Pixel-Obsidian-256GB-Storage/dp/B0FNPNL2D8/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0FNPNL2D8&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/516HIUddM3L._AC_UY218_.jpg",
+   "rating": 4.3,
+   "reviews": 326,
+   "bought_last_month": "500+ bought in past month",
+   "price": "₹67,400",
+   "extracted_price": 67400,
+   "old_price": "₹79,999",
+   "extracted_old_price": 79999,
+   "offers": [
+    "Up to 5% back with Amazon Pay ICICI card"
+   ],
+   "delivery": [
+    "FREE delivery Tue, 29 Sept",
+    "Or fastest delivery Tomorrow, 28 Sept"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹67,400",
+     "extracted_primary_price": 67400,
+     "secondary_price": "Up to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI cardUp to 5% back with Amazon Pay ICICI card",
+     "extracted_secondary_price": 5,
+     "old_primary_price": "₹79,999",
+     "extracted_old_primary_price": 79999
+    }
+   ]
+  },
+  {
+   "position": 18,
+   "asin": "B0H293NCKQ",
+   "variants": {
+    "options": [
+     {
+      "position": 1,
+      "asin": "B0H293NCKQ",
+      "title": "Turbo White",
+      "link": "https://www.amazon.in/Dimensity-7540mAh-Battery-HyperCharge-Compact/dp/B0H293NCKQ/ref=cs_sr_dp_1?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-18"
+     },
+     {
+      "position": 2,
+      "asin": "B0H295X7LD",
+      "title": "Asphalt Black",
+      "link": "https://www.amazon.in/Dimensity-7540mAh-Battery-HyperCharge-Compact/dp/B0H295X7LD/ref=cs_sr_dp_2?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-18"
+     },
+     {
+      "position": 3,
+      "asin": "B0H297QC3Z",
+      "title": "Nitro Blue",
+      "link": "https://www.amazon.in/Dimensity-7540mAh-Battery-HyperCharge-Compact/dp/B0H297QC3Z/ref=cs_sr_dp_3?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-18"
+     }
+    ]
+   },
+   "brand": "Redmi",
+   "title": "Turbo 5 (12GB + 256GB) Turbo White | Dimensity 8500 Ultra | Mega 7540mAh Battery | 100W HyperCharge | Compact 16.75cm(6.59) 120Hz AMOLED Screen | 50MP Sony OIS Camera",
+   "link": "https://www.amazon.in/Dimensity-7540mAh-Battery-HyperCharge-Compact/dp/B0H293NCKQ/ref=sr_1_18?dib=eyJ2IjoiMSJ9.Rd9oxxJdwL1t_pUhtZ-u9t_yjL2xND1MsSstjnwgIww85d15EKP7gqhgru6Aqpp1Kh2nohZJTHOynRVxoGA261lLJ2RRie5XIjHq_g-DBODhMSdWYLiF-iqRakVtRsGhvpMRJmHtLlyFCxofhPqo-wrdckw2JdbM5r0uQdf7smua-VO4qjVWoYwauHbO4XFO1wtvai1BcfhpLO9La31-TTyyr3Kysd1O1poQNIO8MvE.shFMbdK0xc00Fb7t8gHDIbEO5pZW9icAg2ZEEIChhbk&dib_tag=se&keywords=iPhone&qid=1790515444&sr=8-18",
+   "link_clean": "https://www.amazon.in/Dimensity-7540mAh-Battery-HyperCharge-Compact/dp/B0H293NCKQ/",
+   "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.in&asin=B0H293NCKQ&device=desktop&engine=amazon_product",
+   "thumbnail": "https://m.media-amazon.com/images/I/71-soe9ImCL._AC_UY218_.jpg",
+   "rating": 4.3,
+   "reviews": 286,
+   "bought_last_month": "100+ bought in past month",
+   "price": "₹46,999",
+   "extracted_price": 46999,
+   "old_price": "₹57,999",
+   "extracted_old_price": 57999,
+   "offers": [
+    "10% Off on select cards"
+   ],
+   "delivery": [
+    "FREE delivery Tue, 29 Sept",
+    "Or fastest delivery Tomorrow 8 am - 12 pm"
+   ],
+   "purchase_options": [
+    {
+     "free_with_subscription": true,
+     "primary_price": "₹46,999",
+     "extracted_primary_price": 46999,
+     "secondary_price": "10% Off on select cards10% Off on select cards10% Off on select cards10% Off on select cards",
+     "extracted_secondary_price": 10,
+     "old_primary_price": "₹57,999",
+     "extracted_old_primary_price": 57999
+    }
+   ]
+  }
+ ],
+ "serpapi_pagination": {
+  "current": 1,
+  "next": "https://serpapi.com/search.json?amazon_domain=amazon.in&device=desktop&engine=amazon&k=iPhone&page=2"
+ }
+}
