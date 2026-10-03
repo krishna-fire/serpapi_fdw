@@ -25,7 +25,7 @@ type, no prompt clutter, results that appear rather than scroll.
 | 1:30 | **It never surprises your bill.** | "Third. It never surprises your bill." |
 | 1:34 | `serpapi.budget_status()` → hour 7/50, month 41/250, user 3/20. Then a query that trips the cap: `serpapi: hourly cap reached (50/50), resets at 14:00`. Then a wrong-key error, zoomed: no URL in it. | "Caps live inside the wrapper. Quotas live per user. The key lives in Vault — and never in an error message." |
 | 1:50 | `curl … /rpc/google_shopping` with the anon key → `anonymous callers are not allowed`; with a user token → rows. | "An app can call it. An anonymous visitor can't." |
-| 1:58 | **October 9. Big Billion Days.** | — |
+| 1:58 | **October. Festive sale season.** | — |
 | 2:02 | `select * from strikethrough_forensics('2026-10-09') where inflated;` Zoom on one row: *was ₹149,900 → ₹119,900 · claimed 20% · real 4%*. | "The discount is a claim. The ledger is a fact." |
 | 2:16 | **Under the hood.** Fast cuts: `cargo test` → 27 passed; `smoke-assert.sh` → errors=5 warnings=0; a 480 KB `.wasm`; `create server serpapi … fdw_package_url 'https://github.com/…/serpapi_fdw.wasm'`. Three logos in a row: Supabase hosted, Supabase local, Postgres. | "One wrapper, in Rust. Installs from a URL. Runs wherever Supabase Wrappers runs." |
 | 2:32 | **One more thing.** | — |

@@ -12,7 +12,7 @@ from products p, lateral serpapi.google_shopping(p.query) s; -- one search per r
 select * from serpapi.budget_status();                        -- used / cap / resets_at, costs nothing
 ```
 
-Built for the [SerpApi India Hackathon 2026](https://serpapi.github.io/serpapi-india-hackathon-2026/) (Open-Source Integrations). The bundled example, **Strikethrough**, snapshots ten products nightly through the wrapper and shows on Big Billion Days which "70% off" strikethrough prices were manufactured in the days before the sale.
+Built for the [SerpApi India Hackathon 2026](https://serpapi.github.io/serpapi-india-hackathon-2026/) (Open-Source Integrations). The bundled example, **Strikethrough**, snapshots every iPhone on Amazon.in (and Google Shopping) nightly through the wrapper, so when the October festive sales land (Amazon's Great Indian Festival, Flipkart's Big Billion Days) you can check whether a "was" price was ever a real price.
 
 > Status: under construction (Sep 27 → Oct 10, 2026). See [docs/architecture.md](docs/architecture.md) and [docs/engines.md](docs/engines.md).
 
