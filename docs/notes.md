@@ -69,3 +69,20 @@ filed as an issue where one does not already exist; links are added as they are 
   own Wrappers security guide recommends.
 - A `security definer` function is not inlined, so the foreign scan runs with its arguments as
   bound parameters; Wrappers ≥ 0.6.1 rescans correctly when parameters change (PR #587).
+
+## Local wasm lives in the container's /tmp (2026-09-27)
+
+`scripts/load-local.sh` copies `dist/serpapi_fdw.wasm` to `/tmp/serpapi_fdw.wasm` inside the db
+container and points `fdw_package_url` at `file:///tmp/...`. That path is not on a volume: any
+`supabase stop` + `start` recreates the container and every call then fails with
+`invalid WebAssembly component` (the host reports a missing file with the same message as a corrupt
+one). Re-run `docker cp dist/serpapi_fdw.wasm supabase_db_<project>:/tmp/serpapi_fdw.wasm` and
+`chmod 644` it, or use the `--docker`-free alternative of serving the file over HTTP from the host.
+
+## Grants (2026-09-27)
+
+Procedures default to PUBLIC execute in Postgres, so `40_snapshots.sql` now revokes
+`serpapi.snapshot_prices(date)` from public. `30_public.sql` grants signed-in Supabase users
+(`authenticated`) every typed engine function, its `replay_*` twin and the Markdown pair, all of
+which are metered by the per-caller daily quota; the generic `search`/`replay` (any engine) stay
+owner/service_role only. Anonymous callers keep only `budget_status()`.
