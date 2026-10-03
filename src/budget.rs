@@ -78,16 +78,15 @@ impl Budget {
     pub fn check(&self, n: u32, hourly_cap: u32, monthly_cap: u32, now: i64) -> Result<(), String> {
         if hourly_cap > 0 && self.hour_used + n > hourly_cap {
             return Err(format!(
-                "serpapi: hourly cap reached ({}/{} searches this hour); window resets at epoch {} (~{} min). Raise hourly_cap on the server if your plan allows.",
+                "serpapi: hourly cap reached ({}/{} searches this hour); resets in {} min. No request was sent. Raise hourly_cap on the server if your plan allows.",
                 self.hour_used,
                 hourly_cap,
-                next_hour_start(now),
-                (next_hour_start(now) - now).max(0) / 60
+                ((next_hour_start(now) - now).max(0) + 59) / 60
             ));
         }
         if monthly_cap > 0 && self.month_used + n > monthly_cap {
             return Err(format!(
-                "serpapi: monthly cap reached ({}/{} searches in {}). Raise monthly_cap on the server if your plan allows, or use search_id replay (free).",
+                "serpapi: monthly cap reached ({}/{} searches in {}). No request was sent. Raise monthly_cap on the server if your plan allows, or use search_id replay (free).",
                 self.month_used, monthly_cap, self.month_key
             ));
         }
