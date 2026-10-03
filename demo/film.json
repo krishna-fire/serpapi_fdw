@@ -39,12 +39,14 @@
     {
       "type": "browser",
       "id": "r01-install",
-      "vo": "Install it once."
+      "vo": "Install it once.",
+      "speed": 2.0
     },
     {
       "type": "browser",
       "id": "r02-shopping",
-      "vo": "One function call. Live Google results, as typed rows."
+      "vo": "One function call. Live Google results, as typed rows.",
+      "speed": 1.4
     },
     {
       "type": "anim",
@@ -124,7 +126,8 @@
     {
       "type": "tape",
       "id": "t09-plainpg",
-      "vo": "Here it is on plain Postgres. Same function, same rows."
+      "vo": "Here it is on plain Postgres. Same function, same rows.",
+      "speed": 1.6
     },
     {
       "type": "anim",

@@ -137,10 +137,16 @@ def tape_clip(seg: dict, min_secs: float = 0.0) -> Path:
     clip = CLIPS / f"{seg['id']}.mp4"
     # normalise every recording to the film's size/fps, hold the last frame if the narration runs longer,
     # and add a short fade in/out so cuts breathe
-    d = duration(src)
+    # "speed": >1 plays a recording faster (typing-heavy shots); animations hold their last frame,
+    # so they are cut to the narration's length instead of playing out their tail
+    speed = float(seg.get("speed", 1.0))
+    d = duration(src) / speed
+    if seg["type"] == "anim" and min_secs > 0:
+        d = min(d, min_secs)
     hold = max(min_secs - d, 0.0)
     total = d + hold
     pad = f"tpad=stop_mode=clone:stop_duration={hold:.2f}," if hold > 0 else ""
+    pad = (f"setpts=PTS/{speed}," if speed != 1.0 else "") + f"trim=duration={d:.3f},setpts=PTS-STARTPTS," + pad
     # "fade": false for match cuts and animations that carry their own transition
     fade = (f"fade=t=in:st=0:d=0.35,fade=t=out:st={max(total-0.35,0)}:d=0.35,"
             if seg.get("fade", seg["type"] != "anim") else "")

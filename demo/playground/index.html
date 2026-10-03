@@ -207,8 +207,8 @@ let who = "anon", session = null, engine = "google_shopping", view = "rows", las
 const COLS = {
   google_shopping: [["source", "merchant", "merchant"], ["extracted_price", "price", "price"], ["extracted_old_price", "was", "was"], ["title", "title", "title"]],
   amazon:          [["title", "title", "title"], ["extracted_price", "price", "price"], ["extracted_old_price", "was", "was"], ["rating", "rating", "num"]],
-  google_news:     [["source", "source", "merchant"], ["date", "date", ""], ["title", "title", "title"]],
-  google_jobs:     [["company_name", "company", "merchant"], ["location", "location", ""], ["title", "title", "title"]],
+  google_news:     [["source_name", "source", "merchant"], ["date", "date", ""], ["title", "title", "title"]],
+  google_jobs:     [["company_name", "company", "merchant"], ["job_location", "location", ""], ["title", "title", "title"]],
 };
 const WIDTH = {merchant: "22%", price: "15%", was: "15%", num: "12%", "": "24%"};
 const PLACEHOLDER = {google_shopping: "Search products", amazon: "Search Amazon.in", google_news: "Search news", google_jobs: "Search jobs"};
@@ -327,7 +327,7 @@ function fade() { $("#body").classList.add("fading"); }
 function reqline(r, archive) {
   const ok = r.status >= 200 && r.status < 300;
   const n = r.credits;
-  const cr = n === null ? "" : `<span class="sep">·</span><span class="cr ${n === 0 ? "zero" : ""}">${n} credit${n === 1 ? "" : "s"}</span>`;
+  const cr = n === null ? "" : `<span class="sep">·</span><span class="cr ${n === 0 ? "zero" : ""}">${n === 0 ? "0 credits" : `${n} search${n === 1 ? "" : "es"} counted`}</span>`;
   const status = ok ? `<span class="ok">${r.status}</span>` : `<span class="no">refused</span>`;
   $("#reqline").innerHTML = `<span>POST /rest/v1/rpc/${esc(r.fn)}</span><span class="sep">·</span>${status}<span class="sep">·</span><span>${r.ms} ms</span>${cr}` +
     (archive && ok ? `<span class="sep">·</span><span class="arch">from SerpApi archive</span>` : "");
