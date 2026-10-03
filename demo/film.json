@@ -4,9 +4,9 @@
   "height": 1080,
   "fps": 30,
   "card_fade": 0.6,
-  "voice_engine": "chirp",
-  "voice": "en-IN-Chirp3-HD-Algenib",
-  "voice_speed": 0.92,
+  "voice_engine": "elevenlabs",
+  "voice": "pFZP5JQG7iQjIQuC4Bku",
+  "voice_speed": 1.0,
   "pronounce": {
     "serpapi_fdw": "Serp A-P-I F-D-W",
     "SerpApi": "Serp A-P-I",
@@ -121,5 +121,6 @@
       "subtitle": "github.com/krishna-fire/serpapi_fdw  ·  Open-Source Integrations  ·  Krishna Janaswamy, Bengaluru",
       "vo": "serpapi F D W. Open source. Built in Bengaluru."
     }
-  ]
+  ],
+  "voice_model": "eleven_v4"
 }
