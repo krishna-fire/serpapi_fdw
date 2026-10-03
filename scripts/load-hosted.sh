@@ -21,8 +21,8 @@ else
   export DB_URL="postgresql://postgres:${PW}@db.${PROJECT_REF}.supabase.co:5432/postgres"
 fi
 
-URL="https://github.com/krishna-fire/serpapi_fdw/releases/download/${RELEASE}/serpapi_fdw.wasm"
-SUM="$(curl -sfL "https://github.com/krishna-fire/serpapi_fdw/releases/download/${RELEASE}/checksum.txt" | awk '{print $1}')"
+URL="https://github.com/krishna247/serpapi_fdw/releases/download/${RELEASE}/serpapi_fdw.wasm"
+SUM="$(curl -sfL "https://github.com/krishna247/serpapi_fdw/releases/download/${RELEASE}/checksum.txt" | awk '{print $1}')"
 test -n "$SUM" || { echo "could not fetch checksum for $RELEASE" >&2; exit 1; }
 VERSION="$(grep -m1 '^version' Cargo.toml | sed -E 's/.*"([^"]+)".*/\1/')"
 echo "release $RELEASE  sha256 $SUM  package version $VERSION"

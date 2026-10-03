@@ -9,7 +9,7 @@
 create server serpapi
   foreign data wrapper wasm_wrapper
   options (
-    fdw_package_url 'https://github.com/krishna-fire/serpapi_fdw/releases/download/v0.1.0/serpapi_fdw.wasm',
+    fdw_package_url 'https://github.com/krishna247/serpapi_fdw/releases/download/v0.1.0/serpapi_fdw.wasm',
     fdw_package_name 'serpapi:serpapi-fdw',
     fdw_package_version '0.1.0',
     fdw_package_checksum 'e91ef82b1cfd1c6bd045982c4848e76c0bc78eff57903c84d7d172181d84e54f',

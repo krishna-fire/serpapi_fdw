@@ -134,7 +134,7 @@ def scene_s01_install(page: Page):
     extra = [f"  api_url '{API_URL}',"] if API_URL else []
     studio_type(page, [
         "create server serpapi foreign data wrapper wasm_wrapper options (",
-        f"  fdw_package_url 'https://github.com/krishna-fire/serpapi_fdw/releases/download/{RELEASE}/serpapi_fdw.wasm',",
+        f"  fdw_package_url 'https://github.com/krishna247/serpapi_fdw/releases/download/{RELEASE}/serpapi_fdw.wasm',",
         "  fdw_package_name 'serpapi:serpapi-fdw', fdw_package_version '0.1.0',",
         f"  fdw_package_checksum '{sha}',",
         "  api_key_name 'serpapi_api_key',",

@@ -30,7 +30,7 @@ type, no prompt clutter, results that appear rather than scroll.
 | 2:16 | **Under the hood.** Fast cuts: `cargo test` → 27 passed; `smoke-assert.sh` → errors=5 warnings=0; a 480 KB `.wasm`; `create server serpapi … fdw_package_url 'https://github.com/…/serpapi_fdw.wasm'`. Three logos in a row: Supabase hosted, Supabase local, Postgres. | "One wrapper, in Rust. Installs from a URL. Runs wherever Supabase Wrappers runs." |
 | 2:32 | **One more thing.** | — |
 | 2:35 | `select markdown from serpapi.search_md('google_news', '{"q":"Bengaluru tech hiring"}');` → a clean Markdown block. | "Markdown out. For your agents." |
-| 2:42 | End card: **serpapi_fdw** · github.com/krishna-fire/serpapi_fdw · Open-Source Integrations · Krishna Janaswamy, Bengaluru | — |
+| 2:42 | End card: **serpapi_fdw** · github.com/krishna247/serpapi_fdw · Open-Source Integrations · Krishna Janaswamy, Bengaluru | — |
 
 Runtime of terminal footage: about 1:50 of 2:45. Cards never exceed six seconds.
 

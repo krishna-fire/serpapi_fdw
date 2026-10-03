@@ -5,7 +5,7 @@ edition = "2024"
 rust-version = "1.97.1"
 description = "SerpApi as Postgres foreign tables and SQL functions for Supabase Wrappers (Wasm FDW)"
 license = "MIT"
-repository = "https://github.com/krishna-fire/serpapi_fdw"
+repository = "https://github.com/krishna247/serpapi_fdw"
 
 [lib]
 crate-type = ["cdylib"]

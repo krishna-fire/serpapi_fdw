@@ -74,7 +74,7 @@ No SDK or MCP server is involved: the wrapper runs inside Postgres, where there 
 Offline: recorded fixtures served by a local mock, no key, no credits. Needs Docker (running), the [Supabase CLI](https://supabase.com/docs/guides/cli), `psql` and `python3`.
 
 ```bash
-git clone https://github.com/krishna-fire/serpapi_fdw && cd serpapi_fdw
+git clone https://github.com/krishna247/serpapi_fdw && cd serpapi_fdw
 scripts/dev-up.sh            # local Supabase (Postgres 17, Wrappers, Auth), the mock on :8787, a demo user
 SERPAPI_API_URL=http://host.docker.internal:8787 SERPAPI_API_KEY=mock-key scripts/load-local.sh
 scripts/apply-sql.sh
@@ -104,7 +104,7 @@ create foreign data wrapper wasm_wrapper handler wasm_fdw_handler validator wasm
 select vault.create_secret('<your serpapi key>', 'serpapi_api_key');
 
 create server serpapi foreign data wrapper wasm_wrapper options (
-  fdw_package_url 'https://github.com/krishna-fire/serpapi_fdw/releases/download/v0.1.0/serpapi_fdw.wasm',
+  fdw_package_url 'https://github.com/krishna247/serpapi_fdw/releases/download/v0.1.0/serpapi_fdw.wasm',
   fdw_package_name 'serpapi:serpapi-fdw',
   fdw_package_version '0.1.0',
   fdw_package_checksum 'e91ef82b1cfd1c6bd045982c4848e76c0bc78eff57903c84d7d172181d84e54f',
