@@ -6,7 +6,18 @@
 #   export DB_URL=postgresql://postgres:postgres@127.0.0.1:55432/postgres CONTAINER=serpapi-plainpg
 #   SERPAPI_API_URL=http://host.docker.internal:8787 SERPAPI_API_KEY=mock-key scripts/load-local.sh   # or a real key
 #   scripts/apply-sql.sh && psql "$DB_URL" -f scripts/smoke.sql
+# The container gets --add-host=host.docker.internal:host-gateway so the mock URL also works on Linux.
 set -euo pipefail
+
+missing=0
+need() { command -v "$1" >/dev/null 2>&1 || { echo "missing: $1 ($2)" >&2; missing=1; }; }
+need docker  "https://docs.docker.com/get-docker/"
+need psql    "PostgreSQL client, e.g. brew install libpq / apt install postgresql-client"
+need python3 "Python 3, for the mock and scripts/gen.py"
+if command -v docker >/dev/null 2>&1 && ! docker info >/dev/null 2>&1; then
+  echo "docker is not running (start Docker Desktop / dockerd)" >&2; missing=1
+fi
+[[ $missing -eq 0 ]] || exit 1
 
 NAME="${NAME:-serpapi-plainpg}"
 PORT="${PORT:-55432}"
