@@ -1,7 +1,9 @@
 # Notes for SerpApi and Supabase
 
-Concrete observations made while building `serpapi_fdw`, with the workaround used. Each will be
-filed as an issue where one does not already exist; links are added as they are filed.
+Concrete observations made while building `serpapi_fdw`, with the workaround used. None has been
+filed upstream yet. Each will be filed as an issue where one does not already exist, and the link
+added here. The one upstream issue referenced below, supabase/supabase#46480, is an existing
+report by someone else of the same symptom.
 
 ## Supabase Wrappers (Wasm host)
 
