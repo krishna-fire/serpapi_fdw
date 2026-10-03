@@ -2,12 +2,31 @@
 # Load the built wrapper into a running `supabase start` database and (re)create the server.
 #   scripts/load-local.sh                # uses ~/.serpapi_key for the Vault secret
 #   SERPAPI_API_KEY=... scripts/load-local.sh
+#   SERPAPI_FDW_VERSION=v0.1.0 ...      # release to download when dist/serpapi_fdw.wasm is absent
 # Then apply the SQL layers:  scripts/apply-sql.sh
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 WASM=dist/serpapi_fdw.wasm
-test -f "$WASM" || { echo "no $WASM; run scripts/build.sh first" >&2; exit 1; }
+# No local build? Fetch the published release instead (no Rust toolchain needed), checksum-verified.
+# To build from source instead: scripts/build.sh (rustup) or scripts/build.sh --docker.
+if [[ ! -f "$WASM" ]]; then
+  REL="${SERPAPI_FDW_VERSION:-v0.1.0}"
+  BASE="https://github.com/krishna-fire/serpapi_fdw/releases/download/$REL"
+  echo "no $WASM; downloading release $REL (or build it: scripts/build.sh [--docker])"
+  TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
+  curl -fsSL -o "$TMP/serpapi_fdw.wasm" "$BASE/serpapi_fdw.wasm" \
+    && curl -fsSL -o "$TMP/checksum.txt" "$BASE/checksum.txt" \
+    || { echo "download of $REL failed; build instead: scripts/build.sh [--docker]" >&2; exit 1; }
+  WANT="$(awk '/serpapi_fdw\.wasm/ {print $1; exit}' "$TMP/checksum.txt")"
+  if command -v sha256sum >/dev/null; then GOT="$(sha256sum "$TMP/serpapi_fdw.wasm" | awk '{print $1}')"
+  else GOT="$(shasum -a 256 "$TMP/serpapi_fdw.wasm" | awk '{print $1}')"; fi
+  [[ -n "$WANT" && "$GOT" == "$WANT" ]] || { echo "checksum mismatch for $REL (want ${WANT:-?}, got $GOT)" >&2; exit 1; }
+  mkdir -p dist
+  install -m 644 "$TMP/serpapi_fdw.wasm" "$WASM"
+  cp "$TMP/checksum.txt" dist/checksum.txt
+  echo "verified sha256 $GOT -> $WASM"
+fi
 
 # Supabase local: auto-detected. Plain Postgres: set DB_URL and CONTAINER (see scripts/plain-pg-up.sh).
 DB_URL="${DB_URL:-$(supabase status --output env 2>/dev/null | sed -n 's/^DB_URL=//p' | tr -d '"')}"
@@ -20,7 +39,8 @@ KEY="${SERPAPI_API_KEY:-$(cat "$HOME/.serpapi_key" 2>/dev/null || true)}"
 test -n "$KEY" || { echo "set SERPAPI_API_KEY or put the key in ~/.serpapi_key" >&2; exit 1; }
 
 VERSION="$(grep -m1 '^version' Cargo.toml | sed -E 's/.*"([^"]+)".*/\1/')"
-# SERPAPI_API_URL=http://host.docker.internal:8787 points the wrapper at mock/server.py
+# SERPAPI_API_URL=http://host.docker.internal:8787 points the wrapper at mock/server.py. On Linux the
+# supabase CLI starts its containers with host.docker.internal:host-gateway, and plain-pg-up.sh does too.
 API_URL="${SERPAPI_API_URL:-https://serpapi.com}"
 
 docker cp "$WASM" "$CONTAINER:/tmp/serpapi_fdw.wasm"
